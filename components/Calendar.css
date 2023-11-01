@@ -1,5 +1,6 @@
 .react-calendar {
     width: 33.5rem;
+    padding: 2.3rem 1.2rem;
     max-width: 100%;
     background: rgb(255, 255, 255);
     border: 1px solid #a0a096;
@@ -99,11 +100,16 @@
 }
 
 .react-calendar__tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     max-width: 100%;
     padding: 10px 6.6667px;
     background: none;
     text-align: center;
     line-height: 16px;
+    border-radius: 10rem;
 }
 
 .react-calendar__tile:disabled {
@@ -133,6 +139,7 @@
     background: #a9d4ff;
 }
 
+/* 타일 선택시 */
 .react-calendar__tile--active {
     background: #006edc;
     color: white;
@@ -145,4 +152,11 @@
 
 .react-calendar--selectRange .react-calendar__tile--hover {
     background-color: #e6e6e6;
+}
+
+.dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #006edc;
+    border: 10rem;
 }
