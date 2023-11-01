@@ -4,12 +4,17 @@ import * as moment from 'moment';
 import 'moment/locale/ko';
 import { dayList } from 'data/dummy';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
+import { useSetRecoilState } from 'recoil';
+import { dateSelect } from '../atoms/selector';
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const TupleCalendar = () => {
+  const router = useRouter();
   const [date, setDate] = useState<Value>(new Date()); //선택된 날짜
+  const setSelectDate = useSetRecoilState(dateSelect);
   const addContent = ({ date }: any) => {
     const contents = [];
     if (dayList.find((day) => day === moment(date).format('YYYY-MM-DD'))) {
@@ -17,9 +22,12 @@ const TupleCalendar = () => {
     }
     return <div>{contents}</div>;
   };
+  const handleClick = () => {
+    router.replace('/classbyday');
+  };
   useEffect(() => {
-    // console.log(contents);
-  }, []);
+    setSelectDate(moment(date).format('YYYY-MM-DD'));
+  }, [date]);
   return (
     <Wrapper>
       <TitleSection>
@@ -34,6 +42,7 @@ const TupleCalendar = () => {
         prev2Label={null} //년 네비게이션 표시 여부
         showNeighboringMonth={false} //최근 달 일자 표시 여부
         tileContent={addContent}
+        onClickDay={handleClick}
         value={date}
       />
       <ClassSection>
