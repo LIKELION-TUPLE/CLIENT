@@ -6,6 +6,7 @@ import GlobalStyle from '@src/styles/globalStyle';
 import { theme } from '../src/styles/theme';
 
 import React from 'react';
+import 'components/Calendar.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
