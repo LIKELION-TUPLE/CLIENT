@@ -2,7 +2,12 @@ import { DefaultTheme } from 'styled-components';
 
 export const theme: DefaultTheme = {
   colors: {
-    blackOpacity70: 'rgba(58, 58, 58, 0.7)',
-    blackOpacity80: 'rgba(58, 58, 58, 0.8)',
+    mainColor: '#2354D4',
+    backgroundColor: '#F8F8F8',
+    lightGray: '#EDEDED',
+    gray: '#D9D9D9',
+    darkGray: '#5F5F5F',
+    red: '#EC5959',
+    black: '#000000',
   },
 };
