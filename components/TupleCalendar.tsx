@@ -5,6 +5,7 @@ import 'moment/locale/ko';
 import { dayList } from 'data/dummy';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import Layout from './common/Layout';
 
 import { useSetRecoilState } from 'recoil';
 import { dateSelect } from '../atoms/selector';
@@ -29,7 +30,7 @@ const TupleCalendar = () => {
     setSelectDate(moment(date).format('YYYY-MM-DD'));
   }, [date]);
   return (
-    <Wrapper>
+    <Layout noHeader>
       <TitleSection>
         <SubTitle>김인강 선생님, 어서오세요!</SubTitle>
         <Title>과외 일정</Title>
@@ -50,12 +51,12 @@ const TupleCalendar = () => {
         <SubTitle>오늘의 수업</SubTitle>
         <ClassContainer></ClassContainer>
       </ClassSection>
-    </Wrapper>
+    </Layout>
   );
 };
 
 export default TupleCalendar;
-const Wrapper = styled.div``;
+
 const TitleSection = styled.div``;
 const Title = styled.h1``;
 const SubTitle = styled.h2``;

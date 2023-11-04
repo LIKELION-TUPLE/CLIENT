@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RecoilRoot } from 'recoil';
 import GlobalStyle from '@src/styles/globalStyle';
-import { theme } from '../src/styles/theme';
+import theme from '@src/styles/theme';
 
 import React from 'react';
 import 'components/Calendar.css';
