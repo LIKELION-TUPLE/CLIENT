@@ -30,11 +30,11 @@ const SelectSignup = () => {
   }, [clickedId]);
 
   return (
-    <Layout noFooter={true}>
+    <Layout noFooter>
       <Page>
         <TitleWrapper>회원가입</TitleWrapper>
         <SelectWrapper>
-          <SelectButton isClick={clickedId === 1} onClick={() => handleClick(1)}>
+          <SelectButton type="button" isClick={clickedId === 1} onClick={() => handleClick(1)}>
             {clickedId === 1 ? <TeacherWhiteIcon alt="선생님(선택o)" /> : <TeacherBlackIcon alt="선생님(선택x)" />}
             <SelectContent>
               선생님으로
@@ -42,7 +42,7 @@ const SelectSignup = () => {
               회원가입
             </SelectContent>
           </SelectButton>
-          <SelectButton isClick={clickedId === 2} onClick={() => handleClick(2)}>
+          <SelectButton type="button" isClick={clickedId === 2} onClick={() => handleClick(2)}>
             {clickedId === 2 ? <StudentWhiteIcon alt="학생(선택o)" /> : <StudentBlackIcon alt="학생(선택x)" />}
             <SelectContent>
               학생으로
@@ -50,7 +50,7 @@ const SelectSignup = () => {
               회원가입
             </SelectContent>
           </SelectButton>
-          <BottomButton isClick={clickedId !== -1} onClick={handleSignup}>
+          <BottomButton type="submit" isClick={clickedId !== -1} onClick={handleSignup}>
             회원가입 하기
           </BottomButton>
         </SelectWrapper>
@@ -62,13 +62,6 @@ const SelectSignup = () => {
 export default SelectSignup;
 
 const Page = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  overflow: hidden;
-  left: 50%;
-  transform: translate(-50%, 0);
-
   top: 0;
   bottom: 0;
   width: 100%;
@@ -93,6 +86,7 @@ const SelectWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
+  margin-top: 5.8rem;
   height: 100%;
 `;
 
@@ -113,7 +107,7 @@ const SelectButton = styled.button<Props>`
   cursor: pointer;
 `;
 
-const SelectContent = styled.div``;
+const SelectContent = styled.h1``;
 
 const BottomButton = styled.button<Props>`
   width: 100%;
