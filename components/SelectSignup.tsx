@@ -16,11 +16,12 @@ const SelectSignup = () => {
 
   const handleSignup = () => {
     if (clickedId === 1) {
-      router.replace('/signup/선생님');
+      router.replace(`/signup/선생님`);
     } else if (clickedId === 2) {
-      router.replace('singup/학생');
+      router.replace(`/signup/학생`);
     }
   };
+
   const handleClick = (index: number) => {
     setClickedId(index);
   };
