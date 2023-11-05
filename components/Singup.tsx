@@ -107,7 +107,7 @@ const Singup = () => {
   }, [idValid, pwValid, pwConfirmValid, dateValid, nameValid, phoneValid]);
 
   return (
-    <Layout noFooter={true}>
+    <Layout noFooter>
       <Page>
         <TitleWrapper>회원가입</TitleWrapper>
         <ContentWrapper>
@@ -188,13 +188,6 @@ const Singup = () => {
 export default Singup;
 
 const Page = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  overflow: hidden;
-  left: 50%;
-  transform: translate(-50%, 0);
-
   top: 0;
   bottom: 0;
   width: 100%;
