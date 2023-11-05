@@ -4,12 +4,13 @@ import theme from '@src/styles/theme';
 import Layout from './common/Layout';
 import { dummyUsers } from 'data/dummy';
 import { useRouter } from 'next/router';
+import { OwnProps } from 'pages/signup/[userType]';
 
 interface Props {
   isClick?: boolean;
 }
 
-const Singup = () => {
+const Singup: React.FC<OwnProps> = ({ userType }) => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState('');
@@ -109,7 +110,7 @@ const Singup = () => {
   return (
     <Layout noFooter>
       <Page>
-        <TitleWrapper>회원가입</TitleWrapper>
+        <TitleWrapper>{userType} 회원가입</TitleWrapper>
         <ContentWrapper>
           <InputTitle>아이디</InputTitle>
           <InputWrapper>
@@ -207,7 +208,7 @@ const TitleWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   margin-top: 1.5rem;
-  padding: 0 2rem 5rem 2rem;
+  padding: 0.5rem 2rem 5rem 2rem;
   border-radius: 1rem;
 
   background-color: ${theme.colors.white};
