@@ -4,9 +4,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RecoilRoot } from 'recoil';
 import GlobalStyle from '@src/styles/globalStyle';
 import theme from '@src/styles/theme';
+import '../public/fonts/style.css';
 
 import React from 'react';
-import 'components/Calendar.css';
+import 'components/calendar/Calendar.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
