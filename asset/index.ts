@@ -9,7 +9,7 @@ export { default as TeacherWhiteIcon } from './teacherwhite.svg';
 export { default as StudentBlackIcon } from './studentblack.svg';
 export { default as StudentWhiteIcon } from './studentwhite.svg';
 export { default as CelebrateIcon } from './celebrate.svg';
-export { default as OnboardingCalendarIcon } from './onborading_calendar.svg';
+export { default as OnboardingCalendarIcon } from './onboarding_calendar.svg';
 export { default as OnboardingClassListIcon } from './onboarding_classList.svg';
 export { default as OnboardingMoneyIcon } from './onboarding_money.svg';
 export { default as KakaoIcon } from './kakao_talk.svg';
