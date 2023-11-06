@@ -11,8 +11,20 @@ const colors = {
   white: '#FFFFFF',
 } as const;
 
+function FONT({ weight, size, lineHeight, letterSpacing }) {
+  return `
+      font-family: 'pretendard', sans-serif;
+      font-weight: ${weight};
+      font-style: normal;
+      font-size: ${size}rem;
+      line-height: ${lineHeight}rem;
+      ${letterSpacing && `letter-spacing: -0.0${letterSpacing}rem;`}
+  `;
+}
+const fonts = {} as const;
 const theme = {
   colors,
+  fonts,
 } as const;
 
 export default theme;
