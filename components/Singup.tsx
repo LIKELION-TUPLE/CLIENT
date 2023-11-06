@@ -30,7 +30,7 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
 
   const handleSignup = () => {
     if (!notAllow) {
-      router.replace('./completesignup');
+      router.replace('/completesignup');
     }
   };
 
