@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
-import Layout from './common/Layout';
+import Layout from '../common/Layout';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
 

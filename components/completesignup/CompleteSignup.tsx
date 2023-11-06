@@ -1,21 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
 import { CelebrateIcon } from 'asset';
-import Layout from './common/Layout';
+import Layout from '../common/Layout';
 import theme from '@src/styles/theme';
 import { useRouter } from 'next/router';
+import { useRecoilValue } from 'recoil';
+import { userName, userType } from 'atoms/atom';
 
 const CompleteSignup = () => {
+  const name = useRecoilValue(userName);
+  const type = useRecoilValue(userType);
   const router = useRouter();
   const handleLogin = () => {
     router.replace('/login');
   };
 
   return (
-    <Layout noHeader noFooter>
+    <Layout noFooter>
       <Page>
         <CelebrateIcon alt="축하" />
-        <TitleWrapper>가입이 완료되었습니다</TitleWrapper>
+        <TitleWrapper>
+          {name} {type}
+          <br />
+          가입이 완료되었습니다
+        </TitleWrapper>
         <BottomButton type="button" onClick={handleLogin}>
           로그인 하기
         </BottomButton>
@@ -35,13 +43,14 @@ const Page = styled.div`
   max-width: 37.5rem;
   padding: 0 2rem;
 
-  background-color: ${theme.colors.white};
+  background-color: ${theme.colors.backgroundColor};
 `;
 
 const TitleWrapper = styled.div`
   margin-top: 4.4rem;
 
-  line-height: 3.5rem;
+  text-align: center;
+  line-height: normal;
   font-size: 2.4rem;
   font-weight: 700;
 `;

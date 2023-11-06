@@ -1,15 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import { LeftIcon } from 'asset';
-const Header = () => {
+import { useRouter } from 'next/router';
+import { HeaderProps } from 'components/selectsignup/SelectSignup';
+
+const Header: React.FC<HeaderProps> = ({ path }) => {
+  const router = useRouter();
+  const handleRouter = (path?: string) => {
+    router.replace(`/${path}`);
+  };
   return (
-    <HeaderWrapper>
+    <HeaderWrapper
+      onClick={() => {
+        handleRouter(path);
+      }}>
       <LeftIcon alt="뒤로가기" width={27} height={27} />
     </HeaderWrapper>
   );
 };
 
 export default Header;
+
 const HeaderWrapper = styled.div`
   position: fixed;
   top: 1.2rem;

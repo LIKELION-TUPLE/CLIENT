@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Layout from './common/Layout';
+import Layout from '../common/Layout';
 import theme from '@src/styles/theme';
 import { OnboardingCalendarIcon, OnboardingClassListIcon, OnboardingMoneyIcon, KakaoIcon } from 'asset';
 import { useRouter } from 'next/router';
@@ -27,7 +27,7 @@ const Onboarding = () => {
   };
 
   return (
-    <Layout noHeader noFooter>
+    <Layout noFooter>
       <Page>
         {idx === 1 ? (
           <OnboardingWrapper>
