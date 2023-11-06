@@ -1,16 +1,19 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
-import Layout from './common/Layout';
+import Layout from '../common/Layout';
 import { dummyUsers } from 'data/dummy';
 import { useRouter } from 'next/router';
 import { OwnProps } from 'pages/signup/[userType]';
+import { useSetRecoilState } from 'recoil';
+import { userNameSave, userTypeSave } from 'atoms/selector';
 
 interface Props {
   isClick?: boolean;
 }
 
 const Singup: React.FC<OwnProps> = ({ userType }) => {
+  const type = userType === 'teacher' ? '선생님' : '학생';
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState('');
@@ -27,6 +30,8 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
   const [notAllow, setNotAllow] = useState(true);
 
   const router = useRouter();
+  const setUserName = useSetRecoilState(userNameSave);
+  const setUserType = useSetRecoilState(userTypeSave);
 
   const handleSignup = () => {
     if (!notAllow) {
@@ -102,6 +107,8 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
   useEffect(() => {
     if (idValid && pwValid && pwConfirmValid && dateValid && nameValid && phoneValid) {
       setNotAllow(false);
+      setUserName(name);
+      setUserType(type);
       return;
     }
     setNotAllow(true);
@@ -110,7 +117,7 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
   return (
     <Layout noFooter>
       <Page>
-        <TitleWrapper>{userType} 회원가입</TitleWrapper>
+        <TitleWrapper>{type} 회원가입</TitleWrapper>
         <ContentWrapper>
           <InputTitle>아이디</InputTitle>
           <InputWrapper>

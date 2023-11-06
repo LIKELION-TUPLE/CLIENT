@@ -5,17 +5,15 @@ import Header from './Header';
 import theme from '@src/styles/theme';
 
 interface LayoutProps {
-  noHeader?: boolean;
   children: React.ReactNode;
   noFooter?: boolean;
 }
 
 const Layout = (props: LayoutProps) => {
-  const { children, noFooter, noHeader } = props;
+  const { children, noFooter } = props;
   return (
     <LayoutWrapper>
       <ContentWrapper>
-        {!noHeader && <Header />}
         {children}
         {!noFooter && <Footer />}
       </ContentWrapper>
@@ -24,6 +22,7 @@ const Layout = (props: LayoutProps) => {
 };
 
 export default Layout;
+
 const LayoutWrapper = styled.div`
   display: flex;
   justify-content: center;

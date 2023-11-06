@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import { TeacherBlackIcon, StudentBlackIcon, TeacherWhiteIcon, StudentWhiteIcon } from 'asset';
 import { useRouter } from 'next/router';
-import Layout from './common/Layout';
+import Layout from '../common/Layout';
+import Header from 'components/common/Header';
+
+export interface HeaderProps {
+  path?: string;
+}
 
 interface Props {
   isClick?: boolean;
@@ -16,9 +21,9 @@ const SelectSignup = () => {
 
   const handleSignup = () => {
     if (clickedId === 1) {
-      router.replace(`/signup/선생님`);
+      router.replace('/signup/teacher');
     } else if (clickedId === 2) {
-      router.replace(`/signup/학생`);
+      router.replace('/signup/student');
     }
   };
 
@@ -28,10 +33,12 @@ const SelectSignup = () => {
 
   useEffect(() => {
     setClickedId(clickedId);
+    console.log(clickedId);
   }, [clickedId]);
 
   return (
     <Layout noFooter>
+      <Header path={'onboarding'} />
       <Page>
         <TitleWrapper>회원가입</TitleWrapper>
         <SelectWrapper>
@@ -69,7 +76,7 @@ const Page = styled.div`
   max-width: 37.5rem;
   padding: 0 2rem;
 
-  background-color: ${theme.colors.white};
+  background-color: ${theme.colors.backgroundColor};
 `;
 
 const TitleWrapper = styled.div`

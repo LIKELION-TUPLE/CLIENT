@@ -1,5 +1,5 @@
-import Loading from 'components/Loading';
-import Onboarding from 'components/Onboarding';
+import Loading from 'components/onboarding/Loading';
+import Onboarding from 'components/onboarding/Onboarding';
 import React, { useEffect, useState } from 'react';
 
 const index = () => {
@@ -8,7 +8,7 @@ const index = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
 
   return loading ? <Loading /> : <Onboarding />;
