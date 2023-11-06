@@ -9,6 +9,7 @@ const colors = {
   red: '#EC5959',
   black: '#000000',
   white: '#FFFFFF',
+  kakao: `#FFE812`,
 } as const;
 
 const theme = {
