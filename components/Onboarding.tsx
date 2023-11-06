@@ -31,7 +31,7 @@ const Onboarding = () => {
       <Page>
         {idx === 1 ? (
           <OnboardingWrapper>
-            <OnboardingCalendarIcon alt="달력온보딩" width={235} height={490} />
+            <OnboardingCalendarIcon alt="달력온보딩" width={375} height={470} />
             <OnboardingContent>
               과외 일정을
               <br />한 눈에 확인하세요
@@ -39,7 +39,7 @@ const Onboarding = () => {
           </OnboardingWrapper>
         ) : idx === 2 ? (
           <OnboardingWrapper>
-            <OnboardingClassListIcon alt="달력온보딩" width={235} height={490} />
+            <OnboardingClassListIcon alt="달력온보딩" width={375} height={470} />
             <OnboardingContent>
               진행한 과외 내용을
               <br />
@@ -48,7 +48,7 @@ const Onboarding = () => {
           </OnboardingWrapper>
         ) : (
           <OnboardingWrapper>
-            <OnboardingMoneyIcon alt="달력온보딩" width={235} height={490} />
+            <OnboardingMoneyIcon alt="달력온보딩" width={375} height={470} />
             <OnboardingContent>
               과외비 입급 여부를
               <br />
@@ -97,8 +97,6 @@ const Page = styled.div`
   width: 100%;
   max-width: 37.5rem;
   padding: 0 2rem;
-
-  background-color: ${theme.colors.white};
 `;
 
 const OnboardingWrapper = styled.div``;
