@@ -38,12 +38,16 @@ const SelectSignup = () => {
 
   return (
     <Layout noFooter>
-      <Header path={'onboarding'} />
+      <Header path={''} />
       <Page>
         <TitleWrapper>회원가입</TitleWrapper>
         <SelectWrapper>
           <SelectButton type="button" isClick={clickedId === 1} onClick={() => handleClick(1)}>
-            {clickedId === 1 ? <TeacherWhiteIcon alt="선생님(선택o)" /> : <TeacherBlackIcon alt="선생님(선택x)" />}
+            {clickedId === 1 ? (
+              <TeacherWhiteIcon alt="선생님(선택o)" width={90} height={90} />
+            ) : (
+              <TeacherBlackIcon alt="선생님(선택x)" width={90} height={90} />
+            )}
             <SelectContent>
               선생님으로
               <br />
@@ -51,7 +55,11 @@ const SelectSignup = () => {
             </SelectContent>
           </SelectButton>
           <SelectButton type="button" isClick={clickedId === 2} onClick={() => handleClick(2)}>
-            {clickedId === 2 ? <StudentWhiteIcon alt="학생(선택o)" /> : <StudentBlackIcon alt="학생(선택x)" />}
+            {clickedId === 2 ? (
+              <StudentWhiteIcon alt="학생(선택o)" width={90} height={90} />
+            ) : (
+              <StudentBlackIcon alt="학생(선택x)" width={90} height={90} />
+            )}
             <SelectContent>
               학생으로
               <br />
@@ -70,8 +78,6 @@ const SelectSignup = () => {
 export default SelectSignup;
 
 const Page = styled.div`
-  top: 0;
-  bottom: 0;
   width: 100%;
   max-width: 37.5rem;
   padding: 0 2rem;
@@ -80,12 +86,9 @@ const Page = styled.div`
 `;
 
 const TitleWrapper = styled.div`
-  position: fixed;
-  top: 7.2rem;
+  margin-top: 8.3rem;
   margin-left: 1rem;
-
-  font-size: 2.4rem;
-  font-weight: 700;
+  font-style: ${theme.fonts.headline};
 `;
 
 const SelectWrapper = styled.div`
@@ -95,38 +98,35 @@ const SelectWrapper = styled.div`
   align-items: center;
 
   margin-top: 5.8rem;
-  height: 100%;
 `;
 
 const SelectButton = styled.button<Props>`
-  width: 22rem;
-  height: 22rem;
+  width: 18rem;
+  height: 18rem;
   margin-bottom: 7rem;
   border-radius: 3rem;
   border: none;
   outline: none;
-  text-align: center;
   background-color: ${({ isClick }) => (isClick ? theme.colors.mainColor : theme.colors.lightGray)};
   color: ${({ isClick }) => (isClick ? theme.colors.white : theme.colors.black)};
-
-  font-size: 1.8rem;
-  font-weight: 500;
 
   cursor: pointer;
 `;
 
-const SelectContent = styled.h1``;
+const SelectContent = styled.h1`
+  text-align: center;
+  font-style: ${theme.fonts.title_medium};
+`;
 
 const BottomButton = styled.button<Props>`
-  width: 100%;
+  width: 26.8rem;
   height: 5rem;
   border-radius: 3rem;
   border: none;
 
   background-color: ${({ isClick }) => (isClick ? theme.colors.mainColor : theme.colors.lightGray)};
   color: ${theme.colors.white};
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-style: ${theme.fonts.title_bold};
 
   cursor: pointer;
 `;

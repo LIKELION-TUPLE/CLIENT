@@ -2,6 +2,7 @@ import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'rea
 import Layout from '../common/Layout';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
+import Header from 'components/common/Header';
 
 interface Props {
   isClick?: boolean;
@@ -20,6 +21,10 @@ const Login = () => {
     setPw(e.target.value);
   };
 
+  const handleLogin = () => {
+    if (!notAllow) alert('로그인에 성공했습니다');
+  };
+
   useEffect(() => {
     if (id.length > 0 && pw.length > 0) {
       setNotAllow(false);
@@ -31,6 +36,7 @@ const Login = () => {
 
   return (
     <Layout noFooter>
+      <Header path="" />
       <Page>
         <TitleWrapper>회원 로그인</TitleWrapper>
         <ContentWrapper>
@@ -44,9 +50,11 @@ const Login = () => {
             <Input type="password" placeholder="비밀번호를 입력해주세요" value={pw} onChange={handlePw}></Input>
           </InputWrapper>
         </ContentWrapper>
-        <BottomButton type="submit" isClick={notAllow}>
-          로그인
-        </BottomButton>
+        <ButtonWrapper>
+          <BottomButton type="submit" isClick={notAllow} onClick={handleLogin}>
+            로그인
+          </BottomButton>
+        </ButtonWrapper>
       </Page>
     </Layout>
   );
@@ -55,37 +63,35 @@ const Login = () => {
 export default Login;
 
 const Page = styled.div`
-  top: 0;
-  bottom: 0;
   width: 100%;
   max-width: 37.5rem;
   padding: 0 2rem;
+
   background-color: ${theme.colors.backgroundColor};
 `;
 
 const TitleWrapper = styled.div`
+  margin-top: 8.3rem;
   margin-left: 1rem;
-  margin-top: 7.2rem;
-  font-size: 2.4rem;
-  font-weight: 700;
+  font-style: ${theme.fonts.headline};
 `;
 
 const ContentWrapper = styled.div`
-  margin-top: 1.5rem;
-  padding: 0.5rem 2rem 5rem 2rem;
+  margin-top: 1rem;
+  padding: 0 2rem 3.5rem 2rem;
   border-radius: 1rem;
+
   background-color: ${theme.colors.white};
 `;
 
 const InputTitle = styled.div`
-  margin-top: 5rem;
-  font-size: 1.5rem;
-  font-weight: 500;
+  padding-top: 3.5rem;
+  font-style: ${theme.fonts.text01_medium};
 `;
 
 const InputWrapper = styled.div`
-  display: flex;
-  padding-top: 1rem;
+  padding-top: 0.6rem;
+  padding-bottom: 0.2rem;
   border-bottom: 0.1rem solid ${theme.colors.black};
 `;
 
@@ -94,21 +100,27 @@ const Input = styled.input`
   height: 1.4rem;
   border: none;
   outline: none;
-  font-size: 1rem;
-  font-weight: 400;
+
+  font-style: ${theme.fonts.text03_regular};
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const BottomButton = styled.button<Props>`
-  margin: 2rem 0;
-  width: 100%;
+  margin-top: 1rem;
+
+  width: 30rem;
   height: 5rem;
   border-radius: 3rem;
   border: none;
+
   background-color: ${({ isClick }) => (isClick ? theme.colors.lightGray : theme.colors.mainColor)};
   color: ${theme.colors.white};
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-align: center;
+  font-style: ${theme.fonts.title_bold};
 
   cursor: pointer;
 `;

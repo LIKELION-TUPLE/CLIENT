@@ -1,5 +1,5 @@
 import React from 'react';
-import ClassbyDay from 'components/ClassbyDay';
+import ClassbyDay from 'components/classbyday/ClassbyDay';
 const index = () => {
   return <ClassbyDay />;
 };
