@@ -13,7 +13,7 @@ interface Props {
   isClick?: boolean;
 }
 
-const Singup: React.FC<OwnProps> = ({ userType }) => {
+const Signup: React.FC<OwnProps> = ({ userType }) => {
   const type = userType === 'teacher' ? '선생님' : '학생';
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
@@ -189,7 +189,7 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
   );
 };
 
-export default Singup;
+export default Signup;
 
 const Page = styled.div`
   width: 100%;

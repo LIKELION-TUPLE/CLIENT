@@ -119,7 +119,7 @@ const SelectContent = styled.h1`
 `;
 
 const BottomButton = styled.button<Props>`
-  width: 26.8rem;
+  width: 30rem;
   height: 5rem;
   border-radius: 3rem;
   border: none;
