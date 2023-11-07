@@ -74,7 +74,7 @@ const Onboarding = () => {
             회원 로그인
           </TupleLoginButton>
           <SignupWrapper>
-            <SignupContent>아직 회원이 아니신가요? </SignupContent>
+            <SignupContent>아직 회원이 아니신가요?</SignupContent>
             <SignupButton type="button" onClick={handleSignup}>
               회원가입 하러가기
             </SignupButton>
@@ -92,27 +92,24 @@ const Page = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  top: 0;
-  bottom: 0;
-  width: 100%;
   max-width: 37.5rem;
-  padding: 0 2rem;
 `;
 
 const OnboardingWrapper = styled.div``;
 
 const OnboardingContent = styled.h1`
   text-align: center;
-  font-size: 1.8rem;
-  font-weight: 500;
-  line-height: normal;
+  font-style: ${theme.fonts.title_medium};
 `;
 
 const ButtonWrapper = styled.div`
   margin-top: 1.8rem;
 `;
 
-const ScrollButton = styled.button``;
+const ScrollButton = styled.button`
+  padding: 1rem;
+  font-style: ${theme.fonts.text02_bold};
+`;
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -121,7 +118,6 @@ const LoginWrapper = styled.div`
   align-items: center;
 
   margin-top: 3.6rem;
-  width: 26.8rem;
 `;
 
 const KakaoLoginButton = styled.button`
@@ -129,7 +125,7 @@ const KakaoLoginButton = styled.button`
   justify-content: center;
   align-items: center;
 
-  width: 100%;
+  width: 26.8rem;
   padding: 1.2rem;
   border-radius: 3rem;
 
@@ -140,8 +136,7 @@ const KakaoLoginButton = styled.button`
 
 const KakaoLogin = styled.div`
   padding-left: 1.4rem;
-  font-size: 1.8rem;
-  font-weight: 500;
+  font-style: ${theme.fonts.title_medium};
 `;
 
 const TupleLoginButton = styled.button`
@@ -152,8 +147,7 @@ const TupleLoginButton = styled.button`
 
   background-color: ${theme.colors.lightGray};
 
-  font-size: 1.8rem;
-  font-weight: 500;
+  font-style: ${theme.fonts.title_medium};
 
   cursor: pointer;
 `;
@@ -167,13 +161,13 @@ const SignupWrapper = styled.div`
 `;
 
 const SignupContent = styled.div`
-  font-size: 1.2rem;
-  font-weight: 400;
+  font-style: ${theme.fonts.text02_regular};
 `;
 
 const SignupButton = styled.button`
-  font-size: 1.2rem;
-  font-weight: 700;
+  padding-left: 1.2rem;
+
+  font-style: ${theme.fonts.text02_bold};
   text-decoration: underline;
 
   cursor: pointer;

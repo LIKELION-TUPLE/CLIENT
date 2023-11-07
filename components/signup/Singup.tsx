@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { OwnProps } from 'pages/signup/[userType]';
 import { useSetRecoilState } from 'recoil';
 import { userNameSave, userTypeSave } from 'atoms/selector';
+import Header from 'components/common/Header';
 
 interface Props {
   isClick?: boolean;
@@ -116,6 +117,7 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
 
   return (
     <Layout noFooter>
+      <Header path={'selectsignup'} />
       <Page>
         <TitleWrapper>{type} 회원가입</TitleWrapper>
         <ContentWrapper>
@@ -136,9 +138,7 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
               onChange={handlePw}></Input>
           </InputWrapper>
           <ErrorMessageWrapper>
-            {!pwValid && pw.length > 0 && (
-              <div>올바른 비밀번호를 입력해주세요 (영문, 숫자, 특수문자 포함 8자 이상)</div>
-            )}
+            {!pwValid && pw.length > 0 && <div>영문, 숫자, 특수문자 포함 8자 이상</div>}
           </ErrorMessageWrapper>
 
           <InputTitle>비밀번호 확인</InputTitle>
@@ -157,9 +157,7 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
           <InputWrapper>
             <Input type="text" placeholder="이름을 입력해주세요 (5자 이하)" value={name} onChange={handleName}></Input>
           </InputWrapper>
-          <ErrorMessageWrapper>
-            {!nameValid && name.length > 0 && <div>올바른 이름을 입력해주세요 (5자 이하)</div>}
-          </ErrorMessageWrapper>
+          <ErrorMessageWrapper>{!nameValid && name.length > 0 && <div>5자 이하</div>}</ErrorMessageWrapper>
 
           <InputTitle>생년월일</InputTitle>
           <InputWrapper>
@@ -169,9 +167,7 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
               value={date}
               onChange={handleDate}></Input>
           </InputWrapper>
-          <ErrorMessageWrapper>
-            {!dateValid && date.length > 0 && <div>올바른 생년월일을 입력해주세요 (YYMMDD)</div>}
-          </ErrorMessageWrapper>
+          <ErrorMessageWrapper>{!dateValid && date.length > 0 && <div>YYMMDD</div>}</ErrorMessageWrapper>
 
           <InputTitle>휴대폰 번호</InputTitle>
           <InputWrapper>
@@ -181,13 +177,13 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
               value={phone}
               onChange={handlePhone}></Input>
           </InputWrapper>
-          <ErrorMessageWrapper>
-            {!phoneValid && phone.length > 0 && <div>올바른 휴대폰 번호를 입력해주세요 (010-XXXX-XXXX)</div>}
-          </ErrorMessageWrapper>
+          <ErrorMessageWrapper>{!phoneValid && phone.length > 0 && <div>010-XXXX-XXXX</div>}</ErrorMessageWrapper>
         </ContentWrapper>
-        <BottomButton type="submit" isClick={notAllow} onClick={handleSignup}>
-          회원가입
-        </BottomButton>
+        <ButtonWrapper>
+          <BottomButton type="submit" isClick={notAllow} onClick={handleSignup}>
+            회원가입
+          </BottomButton>
+        </ButtonWrapper>
       </Page>
     </Layout>
   );
@@ -196,8 +192,6 @@ const Singup: React.FC<OwnProps> = ({ userType }) => {
 export default Singup;
 
 const Page = styled.div`
-  top: 0;
-  bottom: 0;
   width: 100%;
   max-width: 37.5rem;
   padding: 0 2rem;
@@ -206,62 +200,63 @@ const Page = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  margin-top: 8.3rem;
   margin-left: 1rem;
-  margin-top: 7.2rem;
-
-  font-size: 2.4rem;
-  font-weight: 700;
+  font-style: ${theme.fonts.headline};
 `;
 
 const ContentWrapper = styled.div`
-  margin-top: 1.5rem;
-  padding: 0.5rem 2rem 5rem 2rem;
+  margin-top: 1rem;
+  padding: 0 2rem 3.5rem 2rem;
   border-radius: 1rem;
 
   background-color: ${theme.colors.white};
 `;
+
 const InputTitle = styled.div`
-  margin-top: 5rem;
-
-  font-size: 1.5rem;
-  font-weight: 500;
+  padding-top: 3.5rem;
+  font-style: ${theme.fonts.text01_medium};
 `;
-const InputWrapper = styled.div`
-  display: flex;
 
-  padding-top: 1rem;
+const InputWrapper = styled.div`
+  padding-top: 0.6rem;
+  padding-bottom: 0.2rem;
   border-bottom: 0.1rem solid ${theme.colors.black};
 `;
+
 const Input = styled.input`
   width: 100%;
   height: 1.4rem;
   border: none;
   outline: none;
 
-  font-size: 1rem;
-  font-weight: 400;
+  font-style: ${theme.fonts.text03_regular};
 `;
+
 const ErrorMessageWrapper = styled.div`
-  margin-top: 0.5rem;
+  margin-top: 0.2rem;
 
   color: #ec5959;
-  font-size: 0.9rem;
-  font-weight: 400;
+  font-style: ${theme.fonts.text03_regular};
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const BottomButton = styled.button<Props>`
-  margin: 2rem 0;
+  margin-top: 1rem;
 
-  width: 100%;
+  width: 30rem;
   height: 5rem;
   border-radius: 3rem;
   border: none;
 
   background-color: ${({ isClick }) => (isClick ? theme.colors.lightGray : theme.colors.mainColor)};
   color: ${theme.colors.white};
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-align: center;
+  font-style: ${theme.fonts.title_bold};
 
   cursor: pointer;
 `;

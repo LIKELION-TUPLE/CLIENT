@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { LeftIcon } from 'asset';
 import { useRouter } from 'next/router';
-import { HeaderProps } from 'components/selectsignup/SelectSignup';
+import { HeaderProps } from 'components/signup/SelectSignup';
 
 const Header: React.FC<HeaderProps> = ({ path }) => {
   const router = useRouter();

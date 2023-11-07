@@ -41,7 +41,6 @@ const Page = styled.div`
   align-items: center;
   width: 100%;
   max-width: 37.5rem;
-  padding: 0 2rem;
 
   background-color: ${theme.colors.backgroundColor};
 `;
@@ -50,23 +49,20 @@ const TitleWrapper = styled.div`
   margin-top: 4.4rem;
 
   text-align: center;
-  line-height: normal;
-  font-size: 2.4rem;
-  font-weight: 700;
+  font-style: ${theme.fonts.headline};
 `;
 
 const BottomButton = styled.button`
-  margin-top: 13.3rem;
+  margin-top: 13.4rem;
 
-  width: 100%;
+  width: 30rem;
   height: 5rem;
   border-radius: 3rem;
   border: none;
 
   background-color: ${theme.colors.mainColor};
   color: ${theme.colors.white};
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-style: ${theme.fonts.title_bold};
 
   cursor: pointer;
 `;
