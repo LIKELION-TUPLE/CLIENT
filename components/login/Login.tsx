@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import Layout from '../common/Layout';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
@@ -44,7 +44,6 @@ const Login = () => {
           <InputWrapper>
             <Input type="text" placeholder="아이디를 입력해주세요" value={id} onChange={handleId}></Input>
           </InputWrapper>
-
           <InputTitle>비밀번호</InputTitle>
           <InputWrapper>
             <Input type="password" placeholder="비밀번호를 입력해주세요" value={pw} onChange={handlePw}></Input>
