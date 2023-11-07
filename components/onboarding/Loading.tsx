@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 const Loading = () => {
   return (
-    <Layout noHeader noFooter>
+    <Layout noFooter>
       <Page>
         <Image src={TupleLogoImage} alt="튜플로고" width={335} height={200} />
         <LoadingContent>로딩 중... 잠시만 기다려주세요</LoadingContent>
@@ -31,7 +31,6 @@ const Page = styled.div`
 const LoadingContent = styled.h1`
   margin-top: 5rem;
 
-  font-size: 2rem;
-  font-weight: 700;
+  font-style: ${theme.fonts.subheadline};
   color: ${theme.colors.white};
 `;

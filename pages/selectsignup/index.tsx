@@ -1,5 +1,5 @@
 import React from 'react';
-import SelectSignup from 'components/selectsignup/SelectSignup';
+import SelectSignup from 'components/signup/SelectSignup';
 
 const index = () => {
   return <SelectSignup />;
