@@ -1,15 +1,17 @@
-import Head from 'next/head';
+import Loading from 'components/onboarding/Loading';
+import Onboarding from 'components/onboarding/Onboarding';
+import React, { useEffect, useState } from 'react';
 
-function Home() {
-  return (
-    <div>
-      <Head>
-        <title>Tuple 튜플</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div>Home</div>
-    </div>
-  );
-}
+const index = () => {
+  const [loading, setLoading] = useState(true);
 
-export default Home;
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  return loading ? <Loading /> : <Onboarding />;
+};
+
+export default index;
