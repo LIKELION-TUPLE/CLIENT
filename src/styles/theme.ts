@@ -1,5 +1,3 @@
-import { DefaultTheme } from 'styled-components';
-
 const colors = {
   mainColor: '#2354D4',
   backgroundColor: '#F8F8F8',
@@ -19,9 +17,10 @@ interface FontProps {
   lineHeight?: string;
   letterSpacing?: number;
 }
+
 function FONT({ weight, size, lineHeight, letterSpacing }: FontProps): string {
   return `
-      font-family: 'Noto Sans KR', sans-serif;
+     font-family: 'Noto Sans KR', sans-serif;
       font-weight: ${weight};
       font-style: normal;
       font-size: ${size}rem;

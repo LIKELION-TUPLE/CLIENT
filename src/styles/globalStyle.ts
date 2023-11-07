@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
-
 const GlobalStyle = createGlobalStyle`
   ${reset};
   
@@ -8,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
     body {
     max-width: 100vw;
     min-height:100vh;
-    overflow-x: hidden;
+    overflow-x: hidden;   
     }
 
   
@@ -23,7 +22,8 @@ const GlobalStyle = createGlobalStyle`
  * {
     box-sizing: border-box;
     padding: 0;
-    margin: 0;
+    margin: 0;    
+    
     }
   
 
@@ -31,11 +31,6 @@ const GlobalStyle = createGlobalStyle`
   list-style: none;
   }
 
-  body, button {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-    Helvetica Neue, sans-serif;
-  }
-  
   button {
     cursor: pointer;
     border: none;
