@@ -9,7 +9,7 @@ export interface OwnProps {
 const userType = () => {
   const router = useRouter();
   const { userType } = router.query;
-  if (userType === 'teacher' || userType === 'student') return <Singup userType={userType as string} />;
+  if (userType === 'teacher' || userType === 'student') return <Singup userType={userType} />;
 };
 
 export default userType;
