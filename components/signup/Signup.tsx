@@ -121,63 +121,79 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
       <Page>
         <TitleWrapper>{type} 회원가입</TitleWrapper>
         <ContentWrapper>
-          <InputTitle>아이디</InputTitle>
-          <InputWrapper>
-            <Input type="text" placeholder="아이디를 입력해주세요" value={id} onChange={handleId}></Input>
-          </InputWrapper>
-          <ErrorMessageWrapper>
-            {!idValid && id.length > 0 && <div>이미 사용중인 아이디입니다</div>}
-          </ErrorMessageWrapper>
+          <ContentContainer>
+            <InputTitle>아이디</InputTitle>
+            <InputWrapper>
+              <Input type="text" placeholder="아이디를 입력해주세요" value={id} onChange={handleId}></Input>
+            </InputWrapper>
+            <ErrorMessageWrapper>
+              {!idValid && id.length > 0 && <div>이미 사용중인 아이디입니다</div>}
+            </ErrorMessageWrapper>
+          </ContentContainer>
 
-          <InputTitle>비밀번호</InputTitle>
-          <InputWrapper>
-            <Input
-              type="password"
-              placeholder="비밀번호를 입력해주세요 (영문, 숫자, 특수문자 포함 8자 이상)"
-              value={pw}
-              onChange={handlePw}></Input>
-          </InputWrapper>
-          <ErrorMessageWrapper>
-            {!pwValid && pw.length > 0 && <div>영문, 숫자, 특수문자 포함 8자 이상</div>}
-          </ErrorMessageWrapper>
+          <ContentContainer>
+            <InputTitle>비밀번호</InputTitle>
+            <InputWrapper>
+              <Input
+                type="password"
+                placeholder="비밀번호를 입력해주세요 (영문, 숫자, 특수문자 포함 8자 이상)"
+                value={pw}
+                onChange={handlePw}></Input>
+            </InputWrapper>
+            <ErrorMessageWrapper>
+              {!pwValid && pw.length > 0 && <div>영문, 숫자, 특수문자 포함 8자 이상</div>}
+            </ErrorMessageWrapper>
+          </ContentContainer>
 
-          <InputTitle>비밀번호 확인</InputTitle>
-          <InputWrapper>
-            <Input
-              type="password"
-              placeholder="비밀번호를 다시 입력해주세요"
-              value={pwConfirm}
-              onChange={handlePwConfirm}></Input>
-          </InputWrapper>
-          <ErrorMessageWrapper>
-            {!pwConfirmValid && pwConfirm.length > 0 && <div>비밀번호가 일치하지 않습니다</div>}
-          </ErrorMessageWrapper>
+          <ContentContainer>
+            <InputTitle>비밀번호 확인</InputTitle>
+            <InputWrapper>
+              <Input
+                type="password"
+                placeholder="비밀번호를 다시 입력해주세요"
+                value={pwConfirm}
+                onChange={handlePwConfirm}></Input>
+            </InputWrapper>
+            <ErrorMessageWrapper>
+              {!pwConfirmValid && pwConfirm.length > 0 && <div>비밀번호가 일치하지 않습니다</div>}
+            </ErrorMessageWrapper>
+          </ContentContainer>
 
-          <InputTitle>이름</InputTitle>
-          <InputWrapper>
-            <Input type="text" placeholder="이름을 입력해주세요 (5자 이하)" value={name} onChange={handleName}></Input>
-          </InputWrapper>
-          <ErrorMessageWrapper>{!nameValid && name.length > 0 && <div>5자 이하</div>}</ErrorMessageWrapper>
+          <ContentContainer>
+            <InputTitle>이름</InputTitle>
+            <InputWrapper>
+              <Input
+                type="text"
+                placeholder="이름을 입력해주세요 (5자 이하)"
+                value={name}
+                onChange={handleName}></Input>
+            </InputWrapper>
+            <ErrorMessageWrapper>{!nameValid && name.length > 0 && <div>5자 이하</div>}</ErrorMessageWrapper>
+          </ContentContainer>
 
-          <InputTitle>생년월일</InputTitle>
-          <InputWrapper>
-            <Input
-              type="text"
-              placeholder="생년월일을 입력해주세요 (YYMMDD)"
-              value={date}
-              onChange={handleDate}></Input>
-          </InputWrapper>
-          <ErrorMessageWrapper>{!dateValid && date.length > 0 && <div>YYMMDD</div>}</ErrorMessageWrapper>
+          <ContentContainer>
+            <InputTitle>생년월일</InputTitle>
+            <InputWrapper>
+              <Input
+                type="text"
+                placeholder="생년월일을 입력해주세요 (YYMMDD)"
+                value={date}
+                onChange={handleDate}></Input>
+            </InputWrapper>
+            <ErrorMessageWrapper>{!dateValid && date.length > 0 && <div>YYMMDD</div>}</ErrorMessageWrapper>
+          </ContentContainer>
 
-          <InputTitle>휴대폰 번호</InputTitle>
-          <InputWrapper>
-            <Input
-              type="text"
-              placeholder="휴대폰 번호를 입력해주세요 (010-XXXX-XXXX)"
-              value={phone}
-              onChange={handlePhone}></Input>
-          </InputWrapper>
-          <ErrorMessageWrapper>{!phoneValid && phone.length > 0 && <div>010-XXXX-XXXX</div>}</ErrorMessageWrapper>
+          <ContentContainer>
+            <InputTitle>휴대폰 번호</InputTitle>
+            <InputWrapper>
+              <Input
+                type="text"
+                placeholder="휴대폰 번호를 입력해주세요 (010-XXXX-XXXX)"
+                value={phone}
+                onChange={handlePhone}></Input>
+            </InputWrapper>
+            <ErrorMessageWrapper>{!phoneValid && phone.length > 0 && <div>010-XXXX-XXXX</div>}</ErrorMessageWrapper>
+          </ContentContainer>
         </ContentWrapper>
         <ButtonWrapper>
           <BottomButton type="submit" isClick={notAllow} onClick={handleSignup}>
@@ -202,20 +218,27 @@ const Page = styled.div`
 const TitleWrapper = styled.div`
   margin-top: 8.3rem;
   margin-left: 1rem;
-  font-style: ${theme.fonts.headline};
+  ${theme.fonts.headline};
 `;
 
 const ContentWrapper = styled.div`
-  margin-top: 1rem;
-  padding: 0 2rem 3.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3.8rem;
+
+  height: 51.4rem;
+  margin-top: 1.5rem;
+  padding: 3rem 2rem;
   border-radius: 1rem;
 
   background-color: ${theme.colors.white};
 `;
 
+const ContentContainer = styled.div``;
+
 const InputTitle = styled.div`
-  padding-top: 3.5rem;
-  font-style: ${theme.fonts.text01_medium};
+  ${theme.fonts.text01_medium};
 `;
 
 const InputWrapper = styled.div`
@@ -230,14 +253,19 @@ const Input = styled.input`
   border: none;
   outline: none;
 
-  font-style: ${theme.fonts.text03_regular};
+  ${theme.fonts.text03_regular};
+
+  &::placeholder {
+    color: #d2d2d2;
+    ${theme.fonts.text03_regular};
+  }
 `;
 
 const ErrorMessageWrapper = styled.div`
   margin-top: 0.2rem;
 
   color: #ec5959;
-  font-style: ${theme.fonts.text03_regular};
+  ${theme.fonts.text03_regular};
 `;
 
 const ButtonWrapper = styled.div`
@@ -247,7 +275,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const BottomButton = styled.button<Props>`
-  margin-top: 1rem;
+  margin-top: 2rem;
 
   width: 30rem;
   height: 5rem;
@@ -256,7 +284,7 @@ const BottomButton = styled.button<Props>`
 
   background-color: ${({ isClick }) => (isClick ? theme.colors.lightGray : theme.colors.mainColor)};
   color: ${theme.colors.white};
-  font-style: ${theme.fonts.title_bold};
+  ${theme.fonts.title_bold};
 
   cursor: pointer;
 `;

@@ -18,7 +18,7 @@ const CompleteSignup = () => {
   return (
     <Layout noFooter>
       <Page>
-        <CelebrateIcon alt="축하" />
+        <CelebrateIcon alt="축하" style={{ marginTop: `22.9rem` }} />
         <TitleWrapper>
           {name} {type}
           <br />
@@ -37,7 +37,6 @@ export default CompleteSignup;
 const Page = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 37.5rem;
@@ -49,11 +48,11 @@ const TitleWrapper = styled.div`
   margin-top: 4.4rem;
 
   text-align: center;
-  font-style: ${theme.fonts.headline};
+  ${theme.fonts.headline};
 `;
 
 const BottomButton = styled.button`
-  margin-top: 13.4rem;
+  margin-top: 13.3rem;
 
   width: 30rem;
   height: 5rem;
@@ -62,7 +61,7 @@ const BottomButton = styled.button`
 
   background-color: ${theme.colors.mainColor};
   color: ${theme.colors.white};
-  font-style: ${theme.fonts.title_bold};
+  ${theme.fonts.title_bold};
 
   cursor: pointer;
 `;

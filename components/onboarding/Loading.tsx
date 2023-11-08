@@ -31,6 +31,6 @@ const Page = styled.div`
 const LoadingContent = styled.h1`
   margin-top: 5rem;
 
-  font-style: ${theme.fonts.subheadline};
+  ${theme.fonts.subheadline};
   color: ${theme.colors.white};
 `;
