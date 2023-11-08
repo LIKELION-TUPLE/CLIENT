@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import Layout from '../common/Layout';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
@@ -40,15 +40,19 @@ const Login = () => {
       <Page>
         <TitleWrapper>회원 로그인</TitleWrapper>
         <ContentWrapper>
-          <InputTitle>아이디</InputTitle>
-          <InputWrapper>
-            <Input type="text" placeholder="아이디를 입력해주세요" value={id} onChange={handleId}></Input>
-          </InputWrapper>
+          <ContentContainer>
+            <InputTitle>아이디</InputTitle>
+            <InputWrapper>
+              <Input type="text" placeholder="아이디를 입력해주세요" value={id} onChange={handleId}></Input>
+            </InputWrapper>
+          </ContentContainer>
 
-          <InputTitle>비밀번호</InputTitle>
-          <InputWrapper>
-            <Input type="password" placeholder="비밀번호를 입력해주세요" value={pw} onChange={handlePw}></Input>
-          </InputWrapper>
+          <ContentContainer>
+            <InputTitle>비밀번호</InputTitle>
+            <InputWrapper>
+              <Input type="password" placeholder="비밀번호를 입력해주세요" value={pw} onChange={handlePw}></Input>
+            </InputWrapper>
+          </ContentContainer>
         </ContentWrapper>
         <ButtonWrapper>
           <BottomButton type="submit" isClick={notAllow} onClick={handleLogin}>
@@ -73,20 +77,26 @@ const Page = styled.div`
 const TitleWrapper = styled.div`
   margin-top: 8.3rem;
   margin-left: 1rem;
-  font-style: ${theme.fonts.headline};
+  ${theme.fonts.headline};
 `;
 
 const ContentWrapper = styled.div`
-  margin-top: 1rem;
-  padding: 0 2rem 3.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3.8rem;
+
+  margin-top: 1.5rem;
+  padding: 3rem 2rem;
   border-radius: 1rem;
 
   background-color: ${theme.colors.white};
 `;
 
+const ContentContainer = styled.div``;
+
 const InputTitle = styled.div`
-  padding-top: 3.5rem;
-  font-style: ${theme.fonts.text01_medium};
+  ${theme.fonts.text01_medium};
 `;
 
 const InputWrapper = styled.div`
@@ -101,7 +111,12 @@ const Input = styled.input`
   border: none;
   outline: none;
 
-  font-style: ${theme.fonts.text03_regular};
+  ${theme.fonts.text03_regular};
+
+  &::placeholder {
+    color: #d2d2d2;
+    ${theme.fonts.text03_regular};
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -111,7 +126,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const BottomButton = styled.button<Props>`
-  margin-top: 1rem;
+  margin-top: 2rem;
 
   width: 30rem;
   height: 5rem;
@@ -120,7 +135,7 @@ const BottomButton = styled.button<Props>`
 
   background-color: ${({ isClick }) => (isClick ? theme.colors.lightGray : theme.colors.mainColor)};
   color: ${theme.colors.white};
-  font-style: ${theme.fonts.title_bold};
+  ${theme.fonts.title_bold};
 
   cursor: pointer;
 `;

@@ -88,7 +88,7 @@ const Page = styled.div`
 const TitleWrapper = styled.div`
   margin-top: 8.3rem;
   margin-left: 1rem;
-  font-style: ${theme.fonts.headline};
+  ${theme.fonts.headline};
 `;
 
 const SelectWrapper = styled.div`
@@ -103,7 +103,7 @@ const SelectWrapper = styled.div`
 const SelectButton = styled.button<Props>`
   width: 18rem;
   height: 18rem;
-  margin-bottom: 7rem;
+  margin-bottom: 5.6rem;
   border-radius: 3rem;
   border: none;
   outline: none;
@@ -115,18 +115,19 @@ const SelectButton = styled.button<Props>`
 
 const SelectContent = styled.h1`
   text-align: center;
-  font-style: ${theme.fonts.title_medium};
+  ${theme.fonts.title_medium};
 `;
 
 const BottomButton = styled.button<Props>`
-  width: 26.8rem;
+  width: 30rem;
   height: 5rem;
+  margin-top: 2.1rem;
   border-radius: 3rem;
   border: none;
 
   background-color: ${({ isClick }) => (isClick ? theme.colors.mainColor : theme.colors.lightGray)};
   color: ${theme.colors.white};
-  font-style: ${theme.fonts.title_bold};
+  ${theme.fonts.title_bold};
 
   cursor: pointer;
 `;
