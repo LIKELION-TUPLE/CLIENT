@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from 'components/common/Layout';
 import Detail from 'components/_class/detail';
 export interface idProps {
-  userid?: string;
+  id?: string | string[];
 }
 const id = () => {
   const router = useRouter();
-  const { id } = router.query();
+  const queryid = router.query.id;
+
   return (
     <Layout>
-      <Detail userid={id as string}></Detail>
+      <Detail id={queryid}></Detail>
     </Layout>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ClassListIcon, CalendarIcon, MoneyIcon } from 'asset';
-import Image from 'next/image';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
 interface Props {

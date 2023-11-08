@@ -99,7 +99,7 @@ const OnboardingWrapper = styled.div``;
 
 const OnboardingContent = styled.h1`
   text-align: center;
-  font-style: ${theme.fonts.title_medium};
+  ${theme.fonts.title_medium};
 `;
 
 const ButtonWrapper = styled.div`
@@ -108,7 +108,7 @@ const ButtonWrapper = styled.div`
 
 const ScrollButton = styled.button`
   padding: 1rem;
-  font-style: ${theme.fonts.text02_bold};
+  ${theme.fonts.text02_bold};
 `;
 
 const LoginWrapper = styled.div`
@@ -136,7 +136,7 @@ const KakaoLoginButton = styled.button`
 
 const KakaoLogin = styled.div`
   padding-left: 1.4rem;
-  font-style: ${theme.fonts.title_medium};
+  ${theme.fonts.title_medium};
 `;
 
 const TupleLoginButton = styled.button`
@@ -147,7 +147,7 @@ const TupleLoginButton = styled.button`
 
   background-color: ${theme.colors.lightGray};
 
-  font-style: ${theme.fonts.title_medium};
+  ${theme.fonts.title_medium};
 
   cursor: pointer;
 `;
@@ -161,13 +161,13 @@ const SignupWrapper = styled.div`
 `;
 
 const SignupContent = styled.div`
-  font-style: ${theme.fonts.text02_regular};
+  ${theme.fonts.text02_regular};
 `;
 
 const SignupButton = styled.button`
-  padding-left: 1.2rem;
+  padding-left: 0.2rem;
 
-  font-style: ${theme.fonts.text02_bold};
+  ${theme.fonts.text02_bold};
   text-decoration: underline;
 
   cursor: pointer;

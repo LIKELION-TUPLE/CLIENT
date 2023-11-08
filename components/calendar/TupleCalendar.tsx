@@ -86,7 +86,7 @@ const SubTitle = styled.h2`
 const CalendarSection = styled.div`
   width: 33.5rem;
   height: 35.6rem;
-  margin-left: 2rem;
+  margin: 3rem 0rem 1.5rem 2rem;
 `;
 const ClassSection = styled.div`
   width: 33.5rem;
