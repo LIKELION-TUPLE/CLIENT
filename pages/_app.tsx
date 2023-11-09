@@ -8,6 +8,7 @@ import Layout from 'components/common/Layout';
 import React from 'react';
 import 'components/calendar/Calendar.css';
 import '../public/fonts/font.css';
+import Head from 'next/head';
 // import { Noto_Sans_KR } from 'next/font/google';
 // const notoSansKr = Noto_Sans_KR({ weight: ['400', '500', '700'], subsets: ['latin'] });
 function MyApp({ Component, pageProps }: AppProps) {
@@ -16,8 +17,19 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <ThemeProvider theme={theme}>
+<<<<<<< HEAD
           <GlobalStyle />
           <Component {...pageProps} />
+=======
+          <>
+            <Head>
+              <link rel="icon" href="public/favicon.ico" />
+              <title>TU:PL</title>
+            </Head>
+            <GlobalStyle />
+            <Component {...pageProps} />
+          </>
+>>>>>>> 6518d2d152836af9b3680656a1f6a14339c103eb
         </ThemeProvider>
       </RecoilRoot>
     </QueryClientProvider>

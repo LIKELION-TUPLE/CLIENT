@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import { idProps } from 'pages/classbyday/detail/[id]';
@@ -10,12 +10,27 @@ import Image from 'next/image';
 interface colorProps {
   color: string;
 }
-const dummyHW = ['먕', '먕먕', '먕먕먕'];
+const dummyHW = [
+  { key: 1, text: '먕', isChecked: true },
+  { key: 2, text: '먕먕', isChecked: false },
+  { key: 3, text: '먕먕먕', isChecked: true },
+];
 const Detail = (props: idProps): JSX.Element | JSX.Element[] => {
   const { id } = props;
   console.log(id);
-  const [isChecked, setIsChecked] = useState([]);
+  const [checkList, setCheckList] = useState(dummyHW);
 
+  // useEffect(() => {
+  //   const
+  //   dummyHW.forEach((hw) => {
+  //     hw.isChecked;
+  //   });
+  //   setCheckList([]);
+  // }, []);
+
+  // const handleIsChecked = () => {
+  //   setIsChecked(...isChecked);
+  // };
   return (
     <ClassWrapper>
       <Header path={'calendar'} />
@@ -49,19 +64,19 @@ const Detail = (props: idProps): JSX.Element | JSX.Element[] => {
         </MainInfoSection>
       ))}
       <ClassInfoSection>
-        <TitleContainer>
-          <InfoTitle>오늘까지 숙제</InfoTitle>
-          <UnderLine></UnderLine>
-        </TitleContainer>
-        {dummyHW.map((hw) => (
-          <TodayHWContainer>
-            <CheckButton isClick={setIsChecked([!isChecked])}>
-              {isChecked ? <CheckedButtonIcon /> : <UnCheckedButtonIcon />}
-            </CheckButton>
-            <Homework>{hw}</Homework>
-            {/* <TrashIcon></TrashIcon> */}
-          </TodayHWContainer>
-        ))}
+        <Container>
+          <TitleContainer>
+            <InfoTitle>오늘까지 숙제</InfoTitle>
+            <UnderLine></UnderLine>
+          </TitleContainer>
+          {dummyHW.map((hw) => (
+            <TodayHWContainer>
+              <CheckButton>{hw.isChecked ? <CheckedButtonIcon /> : <UnCheckedButtonIcon />}</CheckButton>
+              <Homework>{hw.text}</Homework>
+              {/* <TrashIcon></TrashIcon> */}
+            </TodayHWContainer>
+          ))}
+        </Container>
         <TitleContainer>
           <InfoTitle>오늘 나간 진도</InfoTitle>
           <UnderLine></UnderLine>
@@ -193,9 +208,13 @@ const ClassInfoSection = styled.section`
   background-color: ${theme.colors.white};
   border-radius: 1.25rem;
 `;
+const Container = styled.div`
+  margin-bottom: 4.6rem;
+`;
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 0.3rem;
 `;
 const InfoTitle = styled.h2`
   width: 100%;
@@ -214,7 +233,7 @@ const TodayHWContainer = styled.div`
   display: flex;
   align-items: center;
   margin-left: 0.8rem;
-  margin-bottom: 4.6rem;
+  /* margin-bottom: 4.6rem; */
 `;
 const CheckButton = styled.div``;
 const Homework = styled.p`
