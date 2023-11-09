@@ -6,7 +6,7 @@ import { dummyUsers } from 'data/dummy';
 import { useRouter } from 'next/router';
 import { OwnProps } from 'pages/signup/[userType]';
 import { useSetRecoilState } from 'recoil';
-import { userNameSave, userTypeSave } from 'atoms/selector';
+import { userInfoSave } from 'atoms/selector';
 import Header from 'components/common/Header';
 
 interface Props {
@@ -31,8 +31,7 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
   const [notAllow, setNotAllow] = useState(true);
 
   const router = useRouter();
-  const setUserName = useSetRecoilState(userNameSave);
-  const setUserType = useSetRecoilState(userTypeSave);
+  const setUserInfo = useSetRecoilState(userInfoSave);
 
   const handleSignup = () => {
     if (!notAllow) {
@@ -108,8 +107,7 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
   useEffect(() => {
     if (idValid && pwValid && pwConfirmValid && dateValid && nameValid && phoneValid) {
       setNotAllow(false);
-      setUserName(name);
-      setUserType(type);
+      setUserInfo({ name: name, type: type });
       return;
     }
     setNotAllow(true);
