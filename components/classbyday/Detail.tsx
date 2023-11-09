@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import { idProps } from 'pages/classbyday/detail/[id]';
 import Header from 'components/common/Header';
 import { classList } from 'data/dummy';
+import { CheckedButtonIcon, UnCheckedButtonIcon, TrashIcon } from 'asset/index';
+import Image from 'next/image';
+
 interface colorProps {
   color: string;
 }
-const Detail = (props: idProps) => {
+const dummyHW = ['먕', '먕먕', '먕먕먕'];
+const Detail = (props: idProps): JSX.Element | JSX.Element[] => {
   const { id } = props;
   console.log(id);
+  const [isChecked, setIsChecked] = useState([]);
 
   return (
     <ClassWrapper>
@@ -48,7 +53,15 @@ const Detail = (props: idProps) => {
           <InfoTitle>오늘까지 숙제</InfoTitle>
           <UnderLine></UnderLine>
         </TitleContainer>
-        <TodayHWContainer></TodayHWContainer>
+        {dummyHW.map((hw) => (
+          <TodayHWContainer>
+            <CheckButton isClick={setIsChecked([!isChecked])}>
+              {isChecked ? <CheckedButtonIcon /> : <UnCheckedButtonIcon />}
+            </CheckButton>
+            <Homework>{hw}</Homework>
+            {/* <TrashIcon></TrashIcon> */}
+          </TodayHWContainer>
+        ))}
         <TitleContainer>
           <InfoTitle>오늘 나간 진도</InfoTitle>
           <UnderLine></UnderLine>
@@ -61,6 +74,8 @@ const Detail = (props: idProps) => {
             <InfoTitle>다음 시간까지 숙제</InfoTitle>
             <UnderLine></UnderLine>
           </TitleContainer>
+          <Homework>쎈 76-90p 풀기 </Homework>
+          <Homework>모의고오사 풀기 </Homework>
         </NextHWContainer>
       </ClassInfoSection>
     </ClassWrapper>
@@ -195,7 +210,17 @@ const UnderLine = styled.div`
   background-color: ${theme.colors.darkGray};
 `;
 const TodayHWContainer = styled.div`
+  height: 1.7rem;
+  display: flex;
+  align-items: center;
+  margin-left: 0.8rem;
   margin-bottom: 4.6rem;
+`;
+const CheckButton = styled.div``;
+const Homework = styled.p`
+  margin-left: 1.2rem;
+  margin-bottom: 0.5rem;
+  ${theme.fonts.text02_regular};
 `;
 const ProgressContainer = styled.div`
   width: 100%;

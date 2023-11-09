@@ -14,3 +14,6 @@ export { default as OnboardingCalendarIcon } from './onboarding_calendar.svg';
 export { default as OnboardingClassListIcon } from './onboarding_classList.svg';
 export { default as OnboardingMoneyIcon } from './onboarding_money.svg';
 export { default as KakaoIcon } from './kakao_talk.svg';
+export { default as CheckedButtonIcon } from './checkedButton.svg';
+export { default as UnCheckedButtonIcon } from './unCheckedIcon.svg';
+export { default as TrashIcon } from './Trash.svg';
