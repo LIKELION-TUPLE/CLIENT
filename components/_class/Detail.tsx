@@ -39,11 +39,7 @@ const Detail = (props: idProps) => {
 };
 
 export default Detail;
-const ClassWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
+const ClassWrapper = styled.div``;
 
 const Title = styled.h1`
   margin-top: 7.3rem;
@@ -51,8 +47,8 @@ const Title = styled.h1`
   ${theme.fonts.headline};
 `;
 const MainInfoSection = styled.section`
-  display: flex;
-  flex-direction: column;
+  margin-top: 3rem;
+  margin-left: 3.5rem;
 `;
 const ProfileBox = styled.div<colorProps>`
   width: 4rem;
@@ -69,7 +65,7 @@ const TurnInfoBox = styled.div`
 `;
 const SubInfo = styled.div`
   ${theme.fonts.text02_regular};
-  color: ${theme.colors.darkGray};
+  color: ${theme.colors.black};
 `;
 const MainInfo = styled.div`
   ${theme.fonts.text01_medium};

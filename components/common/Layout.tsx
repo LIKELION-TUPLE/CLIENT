@@ -28,7 +28,6 @@ const LayoutWrapper = styled.div`
 `;
 const ContentWrapper = styled.div`
   display: flex;
-
   flex-wrap: wrap;
 
   width: 37.5rem;

@@ -33,7 +33,7 @@ const TupleCalendar = () => {
   return (
     <CalendarWrapper>
       <TitleSection>
-        <SubTitle>김인강 선생님, 어서오세요!</SubTitle>
+        <SubTitle>최인강 선생님, 어서오세요!</SubTitle>
         <Title>과외 일정</Title>
       </TitleSection>
       <CalendarSection>
