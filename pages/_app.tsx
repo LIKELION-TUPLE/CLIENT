@@ -17,9 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RecoilRoot>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
-          {/* <main className={notoSansKr.className}> */}
           <Component {...pageProps} />
-          {/* </main> */}
         </ThemeProvider>
       </RecoilRoot>
     </QueryClientProvider>

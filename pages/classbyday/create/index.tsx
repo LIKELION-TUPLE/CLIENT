@@ -1,10 +1,10 @@
 import React from 'react';
-import Detail from 'components/_class/Detail';
+import CreateClass from 'components/classbyday/CreateClass';
 import Layout from 'components/common/Layout';
 const index = () => {
   return (
     <Layout>
-      <Detail></Detail>
+      <CreateClass />
     </Layout>
   );
 };
