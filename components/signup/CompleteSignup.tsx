@@ -5,11 +5,10 @@ import Layout from '../common/Layout';
 import theme from '@src/styles/theme';
 import { useRouter } from 'next/router';
 import { useRecoilValue } from 'recoil';
-import { userName, userType } from 'atoms/atom';
+import { userInfo } from 'atoms/atom';
 
 const CompleteSignup = () => {
-  const name = useRecoilValue(userName);
-  const type = useRecoilValue(userType);
+  const { name, type } = useRecoilValue(userInfo);
   const router = useRouter();
   const handleLogin = () => {
     router.replace('/login');

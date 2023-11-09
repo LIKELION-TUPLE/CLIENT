@@ -4,14 +4,25 @@ import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
 import { useRouter } from 'next/router';
+import { useSetRecoilState } from 'recoil';
+import { tutoringInfoSave } from 'atoms/selector';
 
 interface Props {
   isClick?: boolean;
 }
 
 const AddTutoring = () => {
-  const yearOptions = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }, { value: 6 }];
+  const yearOptions = [
+    { value: '' },
+    { value: 1 },
+    { value: 2 },
+    { value: 3 },
+    { value: 4 },
+    { value: 5 },
+    { value: 6 },
+  ];
   const depositOptions = [
+    { value: '' },
     { value: 1 },
     { value: 2 },
     { value: 3 },
@@ -38,13 +49,14 @@ const AddTutoring = () => {
   const [deposit, setDeposit] = useState('');
 
   const [ageValid, setAgeValid] = useState(false);
-  const [studentPhoneValid, setStudenPhoneValid] = useState(false);
-  const [parentPhoneValid, setParentPhoneValid] = useState(false);
+  const [gradeValid, setGradeValid] = useState(false);
   const [timeValid, setTimeValid] = useState(false);
   const [feeValid, setFeeValid] = useState(false);
+  const [depositValid, setDepositValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
   const router = useRouter();
+  const setTutoringInfo = useSetRecoilState(tutoringInfoSave);
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -64,28 +76,23 @@ const AddTutoring = () => {
     setSchool(e.target.value);
   };
 
-  const handleGrade = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleGrade = (e: ChangeEvent<HTMLSelectElement>) => {
     setGrade(e.target.value);
+    if (e.target.value !== '') {
+      setGradeValid(true);
+    } else {
+      setGradeValid(false);
+    }
   };
 
   const handleStudentPhone = (e: ChangeEvent<HTMLInputElement>) => {
     const phone = e.target.value;
     setStudentPhone(phone);
-    if (phone.length === 13 && phone[3] === '-' && phone[8] === '-') {
-      setStudenPhoneValid(true);
-    } else {
-      setStudenPhoneValid(false);
-    }
   };
 
   const handleParentPhone = (e: ChangeEvent<HTMLInputElement>) => {
     const phone = e.target.value;
     setParentPhone(phone);
-    if (phone.length === 13 && phone[3] === '-' && phone[8] === '-') {
-      setParentPhoneValid(true);
-    } else {
-      setParentPhoneValid(false);
-    }
   };
 
   const handleSubject = (e: ChangeEvent<HTMLInputElement>) => {
@@ -112,8 +119,13 @@ const AddTutoring = () => {
     }
   };
 
-  const handleDeopsit = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleDeopsit = (e: ChangeEvent<HTMLSelectElement>) => {
     setDeposit(e.target.value);
+    if (e.target.value !== '') {
+      setDepositValid(true);
+    } else {
+      setDepositValid(false);
+    }
   };
 
   const handleSave = () => {
@@ -140,17 +152,18 @@ const AddTutoring = () => {
       name.length > 0 &&
       ageValid &&
       school.length > 0 &&
-      studentPhoneValid &&
-      parentPhoneValid &&
+      gradeValid &&
       subject.length > 0 &&
       timeValid &&
-      feeValid
+      feeValid &&
+      depositValid
     ) {
       setNotAllow(false);
+      setTutoringInfo({ name: name, subject: subject });
       return;
     }
     setNotAllow(true);
-  }, [name, ageValid, school, studentPhoneValid, parentPhoneValid, subject, timeValid, feeValid]);
+  }, [name, ageValid, school, gradeValid, subject, timeValid, feeValid, depositValid]);
 
   return (
     <Layout noFooter>
@@ -162,14 +175,18 @@ const AddTutoring = () => {
             <Circle />
 
             <ContentBox>
-              <InputTitle>이름</InputTitle>
+              <InputTitle>
+                이름 <Required>*</Required>
+              </InputTitle>
               <InputWrapper style={{ width: '9rem' }}>
-                <Input type="text" placeholder="이름을 입력해주세요" value={name} onChange={handleName}></Input>
+                <Input type="text" value={name} onChange={handleName}></Input>
               </InputWrapper>
             </ContentBox>
 
             <ContentBox>
-              <InputTitle>나이</InputTitle>
+              <InputTitle>
+                나이 <Required>*</Required>
+              </InputTitle>
               <UnitWrapper>
                 <InputWrapper style={{ width: '9rem' }}>
                   <Input type="text" placeholder="숫자로 입력해주세요" value={age} onChange={handleAge}></Input>
@@ -181,9 +198,11 @@ const AddTutoring = () => {
 
           <ContentContainer>
             <ContentBox>
-              <InputTitle>학교</InputTitle>
+              <InputTitle>
+                학교 <Required>*</Required>
+              </InputTitle>
               <InputWrapper style={{ width: '15.5rem' }}>
-                <Input type="text" placeholder="학교를 입력해주세요" value={school} onChange={handleSchool}></Input>
+                <Input type="text" value={school} onChange={handleSchool}></Input>
               </InputWrapper>
             </ContentBox>
 
@@ -195,7 +214,9 @@ const AddTutoring = () => {
                   ))}
                 </Select>
               </SelectBox>
-              <InputTitle>학년</InputTitle>
+              <InputTitle>
+                학년 <Required>*</Required>
+              </InputTitle>
             </SelectWrapper>
           </ContentContainer>
 
@@ -203,11 +224,7 @@ const AddTutoring = () => {
             <ContentBox>
               <InputTitle>학생 휴대폰 번호</InputTitle>
               <InputWrapper style={{ width: '27.5rem' }}>
-                <Input
-                  type="text"
-                  placeholder="휴대폰 번호를 입력해주세요 (010-XXXX-XXXX)"
-                  value={studentPhone}
-                  onChange={handleStudentPhone}></Input>
+                <Input type="text" value={studentPhone} onChange={handleStudentPhone}></Input>
               </InputWrapper>
             </ContentBox>
           </ContentContainer>
@@ -216,11 +233,7 @@ const AddTutoring = () => {
             <ContentBox>
               <InputTitle>학부모 휴대폰 번호</InputTitle>
               <InputWrapper style={{ width: '27.5rem' }}>
-                <Input
-                  type="text"
-                  placeholder="휴대폰 번호를 입력해주세요 (010-XXXX-XXXX)"
-                  value={parentPhone}
-                  onChange={handleParentPhone}></Input>
+                <Input type="text" value={parentPhone} onChange={handleParentPhone}></Input>
               </InputWrapper>
             </ContentBox>
           </ContentContainer>
@@ -229,14 +242,18 @@ const AddTutoring = () => {
         <ContentWrapper>
           <ContentContainer>
             <ContentBox>
-              <InputTitle>과목</InputTitle>
+              <InputTitle>
+                과목 <Required>*</Required>
+              </InputTitle>
               <InputWrapper style={{ width: '15.5rem' }}>
-                <Input type="text" placeholder="과목을 입력해주세요" value={subject} onChange={handleSubject}></Input>
+                <Input type="text" value={subject} onChange={handleSubject}></Input>
               </InputWrapper>
             </ContentBox>
 
             <ContentBox>
-              <InputTitle>수업시간</InputTitle>
+              <InputTitle>
+                수업시간 <Required>*</Required>
+              </InputTitle>
               <UnitWrapper>
                 <InputWrapper style={{ width: '9rem' }}>
                   <Input type="text" placeholder="숫자로 입력해주세요" value={time} onChange={handleTime}></Input>
@@ -248,7 +265,9 @@ const AddTutoring = () => {
 
           <ContentContainer>
             <ContentBox>
-              <InputTitle>과외비</InputTitle>
+              <InputTitle>
+                과외비 <Required>*</Required>
+              </InputTitle>
               <InputWrapper style={{ width: '15.5rem' }}>
                 <Input type="text" placeholder="숫자로 입력해주세요" value={fee} onChange={handleFee}></Input>
                 <Unit>원</Unit>
@@ -256,8 +275,10 @@ const AddTutoring = () => {
             </ContentBox>
 
             <ContentBox>
-              <InputTitle>입금회차</InputTitle>
-              <SelectWrapper style={{ marginTop: `1.2rem` }}>
+              <InputTitle>
+                입금회차 <Required>*</Required>
+              </InputTitle>
+              <SelectWrapper style={{ marginTop: `0.5rem` }}>
                 <SelectBox>
                   <Select value={deposit} onChange={handleDeopsit}>
                     {depositOptions.map((option) => (
@@ -330,7 +351,12 @@ const Circle = styled.div`
 `;
 
 const InputTitle = styled.div`
+  display: inline-block;
   ${theme.fonts.text01_medium};
+`;
+
+const Required = styled.span`
+  color: ${theme.colors.red};
 `;
 
 const InputWrapper = styled.div`
