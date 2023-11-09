@@ -2,15 +2,13 @@ import React from 'react';
 import Layout from '../common/Layout';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
-import { TupleLogoImage } from 'asset';
-import Image from 'next/image';
+import { TupleLogoIcon } from 'asset';
 
 const Loading = () => {
   return (
     <Layout noFooter>
       <Page>
-        <Image src={TupleLogoImage} alt="튜플로고" width={335} height={200} />
-        <LoadingContent>로딩 중... 잠시만 기다려주세요</LoadingContent>
+        <TupleLogoIcon alt="튜플로고" width={120} height={165} />
       </Page>
     </Layout>
   );
@@ -19,18 +17,11 @@ const Loading = () => {
 export default Loading;
 
 const Page = styled.div`
+  width: 37.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 2rem;
 
-  background-color: ${theme.colors.mainColor};
-`;
-
-const LoadingContent = styled.h1`
-  margin-top: 5rem;
-
-  ${theme.fonts.subheadline};
-  color: ${theme.colors.white};
+  background-color: ${theme.colors.backgroundColor};
 `;

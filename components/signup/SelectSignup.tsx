@@ -122,6 +122,7 @@ const BottomButton = styled.button<Props>`
   width: 30rem;
   height: 5rem;
   margin-top: 2.1rem;
+  margin-bottom: 4.5rem;
   border-radius: 3rem;
   border: none;
 

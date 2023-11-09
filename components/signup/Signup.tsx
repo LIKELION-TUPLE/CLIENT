@@ -256,7 +256,7 @@ const Input = styled.input`
   ${theme.fonts.text03_regular};
 
   &::placeholder {
-    color: #d2d2d2;
+    color: ${theme.colors.gray};
     ${theme.fonts.text03_regular};
   }
 `;
@@ -276,6 +276,7 @@ const ButtonWrapper = styled.div`
 
 const BottomButton = styled.button<Props>`
   margin-top: 2rem;
+  margin-bottom: 4.5rem;
 
   width: 30rem;
   height: 5rem;
