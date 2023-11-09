@@ -9,10 +9,10 @@ const nextConfig = {
 
     return config;
   },
-  swcMinify: true,
-  compiler: {
-    styledComponents: true,
-  },
+  // swcMinify: true,
+  // compiler: {
+  //   styledComponents: true,
+  // },
   reactStrictMode: true,
 };
 

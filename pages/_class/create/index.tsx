@@ -1,11 +1,10 @@
 import React from 'react';
-import TupleCalendar from 'components/calendar/TupleCalendar';
+import Detail from 'components/_class/Detail';
 import Layout from 'components/common/Layout';
-
 const index = () => {
   return (
     <Layout>
-      <TupleCalendar />
+      <Detail></Detail>
     </Layout>
   );
 };
