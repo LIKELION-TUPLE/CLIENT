@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
 import { useRouter } from 'next/router';
+import { useSetRecoilState } from 'recoil';
+import { tutoringInfoSave } from 'atoms/selector';
 
 interface Props {
   isClick?: boolean;
@@ -48,14 +50,13 @@ const AddTutoring = () => {
 
   const [ageValid, setAgeValid] = useState(false);
   const [gradeValid, setGradeValid] = useState(false);
-  const [studentPhoneValid, setStudenPhoneValid] = useState(false);
-  const [parentPhoneValid, setParentPhoneValid] = useState(false);
   const [timeValid, setTimeValid] = useState(false);
   const [feeValid, setFeeValid] = useState(false);
   const [depositValid, setDepositValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
   const router = useRouter();
+  const setTutoringInfo = useSetRecoilState(tutoringInfoSave);
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -87,21 +88,11 @@ const AddTutoring = () => {
   const handleStudentPhone = (e: ChangeEvent<HTMLInputElement>) => {
     const phone = e.target.value;
     setStudentPhone(phone);
-    if (phone.length === 13 && phone[3] === '-' && phone[8] === '-') {
-      setStudenPhoneValid(true);
-    } else {
-      setStudenPhoneValid(false);
-    }
   };
 
   const handleParentPhone = (e: ChangeEvent<HTMLInputElement>) => {
     const phone = e.target.value;
     setParentPhone(phone);
-    if (phone.length === 13 && phone[3] === '-' && phone[8] === '-') {
-      setParentPhoneValid(true);
-    } else {
-      setParentPhoneValid(false);
-    }
   };
 
   const handleSubject = (e: ChangeEvent<HTMLInputElement>) => {
@@ -162,29 +153,17 @@ const AddTutoring = () => {
       ageValid &&
       school.length > 0 &&
       gradeValid &&
-      studentPhoneValid &&
-      parentPhoneValid &&
       subject.length > 0 &&
       timeValid &&
       feeValid &&
       depositValid
     ) {
       setNotAllow(false);
+      setTutoringInfo({ name: name, subject: subject });
       return;
     }
     setNotAllow(true);
-  }, [
-    name,
-    ageValid,
-    school,
-    gradeValid,
-    studentPhoneValid,
-    parentPhoneValid,
-    subject,
-    timeValid,
-    feeValid,
-    depositValid,
-  ]);
+  }, [name, ageValid, school, gradeValid, subject, timeValid, feeValid, depositValid]);
 
   return (
     <Layout noFooter>
