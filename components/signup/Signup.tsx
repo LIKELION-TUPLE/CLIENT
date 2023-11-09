@@ -122,7 +122,9 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
         <TitleWrapper>{type} 회원가입</TitleWrapper>
         <ContentWrapper>
           <ContentContainer>
-            <InputTitle>아이디</InputTitle>
+            <InputTitle>
+              아이디 <Required>*</Required>
+            </InputTitle>
             <InputWrapper>
               <Input type="text" placeholder="아이디를 입력해주세요" value={id} onChange={handleId}></Input>
             </InputWrapper>
@@ -132,7 +134,9 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
           </ContentContainer>
 
           <ContentContainer>
-            <InputTitle>비밀번호</InputTitle>
+            <InputTitle>
+              비밀번호 <Required>*</Required>
+            </InputTitle>
             <InputWrapper>
               <Input
                 type="password"
@@ -146,7 +150,9 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
           </ContentContainer>
 
           <ContentContainer>
-            <InputTitle>비밀번호 확인</InputTitle>
+            <InputTitle>
+              비밀번호 확인 <Required>*</Required>
+            </InputTitle>
             <InputWrapper>
               <Input
                 type="password"
@@ -160,7 +166,9 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
           </ContentContainer>
 
           <ContentContainer>
-            <InputTitle>이름</InputTitle>
+            <InputTitle>
+              이름 <Required>*</Required>
+            </InputTitle>
             <InputWrapper>
               <Input
                 type="text"
@@ -172,7 +180,9 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
           </ContentContainer>
 
           <ContentContainer>
-            <InputTitle>생년월일</InputTitle>
+            <InputTitle>
+              생년월일 <Required>*</Required>
+            </InputTitle>
             <InputWrapper>
               <Input
                 type="text"
@@ -184,7 +194,9 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
           </ContentContainer>
 
           <ContentContainer>
-            <InputTitle>휴대폰 번호</InputTitle>
+            <InputTitle>
+              휴대폰 번호 <Required>*</Required>
+            </InputTitle>
             <InputWrapper>
               <Input
                 type="text"
@@ -238,7 +250,12 @@ const ContentWrapper = styled.div`
 const ContentContainer = styled.div``;
 
 const InputTitle = styled.div`
+  display: inline-block;
   ${theme.fonts.text01_medium};
+`;
+
+const Required = styled.span`
+  color: ${theme.colors.red};
 `;
 
 const InputWrapper = styled.div`
