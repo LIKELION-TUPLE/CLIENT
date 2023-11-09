@@ -18,7 +18,7 @@ const CompleteSignup = () => {
   return (
     <Layout noFooter>
       <Page>
-        <CelebrateIcon alt="축하" style={{ marginTop: `22.9rem` }} />
+        <CelebrateIcon alt="축하" style={{ marginTop: `18.5rem` }} />
         <TitleWrapper>
           {name} {type}
           <br />
@@ -53,6 +53,7 @@ const TitleWrapper = styled.div`
 
 const BottomButton = styled.button`
   margin-top: 13.3rem;
+  margin-bottom: 4.5rem;
 
   width: 30rem;
   height: 5rem;
