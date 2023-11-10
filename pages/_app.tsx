@@ -17,10 +17,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <ThemeProvider theme={theme}>
-<<<<<<< HEAD
-          <GlobalStyle />
-          <Component {...pageProps} />
-=======
           <>
             <Head>
               <link rel="icon" href="public/favicon.ico" />
@@ -29,7 +25,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             <GlobalStyle />
             <Component {...pageProps} />
           </>
->>>>>>> 6518d2d152836af9b3680656a1f6a14339c103eb
         </ThemeProvider>
       </RecoilRoot>
     </QueryClientProvider>

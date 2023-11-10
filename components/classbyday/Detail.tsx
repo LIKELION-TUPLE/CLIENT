@@ -5,7 +5,6 @@ import { idProps } from 'pages/classbyday/detail/[id]';
 import Header from 'components/common/Header';
 import { classList } from 'data/dummy';
 import { CheckedButtonIcon, UnCheckedButtonIcon, TrashIcon } from 'asset/index';
-import Image from 'next/image';
 
 interface colorProps {
   color: string;
@@ -15,7 +14,7 @@ const dummyHW = [
   { key: 2, text: '먕먕', isChecked: false },
   { key: 3, text: '먕먕먕', isChecked: true },
 ];
-const Detail = (props: idProps): JSX.Element | JSX.Element[] => {
+const Detail = (props: idProps) => {
   const { id } = props;
   console.log(id);
   const [checkList, setCheckList] = useState(dummyHW);
