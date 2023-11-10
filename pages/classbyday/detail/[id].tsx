@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from 'components/common/Layout';
-import Detail from 'components/_class/detail';
+import Detail from 'components/classbyday/Detail';
 export interface idProps {
-  id?: string | string[];
+  id?: string;
 }
 const id = () => {
   const router = useRouter();
@@ -11,7 +11,7 @@ const id = () => {
 
   return (
     <Layout>
-      <Detail id={queryid}></Detail>
+      <Detail id={queryid as string}></Detail>
     </Layout>
   );
 };
