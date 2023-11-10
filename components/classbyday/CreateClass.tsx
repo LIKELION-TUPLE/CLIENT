@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { classList } from 'data/dummy';
 import theme from '@src/styles/theme';
@@ -9,6 +9,15 @@ interface colorProps {
   color: string;
 }
 const CreateClass = () => {
+  const [nextHW, setNextHW] = useState<any[]>([]);
+  const [nextHWContent, setNextHWContent] = useState<string[]>([]);
+  const handleNextHW = (content) => {
+    console.log(content);
+  };
+  const handlePlusOnClick = () => {
+    setNextHW(nextHW.concat(<NextHWInput placeholder="숙제를 입력해주세요" />));
+    handleNextHW(nextHW);
+  };
   return (
     <ClassWrapper>
       <Header path={'calendar'} />
@@ -60,7 +69,8 @@ const CreateClass = () => {
           <UnderLine></UnderLine>
         </TitleContainer>
         <NextHWContainer>
-          <PlusIconSvg />
+          <div>{nextHW}</div>
+          <PlusIconSvg onClick={handlePlusOnClick} />
         </NextHWContainer>
       </ClassInfoSection>
       <Button>저장</Button>
@@ -258,11 +268,20 @@ const ProgressInput = styled.input`
 `;
 const NextHWContainer = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  /* align-items: center; */
 `;
 const PlusIconSvg = styled(PlusIcon)`
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin: 1.5rem 0rem 1.5rem 12.5rem;
+`;
+const NextHWInput = styled.input`
+  width: 23.4rem;
+  margin-left: 0.8rem;
+  margin-top: 0.5rem;
+  outline: none;
+  border: none;
+  border-bottom: 0.1rem ${theme.colors.gray} solid;
+  ${theme.fonts.text02_regular};
 `;
 const Button = styled.div`
   /* position: fixed; */
