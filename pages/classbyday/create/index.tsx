@@ -3,7 +3,7 @@ import CreateClass from 'components/classbyday/CreateClass';
 import Layout from 'components/common/Layout';
 const index = () => {
   return (
-    <Layout>
+    <Layout noFooter>
       <CreateClass />
     </Layout>
   );

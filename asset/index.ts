@@ -17,3 +17,4 @@ export { default as KakaoIcon } from './kakao_talk.svg';
 export { default as CheckedButtonIcon } from './checkedButton.svg';
 export { default as UnCheckedButtonIcon } from './unCheckedIcon.svg';
 export { default as TrashIcon } from './Trash.svg';
+export { default as PlusIcon } from './plus.svg';
