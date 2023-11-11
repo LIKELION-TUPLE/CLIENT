@@ -1,37 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { ClassListIcon, CalendarIcon, MoneyIcon } from 'asset';
+import {
+  ColorCalendarIcon,
+  ColorClasslistIcon,
+  ColorMoneyIcon,
+  NoColorCalendarIcon,
+  NoColorClasslistIcon,
+  NoColorMoneyIcon,
+} from 'asset';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
+import { useRouter } from 'next/router';
 interface Props {
   isClick?: boolean;
   onClick?: () => void;
 }
 const Footer = () => {
-  // const [isClicked, setIsClicked] = useState<boolean>(false);
-  const [clickedId, setClickedId] = useState<number>(-1);
-  const handleClick = (index: number) => {
-    setClickedId(index);
-  };
-  useEffect(() => {
-    setClickedId(clickedId);
-  }, [clickedId]);
+  const router = useRouter();
+  const { pathname } = useRouter();
+
   return (
     <Wrapper>
-      <ClassListSvg
-        isClick={clickedId === 1}
-        onClick={() => handleClick(1)}
-        src={ClassListIcon}
-        alt="진행 중인 과외 아이콘"></ClassListSvg>
-      <CalenderSvg
-        isClick={clickedId === 2}
-        onClick={() => handleClick(2)}
-        src={CalendarIcon}
-        alt="캘린더 아이콘"></CalenderSvg>
-      <MoneySvg
-        isClick={clickedId === 3}
-        onClick={() => handleClick(3)}
-        src={MoneyIcon}
-        alt="입금관리 아이콘"></MoneySvg>
+      {pathname.startsWith(`/classlist`) ? (
+        <ColorClasslistIcon alt="진행 중인 과외 아이콘" />
+      ) : (
+        <NoColorClasslistIcon onClick={() => router.replace(`classlist`)} alt="진행 중인 과외 아이콘" />
+      )}
+      {pathname.startsWith(`/calendar`) ? (
+        <ColorCalendarIcon alt="캘린더 아이콘" />
+      ) : (
+        <NoColorCalendarIcon onClick={() => router.replace(`calendar`)} alt="캘린더 아이콘" />
+      )}
+      {pathname.startsWith(`/money`) ? (
+        <ColorMoneyIcon alt="입금 관리 아이콘" />
+      ) : (
+        <NoColorMoneyIcon onClick={() => router.replace(`money`)} alt="입금 관리 아이콘" />
+      )}
     </Wrapper>
   );
 };
@@ -51,17 +54,17 @@ const Wrapper = styled.div`
   background-color: ${theme.colors.white};
   border-radius: 2rem 2rem 0rem 0rem;
 `;
-const CalenderSvg = styled(CalendarIcon)<Props>`
-  cursor: pointer;
-  color: ${({ isClick }) => (isClick ? theme.colors.mainColor : theme.colors.gray)};
-`;
+// const CalenderSvg = styled(CalendarIcon)<Props>`
+//   cursor: pointer;
+//   color: ${({ isClick }) => (isClick ? theme.colors.mainColor : theme.colors.gray)};
+// `;
 
-const ClassListSvg = styled(ClassListIcon)<Props>`
-  cursor: pointer;
-  color: ${({ isClick }) => (isClick ? theme.colors.mainColor : theme.colors.gray)};
-`;
+// const ClassListSvg = styled(ClassListIcon)<Props>`
+//   cursor: pointer;
+//   color: ${({ isClick }) => (isClick ? theme.colors.mainColor : theme.colors.gray)};
+// `;
 
-const MoneySvg = styled(MoneyIcon)<Props>`
-  cursor: pointer;
-  stroke: ${({ isClick }) => (isClick ? theme.colors.mainColor : theme.colors.gray)};
-`;
+// const MoneySvg = styled(MoneyIcon)<Props>`
+//   cursor: pointer;
+//   stroke: ${({ isClick }) => (isClick ? theme.colors.mainColor : theme.colors.gray)};
+// `;
