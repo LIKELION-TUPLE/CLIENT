@@ -73,7 +73,8 @@ const TupleCalendar = () => {
 export default TupleCalendar;
 const CalendarWrapper = styled.div``;
 const TitleSection = styled.div`
-  margin: 4.3rem 3rem 0em 3rem;
+  margin-top: 4.3rem;
+  margin-left: 3rem;
 `;
 const Title = styled.h1`
   ${theme.fonts.headline};
