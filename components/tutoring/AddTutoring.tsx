@@ -48,8 +48,10 @@ const AddTutoring = () => {
   const [fee, setFee] = useState('');
   const [deposit, setDeposit] = useState('');
 
+  const [nameValid, setNameValid] = useState(false);
   const [ageValid, setAgeValid] = useState(false);
   const [gradeValid, setGradeValid] = useState(false);
+  const [subjectValid, setSubjectValid] = useState(false);
   const [timeValid, setTimeValid] = useState(false);
   const [feeValid, setFeeValid] = useState(false);
   const [depositValid, setDepositValid] = useState(false);
@@ -60,6 +62,11 @@ const AddTutoring = () => {
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+    if (e.target.value.length <= 6) {
+      setNameValid(true);
+    } else {
+      setNameValid(false);
+    }
   };
 
   const handleAge = (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,17 +93,20 @@ const AddTutoring = () => {
   };
 
   const handleStudentPhone = (e: ChangeEvent<HTMLInputElement>) => {
-    const phone = e.target.value;
-    setStudentPhone(phone);
+    setStudentPhone(e.target.value);
   };
 
   const handleParentPhone = (e: ChangeEvent<HTMLInputElement>) => {
-    const phone = e.target.value;
-    setParentPhone(phone);
+    setParentPhone(e.target.value);
   };
 
   const handleSubject = (e: ChangeEvent<HTMLInputElement>) => {
     setSubject(e.target.value);
+    if (e.target.value.length <= 6) {
+      setSubjectValid(true);
+    } else {
+      setSubjectValid(false);
+    }
   };
 
   const handleTime = (e: ChangeEvent<HTMLInputElement>) => {
@@ -149,11 +159,11 @@ const AddTutoring = () => {
 
   useEffect(() => {
     if (
-      name.length > 0 &&
+      nameValid &&
       ageValid &&
       school.length > 0 &&
       gradeValid &&
-      subject.length > 0 &&
+      subjectValid &&
       timeValid &&
       feeValid &&
       depositValid
@@ -163,7 +173,7 @@ const AddTutoring = () => {
       return;
     }
     setNotAllow(true);
-  }, [name, ageValid, school, gradeValid, subject, timeValid, feeValid, depositValid]);
+  }, [nameValid, ageValid, school, gradeValid, subjectValid, timeValid, feeValid, depositValid]);
 
   return (
     <Layout noFooter>
@@ -179,7 +189,7 @@ const AddTutoring = () => {
                 이름 <Required>*</Required>
               </InputTitle>
               <InputWrapper style={{ width: '9rem' }}>
-                <Input type="text" value={name} onChange={handleName}></Input>
+                <Input type="text" placeholder="1 ~ 6자" value={name} onChange={handleName}></Input>
               </InputWrapper>
             </ContentBox>
 
@@ -246,7 +256,7 @@ const AddTutoring = () => {
                 과목 <Required>*</Required>
               </InputTitle>
               <InputWrapper style={{ width: '15.5rem' }}>
-                <Input type="text" value={subject} onChange={handleSubject}></Input>
+                <Input type="text" placeholder="1 ~ 6자" value={subject} onChange={handleSubject}></Input>
               </InputWrapper>
             </ContentBox>
 

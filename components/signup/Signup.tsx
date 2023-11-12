@@ -78,7 +78,7 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-    if (e.target.value.length <= 5) {
+    if (e.target.value.length <= 6) {
       setNameValid(true);
     } else {
       setNameValid(false);
@@ -170,7 +170,7 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
             <InputWrapper>
               <Input
                 type="text"
-                placeholder="이름을 입력해주세요 (5자 이하)"
+                placeholder="이름을 입력해주세요 (6자 이하)"
                 value={name}
                 onChange={handleName}></Input>
             </InputWrapper>

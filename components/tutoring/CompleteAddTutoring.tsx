@@ -5,15 +5,21 @@ import { tutoringInfo } from 'atoms/atom';
 import Layout from 'components/common/Layout';
 import theme from '@src/styles/theme';
 import copy from 'copy-to-clipboard';
+import { useRouter } from 'next/router';
 
 const inviteCode = '코드 1235';
 
 const CompleteAddTutoring = () => {
+  const router = useRouter();
   const { name, subject } = useRecoilValue(tutoringInfo);
 
   const handleCopyClick = () => {
     copy(inviteCode);
     alert('코드가 복사되었습니다');
+  };
+
+  const handleClick = () => {
+    router.replace('/classlist');
   };
 
   return (
@@ -29,7 +35,9 @@ const CompleteAddTutoring = () => {
           <InviteCode onClick={handleCopyClick}>초대 코드 1235</InviteCode>
           <InviteContent>초대 코드를 복사해 학생에게 보내주세요</InviteContent>
         </CompleteWrapper>
-        <BottomButton>확인</BottomButton>
+        <BottomButton type="button" onClick={handleClick}>
+          확인
+        </BottomButton>
       </Page>
     </Layout>
   );
