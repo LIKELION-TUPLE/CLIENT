@@ -5,10 +5,13 @@ import { tutoringInfo } from 'atoms/atom';
 import Layout from 'components/common/Layout';
 import theme from '@src/styles/theme';
 import copy from 'copy-to-clipboard';
+import { useRouter } from 'next/router';
+import { CopyIcon } from 'asset';
 
 const inviteCode = '코드 1235';
 
 const CompleteAddTutoring = () => {
+  const router = useRouter();
   const { name, subject } = useRecoilValue(tutoringInfo);
 
   const handleCopyClick = () => {
@@ -16,20 +19,29 @@ const CompleteAddTutoring = () => {
     alert('코드가 복사되었습니다');
   };
 
+  const handleClick = () => {
+    router.replace('/classlist');
+  };
+
   return (
     <Layout noFooter>
       <Page>
         <CompleteWrapper>
           <TitleWrapper>
-            김인강 선생님
+            김인강 선생님의
             <br /> [ {name} 학생 | {subject} ]
             <br />
             과외가 추가되었습니다
           </TitleWrapper>
-          <InviteCode onClick={handleCopyClick}>초대 코드 1235</InviteCode>
+          <InviteCode onClick={handleCopyClick}>
+            초대 코드 1235
+            <CopyIcon alt="복사하기" width={30} height={30} />
+          </InviteCode>
           <InviteContent>초대 코드를 복사해 학생에게 보내주세요</InviteContent>
         </CompleteWrapper>
-        <BottomButton>확인</BottomButton>
+        <BottomButton type="button" onClick={handleClick}>
+          확인
+        </BottomButton>
       </Page>
     </Layout>
   );
@@ -61,8 +73,13 @@ const TitleWrapper = styled.div`
 `;
 
 const InviteCode = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  width: 26.8rem;
   margin-top: 3rem;
-  padding: 1.2rem 7.5rem;
+  padding: 1.2rem 0 1.2rem 4.5rem;
   border-radius: 3rem;
   background-color: ${theme.colors.lightGray};
   color: ${theme.colors.mainColor};
