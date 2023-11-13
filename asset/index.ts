@@ -24,3 +24,4 @@ export { default as ColorClasslistIcon } from './colorclasslist.svg';
 export { default as NoColorClasslistIcon } from './nocolorclasslist.svg';
 export { default as ColorMoneyIcon } from './colormoney.svg';
 export { default as NoColorMoneyIcon } from './nocolormoney.svg';
+export { default as CopyIcon } from './copy.svg';
