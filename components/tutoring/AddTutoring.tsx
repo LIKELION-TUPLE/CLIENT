@@ -6,6 +6,9 @@ import Header from 'components/common/Header';
 import { useRouter } from 'next/router';
 import { useSetRecoilState } from 'recoil';
 import { tutoringInfoSave } from 'atoms/selector';
+import { CirclePicker, ColorResult } from 'react-color';
+import Modal from 'react-modal';
+import ReactModal from 'react-modal';
 
 interface Props {
   isClick?: boolean;
@@ -57,8 +60,55 @@ const AddTutoring = () => {
   const [depositValid, setDepositValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(`#f44336`);
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+
   const router = useRouter();
   const setTutoringInfo = useSetRecoilState(tutoringInfoSave);
+
+  const modalStyle: ReactModal.Styles = {
+    overlay: {
+      backgroundColor: ' rgba(0, 0, 0, 0.4)',
+      width: '100%',
+      height: '100vh',
+      zIndex: '10',
+      position: 'fixed',
+      top: '0',
+      left: '0',
+    },
+    content: {
+      width: '30rem',
+      height: '20rem',
+      zIndex: '150',
+      position: 'absolute',
+      top: modalPosition.top + 120,
+      left: modalPosition.left + 100,
+      transform: 'translate(-50%, -50%)',
+      borderRadius: '10px',
+      boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)',
+      backgroundColor: 'white',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'auto',
+    },
+  };
+
+  const handleColorChange = (color: ColorResult) => {
+    setSelectedColor(color.hex);
+    closeModal();
+  };
+
+  const openModal = (event: React.MouseEvent) => {
+    const { clientX, clientY } = event;
+    setModalPosition({ top: clientY, left: clientX });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -141,6 +191,7 @@ const AddTutoring = () => {
   const handleSave = () => {
     if (!notAllow) {
       const tutoringInfo = {
+        color: selectedColor,
         name: name,
         age: age,
         school: school,
@@ -182,7 +233,14 @@ const AddTutoring = () => {
         <TitleWrapper>학생 정보</TitleWrapper>
         <ContentWrapper>
           <ContentContainer>
-            <Circle />
+            <Circle style={{ backgroundColor: selectedColor }} onClick={openModal} />
+            <Modal
+              isOpen={isModalOpen}
+              onRequestClose={closeModal}
+              contentLabel="Color Picker Modal"
+              style={modalStyle}>
+              <CirclePicker color={selectedColor} onChange={handleColorChange} />
+            </Modal>
 
             <ContentBox>
               <InputTitle>
@@ -357,7 +415,7 @@ const Circle = styled.div`
   width: 4rem;
   height: 4rem;
   border-radius: 100%;
-  background-color: ${theme.colors.kakao};
+  cursor: pointer;
 `;
 
 const InputTitle = styled.div`
