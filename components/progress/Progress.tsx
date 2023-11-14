@@ -8,6 +8,11 @@ import css from 'styled-jsx/css';
 interface colorProps {
   color: string;
 }
+const dummy = [
+  { time: '1월 1일 (7회차)', class: '수2 행렬의 곱셈까지 나감' },
+  { time: '1월 8일 (8회차)', class: '수2 행렬 전체 나감' },
+  { time: '1월 15일 (9회차)', class: '수2 벡터 나감' },
+];
 const Progress = (props: idProps) => {
   const { id } = props;
 
@@ -32,16 +37,25 @@ const Progress = (props: idProps) => {
           <RightSmallIcon></RightSmallIcon>
         </DateContainer>
         <SubTitle>과외 기록</SubTitle>
+
         <ProgressContainer>
           <ProgressBar>
-            <ProgressDone />
-            <ProgressBarLine />
+            {Array(dummy.length - 1).fill(
+              <div>
+                <ProgressDone />
+                <ProgressBarLine />
+              </div>,
+            )}
             <ProgressNow />
           </ProgressBar>
-          <ProgressText>
-            <ProgressMain>1월 1일(7회차)</ProgressMain>
-            <ProgressSub>수2 행렬의 곱셈까지 나감</ProgressSub>
-          </ProgressText>
+          <ProgressBox>
+            {dummy.map((data) => (
+              <ProgressText>
+                <ProgressMain>{data.time}</ProgressMain>
+                <ProgressSub>{data.class}</ProgressSub>
+              </ProgressText>
+            ))}
+          </ProgressBox>
         </ProgressContainer>
       </ProgressSection>
     </ClassWrapper>
@@ -121,6 +135,11 @@ const ProgressContainer = styled.div`
   border-radius: 1rem;
   background-color: ${theme.colors.white};
 `;
+const ProgressBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+`;
 const ProgressBar = styled.div`
   display: flex;
   flex-direction: column;
@@ -129,6 +148,14 @@ const ProgressBar = styled.div`
   width: 1.4rem;
   margin-right: 0.9rem;
   margin-top: 0.4rem;
+  & > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 1.4rem;
+    margin-right: 0.9rem;
+  }
 `;
 const ProgressBarLine = styled.div`
   /* margin-left: 0.35rem; */
@@ -149,7 +176,9 @@ const ProgressNow = styled.div`
   border: 0.25rem ${theme.colors.mainColor} solid;
   background-color: ${theme.colors.lightGray};
 `;
-const ProgressText = styled.div``;
+const ProgressText = styled.div`
+  margin-top: -0.2rem;
+`;
 const ProgressMain = styled.h3`
   ${theme.fonts.text01_medium};
 `;
