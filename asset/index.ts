@@ -25,3 +25,8 @@ export { default as NoColorClasslistIcon } from './nocolorclasslist.svg';
 export { default as ColorMoneyIcon } from './colormoney.svg';
 export { default as NoColorMoneyIcon } from './nocolormoney.svg';
 export { default as CopyIcon } from './copy.svg';
+export { default as LeftSmallIcon } from './left.svg';
+export { default as RightSmallIcon } from './right.svg';
+export { default as ProgressBarIcon } from './ProgressBar.svg';
+export { default as ProgressDoneIcon } from './ProgressDone.svg';
+export { default as ProgressNowIcon } from './ProgressNow.svg';
