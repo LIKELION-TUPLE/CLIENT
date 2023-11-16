@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
-import { TeacherBlackIcon, StudentBlackIcon, TeacherWhiteIcon, StudentWhiteIcon } from 'asset';
+import { TeacherBlackIcon, StudentBlackIcon } from 'asset';
 import { useRouter } from 'next/router';
 import Layout from '../common/Layout';
 import Header from 'components/common/Header';
@@ -43,11 +43,7 @@ const SelectSignup = () => {
         <TitleWrapper>회원가입</TitleWrapper>
         <SelectWrapper>
           <SelectButton type="button" isClick={clickedId === 1} onClick={() => handleClick(1)}>
-            {clickedId === 1 ? (
-              <TeacherWhiteIcon alt="선생님(선택o)" width={90} height={90} />
-            ) : (
-              <TeacherBlackIcon alt="선생님(선택x)" width={90} height={90} />
-            )}
+            <TeacherBlackIcon alt="선생님(선택x)" width={80} height={80} />
             <SelectContent>
               선생님으로
               <br />
@@ -55,11 +51,7 @@ const SelectSignup = () => {
             </SelectContent>
           </SelectButton>
           <SelectButton type="button" isClick={clickedId === 2} onClick={() => handleClick(2)}>
-            {clickedId === 2 ? (
-              <StudentWhiteIcon alt="학생(선택o)" width={90} height={90} />
-            ) : (
-              <StudentBlackIcon alt="학생(선택x)" width={90} height={90} />
-            )}
+            <StudentBlackIcon alt="학생(선택x)" width={80} height={80} />
             <SelectContent>
               학생으로
               <br />
