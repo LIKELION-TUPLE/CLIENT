@@ -17,7 +17,7 @@ const CompleteSignup = () => {
   return (
     <Layout noFooter>
       <Page>
-        <CelebrateIcon alt="축하" style={{ marginTop: `18.5rem` }} />
+        <CelebrateIcon alt="축하" width={250} height={250} style={{ marginTop: `18.5rem` }} />
         <TitleWrapper>
           {name} {type}
           <br />

@@ -6,7 +6,7 @@ import Layout from 'components/common/Layout';
 import theme from '@src/styles/theme';
 import copy from 'copy-to-clipboard';
 import { useRouter } from 'next/router';
-import { CopyIcon } from 'asset';
+import { CheckIcon, CopyIcon } from 'asset';
 
 const inviteCode = '코드 1235';
 
@@ -26,6 +26,7 @@ const CompleteAddTutoring = () => {
   return (
     <Layout noFooter>
       <Page>
+        <CheckIcon alt="확인" width={200} height={200} style={{ marginTop: `9.6rem` }} />
         <CompleteWrapper>
           <TitleWrapper>
             김인강 선생님의
@@ -64,7 +65,7 @@ const CompleteWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 20.4rem;
 `;
 
 const TitleWrapper = styled.div`
@@ -95,6 +96,7 @@ const InviteContent = styled.h1`
 `;
 
 const BottomButton = styled.button`
+  margin-top: 17.4rem;
   margin-bottom: 4.5rem;
 
   width: 30rem;
