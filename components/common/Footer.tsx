@@ -21,19 +21,31 @@ const Footer = () => {
   return (
     <Wrapper>
       {pathname.startsWith(`/classlist`) ? (
-        <ColorClasslistIcon alt="진행 중인 과외 아이콘" />
+        <ColorClasslistIcon alt="진행 중인 과외 아이콘" style={{ cursor: `pointer` }} />
       ) : (
-        <NoColorClasslistIcon onClick={() => router.replace(`classlist`)} alt="진행 중인 과외 아이콘" />
+        <NoColorClasslistIcon
+          onClick={() => router.replace(`classlist`)}
+          alt="진행 중인 과외 아이콘"
+          style={{ cursor: `pointer` }}
+        />
       )}
       {pathname.startsWith(`/calendar`) ? (
-        <ColorCalendarIcon alt="캘린더 아이콘" />
+        <ColorCalendarIcon alt="캘린더 아이콘" style={{ cursor: `pointer` }} />
       ) : (
-        <NoColorCalendarIcon onClick={() => router.replace(`calendar`)} alt="캘린더 아이콘" />
+        <NoColorCalendarIcon
+          onClick={() => router.replace(`calendar`)}
+          alt="캘린더 아이콘"
+          style={{ cursor: `pointer` }}
+        />
       )}
       {pathname.startsWith(`/money`) ? (
-        <ColorMoneyIcon alt="입금 관리 아이콘" />
+        <ColorMoneyIcon alt="입금 관리 아이콘" style={{ cursor: `pointer` }} />
       ) : (
-        <NoColorMoneyIcon onClick={() => router.replace(`money`)} alt="입금 관리 아이콘" />
+        <NoColorMoneyIcon
+          onClick={() => router.replace(`money`)}
+          alt="입금 관리 아이콘"
+          style={{ cursor: `pointer` }}
+        />
       )}
     </Wrapper>
   );
