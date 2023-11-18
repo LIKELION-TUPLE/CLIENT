@@ -24,7 +24,7 @@ const dummydata = [
 ];
 const Money = () => {
   const settings = {
-    dots: false,
+    dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 1,
@@ -37,33 +37,34 @@ const Money = () => {
     <Wrapper>
       <Title>입금관리</Title>
       <Section>
-        <StyledSlider {...settings}>
-          <StudentInfoContainer>
-            <Color></Color>
-            <StudentInfoBox>
-              <SchoolInfo>서강고 2학년</SchoolInfo>
-              <StudentInfo>김기철 학생 | 수학</StudentInfo>
-            </StudentInfoBox>
-          </StudentInfoContainer>
-
-          {dummydata.map((data) => (
-            <MoneyInfoBox>
-              <DetailInfo>
-                <Turn>{data.turn}</Turn>
-                <TurnDetail>
-                  <div>{data.date}</div>
-                  <div>{data.date}</div>
-                </TurnDetail>
-                <ConfirmButton>입금 확인</ConfirmButton>
-              </DetailInfo>
-              <Divider />
-              <StateInfo>
-                <State>{data.state}</State>
-                <MoneyInfo>{data.won}</MoneyInfo>
-              </StateInfo>
-            </MoneyInfoBox>
-          ))}
-        </StyledSlider>
+        <StudentInfoContainer>
+          <Color></Color>
+          <StudentInfoBox>
+            <SchoolInfo>서강고 2학년</SchoolInfo>
+            <StudentInfo>김기철 학생 | 수학</StudentInfo>
+          </StudentInfoBox>
+        </StudentInfoContainer>
+        <SliderContainer>
+          <StyledSlider {...settings}>
+            {dummydata.map((data) => (
+              <MoneyInfoBox>
+                <DetailInfo>
+                  <Turn>{data.turn}</Turn>
+                  <TurnDetail>
+                    <div>{data.date}</div>
+                    <div>{data.date}</div>
+                  </TurnDetail>
+                  <ConfirmButton>입금 확인</ConfirmButton>
+                </DetailInfo>
+                <Divider />
+                <StateInfo>
+                  <State>{data.state}</State>
+                  <MoneyInfo>{data.won}</MoneyInfo>
+                </StateInfo>
+              </MoneyInfoBox>
+            ))}
+          </StyledSlider>
+        </SliderContainer>
       </Section>
     </Wrapper>
   );
@@ -83,14 +84,40 @@ const Section = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  overflow-x: hidden;
   border-radius: 1rem;
   background-color: ${theme.colors.lightGray};
 `;
+const SliderContainer = styled.div`
+  width: 100%; // or any specific width you desire
+  margin-left: 3rem;
+  margin-bottom: 1rem;
+`;
 const StyledSlider = styled(Slider)`
-  .slick-slide div {
+  cursor: pointer;
+  .slick-slide {
     outline: none;
-    width: 30rem;
-    margin-right: 1.8rem;
+    width: 30.5rem;
+    /* height: 13.6rem; */
+    margin-right: 1.2rem;
+  }
+  .slick-dots {
+    width: 30.5rem;
+    display: flex;
+    justify-content: center;
+    bottom: 0rem;
+    & > li {
+      margin: 0 0rem; /* Adjust the margin between dots as needed */
+    }
+    & > li button:before {
+      font-size: 0.8rem;
+      opacity: 1;
+      color: ${theme.colors.gray};
+    }
+    & > li.slick-active button:before {
+      color: ${theme.colors.mainColor};
+    }
   }
 `;
 const StudentInfoContainer = styled.div`
