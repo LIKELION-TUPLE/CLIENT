@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { idProps } from 'pages/classbyday/detail/[id]';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
-import { LeftSmallIcon, RightSmallIcon, ProgressBarIcon, ProgressDoneIcon, ProgressNowIcon } from 'asset/index';
-import css from 'styled-jsx/css';
+import { LeftSmallIcon, RightSmallIcon } from 'asset';
 interface colorProps {
   color: string;
 }
@@ -13,9 +12,27 @@ const dummy = [
   { time: '1월 8일 (8회차)', class: '수2 행렬 전체 나감' },
   { time: '1월 15일 (9회차)', class: '수2 벡터 나감' },
 ];
+
 const Progress = (props: idProps) => {
   const { id } = props;
-
+  const [month, setMonth] = useState(10);
+  const [year, setYear] = useState(2023);
+  const handleLeftClick = () => {
+    if (month > 1) {
+      setMonth(month - 1);
+    } else {
+      setYear(year - 1);
+      setMonth(12);
+    }
+  };
+  const handleRightClick = () => {
+    if (month < 12) {
+      setMonth(month + 1);
+    } else {
+      setYear(year + 1);
+      setMonth(1);
+    }
+  };
   return (
     <ClassWrapper>
       <Header path={'classlist'} />
@@ -32,9 +49,11 @@ const Progress = (props: idProps) => {
       </ClassSection>
       <ProgressSection>
         <DateContainer>
-          <LeftSmallIcon></LeftSmallIcon>
-          <Date>2023년 10월</Date>
-          <RightSmallIcon></RightSmallIcon>
+          <LeftSmallIcon onClick={handleLeftClick}></LeftSmallIcon>
+          <Date>
+            {year}년 {month}월
+          </Date>
+          <RightSmallIcon onClick={handleRightClick}></RightSmallIcon>
         </DateContainer>
         <SubTitle>과외 기록</SubTitle>
 
