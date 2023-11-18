@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { classList } from 'data/dummy';
 import theme from '@src/styles/theme';
@@ -11,13 +11,41 @@ interface colorProps {
 const CreateClass = () => {
   const [nextHW, setNextHW] = useState<any[]>([]);
   const [nextHWContent, setNextHWContent] = useState<string[]>([]);
-  const handleNextHW = (content) => {
-    console.log(content);
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [place, setPlace] = useState('');
+  const [progress, setProgress] = useState('');
+  const handleNextHW = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNextHWContent([...nextHWContent, e.target.value]);
+  };
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(e.target.value);
+  };
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTime(e.target.value);
+  };
+  const handlePlaceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlace(e.target.value);
+  };
+  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProgress(e.target.value);
   };
   const handlePlusOnClick = () => {
-    setNextHW(nextHW.concat(<NextHWInput placeholder="숙제를 입력해주세요" />));
-    handleNextHW(nextHW);
+    setNextHW(
+      nextHW.concat(
+        <NextHWInputContainer>
+          -
+          <NextHWInput
+            placeholder="숙제를 입력해주세요"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleNextHW(e)}
+          />
+        </NextHWInputContainer>,
+      ),
+    );
   };
+  useEffect(() => {
+    console.log(nextHWContent);
+  }, [nextHWContent]);
   return (
     <ClassWrapper>
       <Header path={'calendar'} />
@@ -38,16 +66,20 @@ const CreateClass = () => {
         <DateContainer>
           <DateBox>
             <DateTitle>날짜</DateTitle>
-            <DateInput type="date"></DateInput>
+            <DateInput
+              type="date"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDateChange(e)}></DateInput>
           </DateBox>
           <TimeBox>
             <TimeTitle>시간</TimeTitle>
-            <TimeInput type="time"></TimeInput>
+            <TimeInput
+              type="time"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleTimeChange(e)}></TimeInput>
           </TimeBox>
         </DateContainer>
         <PlaceContainer>
           <PlaceTitle>장소</PlaceTitle>
-          <PlaceInput></PlaceInput>
+          <PlaceInput onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePlaceChange(e)}></PlaceInput>
         </PlaceContainer>
       </MainInfoSection>
       <ClassInfoSection>
@@ -61,7 +93,9 @@ const CreateClass = () => {
           <UnderLine></UnderLine>
         </TitleContainer>
         <ProgressContainer>
-          <ProgressInput placeholder="오늘의 진도를 입력해 주세요."></ProgressInput>
+          <ProgressInput
+            placeholder="오늘의 진도를 입력해 주세요."
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleProgressChange(e)}></ProgressInput>
         </ProgressContainer>
 
         <TitleContainer>
@@ -205,18 +239,18 @@ const PlaceContainer = styled.div`
   width: 30.5rem;
   height: 3.7rem;
   padding: 0rem 1rem;
-  gap: 0.7rem;
+  gap: 1.4rem;
   background-color: ${theme.colors.lightGray};
   border-radius: 1rem;
 `;
 const PlaceTitle = styled.p`
-  /* margin-left: 1rem;
-  margin-right: 1.4rem; */
   ${theme.fonts.text01_medium}
 `;
 const PlaceInput = styled.input`
   width: 24rem;
   border: none;
+  outline: none;
+  color: ${theme.colors.darkGray};
   background-color: ${theme.colors.lightGray};
   ${theme.fonts.text02_regular}
 `;
@@ -273,6 +307,10 @@ const NextHWContainer = styled.div`
 `;
 const PlusIconSvg = styled(PlusIcon)`
   margin: 1.5rem 0rem 1.5rem 12.5rem;
+  cursor: pointer;
+`;
+const NextHWInputContainer = styled.div`
+  margin-left: 1rem;
 `;
 const NextHWInput = styled.input`
   width: 23.4rem;
@@ -280,7 +318,7 @@ const NextHWInput = styled.input`
   margin-top: 0.5rem;
   outline: none;
   border: none;
-  border-bottom: 0.1rem ${theme.colors.gray} solid;
+  /* border-bottom: 0.1rem ${theme.colors.gray} solid; */
   ${theme.fonts.text02_regular};
 `;
 const Button = styled.div`
