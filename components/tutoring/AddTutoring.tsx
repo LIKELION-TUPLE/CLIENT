@@ -83,7 +83,7 @@ const AddTutoring = () => {
       zIndex: '150',
       position: 'absolute',
       top: modalPosition.top + 120,
-      left: modalPosition.left + 100,
+      left: `50%`,
       transform: 'translate(-50%, -50%)',
       borderRadius: '10px',
       boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)',
@@ -228,7 +228,7 @@ const AddTutoring = () => {
 
   return (
     <Layout noFooter>
-      <Header />
+      <Header path="/classlist" />
       <Page>
         <TitleWrapper>학생 정보</TitleWrapper>
         <ContentWrapper>

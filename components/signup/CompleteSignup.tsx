@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CelebrateIcon } from 'asset';
+import { CheckIcon } from 'asset';
 import Layout from '../common/Layout';
 import theme from '@src/styles/theme';
 import { useRouter } from 'next/router';
@@ -17,7 +17,7 @@ const CompleteSignup = () => {
   return (
     <Layout noFooter>
       <Page>
-        <CelebrateIcon alt="축하" width={250} height={250} style={{ marginTop: `18.5rem` }} />
+        <CheckIcon alt="축하" width={200} height={200} style={{ marginTop: `18.5rem` }} />
         <TitleWrapper>
           {name} {type}
           <br />
@@ -44,8 +44,6 @@ const Page = styled.div`
 `;
 
 const TitleWrapper = styled.div`
-  margin-top: 4.4rem;
-
   text-align: center;
   ${theme.fonts.headline};
 `;
