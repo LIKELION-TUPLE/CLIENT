@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Layout from '../common/Layout';
 import theme from '@src/styles/theme';
 import { OnboardingCalendarIcon, OnboardingClassListIcon, OnboardingMoneyIcon, KakaoIcon } from 'asset';
 import { useRouter } from 'next/router';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const Onboarding = () => {
-  const [idx, setIdx] = useState(1);
   const router = useRouter();
-
-  const handleClick = (n: number) => {
-    if (n === 1 && idx !== 3) {
-      setIdx(idx + 1);
-    }
-    if (n === -1 && idx !== 1) {
-      setIdx(idx - 1);
-    }
-  };
 
   const handleLogin = () => {
     router.replace('/login');
@@ -29,42 +21,22 @@ const Onboarding = () => {
   return (
     <Layout noFooter>
       <Page>
-        {idx === 1 ? (
-          <OnboardingWrapper>
-            <OnboardingCalendarIcon alt="달력온보딩" width={375} height={375} />
-            <OnboardingContent>
-              과외 일정을
-              <br />한 눈에 확인하세요
-            </OnboardingContent>
-          </OnboardingWrapper>
-        ) : idx === 2 ? (
-          <OnboardingWrapper>
-            <OnboardingClassListIcon alt="달력온보딩" width={375} height={375} />
-            <OnboardingContent>
-              진행한 과외 내용을
-              <br />
-              간편하게 기록하세요
-            </OnboardingContent>
-          </OnboardingWrapper>
-        ) : (
-          <OnboardingWrapper>
-            <OnboardingMoneyIcon alt="달력온보딩" width={375} height={375} />
-            <OnboardingContent>
-              과외비 입급 여부를
-              <br />
-              체계적으로 관리하세요
-            </OnboardingContent>
-          </OnboardingWrapper>
-        )}
+        <SliderWrapper>
+          <Carousel
+            showStatus={false}
+            showArrows={true}
+            autoPlay={true}
+            infiniteLoop={true}
+            showThumbs={false}
+            interval={2000}
+            swipeable={true}
+            emulateTouch={true}>
+            <OnboardingCalendarIcon alt="달력온보딩" width={375} height={500} />
+            <OnboardingClassListIcon alt="달력온보딩" width={375} height={500} />
+            <OnboardingMoneyIcon alt="달력온보딩" width={375} height={500} />
+          </Carousel>
+        </SliderWrapper>
 
-        <ButtonWrapper>
-          <ScrollButton type="button" onClick={() => handleClick(-1)}>
-            이전
-          </ScrollButton>
-          <ScrollButton type="button" onClick={() => handleClick(1)}>
-            다음
-          </ScrollButton>
-        </ButtonWrapper>
         <LoginWrapper>
           <KakaoLoginButton type="button">
             <KakaoIcon alt="카카오톡" width={28} height={26} />
@@ -95,20 +67,9 @@ const Page = styled.div`
   max-width: 37.5rem;
 `;
 
-const OnboardingWrapper = styled.div``;
-
-const OnboardingContent = styled.h1`
-  text-align: center;
-  ${theme.fonts.title_medium};
-`;
-
-const ButtonWrapper = styled.div`
-  margin-top: 1.8rem;
-`;
-
-const ScrollButton = styled.button`
-  padding: 1rem;
-  ${theme.fonts.text02_bold};
+const SliderWrapper = styled.div`
+  width: 37.5rem;
+  overflow: hidden;
 `;
 
 const LoginWrapper = styled.div`

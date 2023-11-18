@@ -8,6 +8,7 @@ import { OwnProps } from 'pages/signup/[userType]';
 import { useSetRecoilState } from 'recoil';
 import { userInfoSave } from 'atoms/selector';
 import Header from 'components/common/Header';
+import axios from 'axios';
 
 interface Props {
   isClick?: boolean;
@@ -33,8 +34,36 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
   const router = useRouter();
   const setUserInfo = useSetRecoilState(userInfoSave);
 
-  const handleSignup = () => {
+  const handleCheckId = async () => {
+    try {
+      const URL = `https://api.tupl.store/signup/check`;
+      const response = await axios.post(URL, {
+        loginId: id,
+      });
+
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleSignup = async () => {
     if (!notAllow) {
+      try {
+        const URL = `https://api.tupl.store/signup/teacher`;
+        const response = await axios.post(URL, {
+          loginId: id,
+          password: pw,
+          name: name,
+          phone: phone,
+          birthDate: date,
+        });
+
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+
       router.replace('/completesignup');
     }
   };
@@ -123,8 +152,11 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
             <InputTitle>
               아이디 <Required>*</Required>
             </InputTitle>
-            <InputWrapper>
+            <InputWrapper style={{ display: `flex`, alignItems: `flex-end` }}>
               <Input type="text" placeholder="아이디를 입력해주세요" value={id} onChange={handleId}></Input>
+              <CheckIdButton type="submit" onClick={handleCheckId}>
+                중복확인
+              </CheckIdButton>
             </InputWrapper>
             <ErrorMessageWrapper>
               {!idValid && id.length > 0 && <div>이미 사용중인 아이디입니다</div>}
@@ -274,6 +306,18 @@ const Input = styled.input`
     color: ${theme.colors.gray};
     ${theme.fonts.text03_regular};
   }
+`;
+
+const CheckIdButton = styled.button`
+  width: 6rem;
+  border-radius: 2rem;
+  padding: 0.5rem 0.7rem;
+  text-align: center;
+  background-color: ${theme.colors.lightGray};
+  ${theme.fonts.text03_regular};
+  color: ${theme.colors.darkGray};
+
+  cursor: pointer;
 `;
 
 const ErrorMessageWrapper = styled.div`
