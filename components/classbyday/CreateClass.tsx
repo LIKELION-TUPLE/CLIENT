@@ -15,6 +15,7 @@ const CreateClass = () => {
   const [time, setTime] = useState('');
   const [place, setPlace] = useState('');
   const [progress, setProgress] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
   const handleNextHW = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNextHWContent([...nextHWContent, e.target.value]);
   };
@@ -44,8 +45,8 @@ const CreateClass = () => {
     );
   };
   useEffect(() => {
-    console.log(nextHWContent);
-  }, [nextHWContent]);
+    nextHWContent && date && time && place && progress ? setIsFormValid(true) : setIsFormValid(false);
+  }, [nextHWContent, date, time, place, progress]);
   return (
     <ClassWrapper>
       <Header path={'calendar'} />
@@ -107,7 +108,7 @@ const CreateClass = () => {
           <PlusIconSvg onClick={handlePlusOnClick} />
         </NextHWContainer>
       </ClassInfoSection>
-      <Button>저장</Button>
+      {isFormValid ? <CompleteButton>저장</CompleteButton> : <UnCompleteButton>저장</UnCompleteButton>}
     </ClassWrapper>
   );
 };
@@ -321,18 +322,30 @@ const NextHWInput = styled.input`
   /* border-bottom: 0.1rem ${theme.colors.gray} solid; */
   ${theme.fonts.text02_regular};
 `;
-const Button = styled.div`
-  /* position: fixed; */
+const CompleteButton = styled.div`
   width: 30rem;
   height: 5rem;
-  /* bottom: 4.3rem; */
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 3.5rem;
   margin-top: 3rem;
-  ${theme.fonts.title_bold};
+  ${theme.fonts.title_medium};
   background-color: ${theme.colors.mainColor};
+  color: ${theme.colors.white};
+  border-radius: 3rem;
+  cursor: pointer;
+`;
+const UnCompleteButton = styled.div`
+  width: 30rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 3.5rem;
+  margin-top: 3rem;
+  ${theme.fonts.title_medium};
+  background-color: ${theme.colors.lightGray};
   color: ${theme.colors.white};
   border-radius: 3rem;
 `;
