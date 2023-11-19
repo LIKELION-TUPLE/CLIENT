@@ -6,6 +6,7 @@ const colors = {
   middleGray: '#757575',
   darkGray: '#5F5F5F',
   red: '#EC5959',
+  green: `#32CD32`,
   black: '#000000',
   white: '#FFFFFF',
   kakao: `#FFE812`,
