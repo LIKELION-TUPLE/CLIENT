@@ -10,7 +10,7 @@ import { CheckIcon, CopyIcon } from 'asset';
 
 const inviteCode = '코드 1235';
 
-const CompleteAddTutoring = () => {
+const CompleteCreateTutoring = () => {
   const router = useRouter();
   const { name, subject } = useRecoilValue(tutoringInfo);
 
@@ -48,7 +48,7 @@ const CompleteAddTutoring = () => {
   );
 };
 
-export default CompleteAddTutoring;
+export default CompleteCreateTutoring;
 
 const Page = styled.div`
   display: flex;
