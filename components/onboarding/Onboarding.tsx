@@ -24,7 +24,7 @@ const Onboarding = () => {
         <SliderWrapper>
           <Carousel
             showStatus={false}
-            showArrows={true}
+            showArrows={false}
             autoPlay={true}
             infiniteLoop={true}
             showThumbs={false}
