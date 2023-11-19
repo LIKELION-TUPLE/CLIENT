@@ -3,6 +3,8 @@ import Layout from '../common/Layout';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 interface Props {
   isClick?: boolean;
@@ -12,6 +14,7 @@ const Login = () => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
   const [notAllow, setNotAllow] = useState(true);
+  const router = useRouter();
 
   const handleId = (e: ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
@@ -21,8 +24,23 @@ const Login = () => {
     setPw(e.target.value);
   };
 
-  const handleLogin = () => {
-    if (!notAllow) alert('로그인에 성공했습니다');
+  const handleLogin = async () => {
+    if (!notAllow) {
+      try {
+        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/login`;
+        await axios.post(URL, {
+          loginId: id,
+          password: pw,
+        });
+        alert('로그인에 성공했습니다');
+        router.replace('/calendar');
+      } catch (error) {
+        alert('등록되지 않은 아이디이거나 비밀번호를 잘못 입력했습니다');
+        setId('');
+        setPw('');
+        setNotAllow(true);
+      }
+    }
   };
 
   useEffect(() => {
