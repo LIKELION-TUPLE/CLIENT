@@ -14,7 +14,7 @@ interface Props {
   isClick?: boolean;
 }
 
-const AddTutoring = () => {
+const CreateTutoring = () => {
   const yearOptions = [
     { value: '' },
     { value: 1 },
@@ -370,7 +370,7 @@ const AddTutoring = () => {
   );
 };
 
-export default AddTutoring;
+export default CreateTutoring;
 
 const Page = styled.div`
   width: 100%;
