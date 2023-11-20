@@ -74,7 +74,7 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
         console.error('Error:', error);
       }
 
-      router.replace('/completesignup');
+      router.replace('/signup/complete');
     }
   };
 

@@ -1,11 +1,19 @@
 import { atom } from 'recoil';
-interface User {
+import { recoilPersist } from 'recoil-persist';
+const localStorage = typeof window !== 'undefined' ? window.localStorage : undefined;
+const { persistAtom } = recoilPersist({
+  key: 'recoil-states',
+  storage: localStorage,
+});
+
+export interface User {
   name?: string;
   type?: string;
 }
-interface Tutoring {
+export interface Tutoring {
   name?: string;
   subject?: string;
+  code?: string;
 }
 
 export const selectedDate = atom<string>({
@@ -14,11 +22,13 @@ export const selectedDate = atom<string>({
 });
 
 export const userInfo = atom<User>({
-  key: `tutoringInfo`,
+  key: `userInfo`,
   default: { name: '', type: '' },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const tutoringInfo = atom<Tutoring>({
   key: `tutoringInfo`,
-  default: { name: '', subject: '' },
+  default: { name: '', subject: '', code: '' },
+  effects_UNSTABLE: [persistAtom],
 });

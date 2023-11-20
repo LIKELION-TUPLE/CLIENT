@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
-import { tutoringInfo } from 'atoms/atom';
+import { useRecoilState } from 'recoil';
+import { Tutoring, tutoringInfo } from 'atoms/atom';
 import Layout from 'components/common/Layout';
 import theme from '@src/styles/theme';
 import copy from 'copy-to-clipboard';
 import { useRouter } from 'next/router';
 import { CheckIcon, CopyIcon } from 'asset';
 
-const inviteCode = '코드 1235';
-
 const CompleteCreateTutoring = () => {
+  const [tutoringState, setClientTutoringState] = useState<Tutoring>({ name: '', subject: '', code: '' });
+  const [tutoringInfoState, setTutoringState] = useRecoilState(tutoringInfo);
+  const [userName, setUserName] = useState('');
   const router = useRouter();
-  const { name, subject } = useRecoilValue(tutoringInfo);
+
+  useEffect(() => {
+    const userName = localStorage.getItem('userName');
+    setUserName(userName || '');
+    setClientTutoringState(tutoringInfoState);
+  }, [tutoringInfoState]);
 
   const handleCopyClick = () => {
-    copy(inviteCode);
+    copy(tutoringState.code || '');
     alert('코드가 복사되었습니다');
   };
 
@@ -29,13 +35,13 @@ const CompleteCreateTutoring = () => {
         <CheckIcon alt="확인" width={200} height={200} style={{ marginTop: `9.6rem` }} />
         <CompleteWrapper>
           <TitleWrapper>
-            김인강 선생님의
-            <br /> [ {name} 학생 | {subject} ]
+            {userName} 선생님의
+            <br /> [ {tutoringState.name} 학생 | {tutoringState.subject} ]
             <br />
             과외가 추가되었습니다
           </TitleWrapper>
           <InviteCode onClick={handleCopyClick}>
-            초대 코드 1235
+            {tutoringState.code}
             <CopyIcon alt="복사하기" width={30} height={30} />
           </InviteCode>
           <InviteContent>초대 코드를 복사해 학생에게 보내주세요</InviteContent>

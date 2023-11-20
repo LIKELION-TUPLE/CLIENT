@@ -28,10 +28,15 @@ const Login = () => {
     if (!notAllow) {
       try {
         const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/login`;
-        await axios.post(URL, {
+        const response = await axios.post(URL, {
           loginId: id,
           password: pw,
         });
+        const userName = response.data.name;
+        const userToken = response.data.token;
+        localStorage.setItem('userName', userName);
+        localStorage.setItem('userToken', userToken);
+
         alert('로그인에 성공했습니다');
         router.replace('/calendar');
       } catch (error) {
