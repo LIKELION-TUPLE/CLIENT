@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { classList } from 'data/dummy';
+import { studentList } from 'data/dummy';
 import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
+import ClassDropdown from './ClassDropdown';
 import { PlusIcon } from 'asset/index';
 
 interface colorProps {
@@ -16,6 +17,9 @@ const CreateClass = () => {
   const [place, setPlace] = useState('');
   const [progress, setProgress] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
+  const [dropDown, setDropDown] = useState<boolean>(false);
+  const [studentInfo, setStudentInfo] = useState<number>(0);
+
   const handleNextHW = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNextHWContent([...nextHWContent, e.target.value]);
   };
@@ -52,18 +56,29 @@ const CreateClass = () => {
       <Header path={'calendar'} />
       <Title>수업일지</Title>
       <MainInfoSection>
-        {classList.map((student) => (
-          <StudentContainer>
-            <ProfileBox color={student.color} />
-            <ClassInfoBox>
-              <SubInfo>{student.school}</SubInfo>
-              <MainInfo>
-                {student.name} 학생 | {student.subject}
-              </MainInfo>
-            </ClassInfoBox>
-            <TurnInfoBox>{student.turn}</TurnInfoBox>
-          </StudentContainer>
-        ))}
+        <StudentContainer
+          onClick={() => {
+            setDropDown(!dropDown);
+          }}>
+          <ProfileBox color={studentList[studentInfo].color} />
+          <ClassInfoBox>
+            <SubInfo>{studentList[studentInfo].school}</SubInfo>
+            <MainInfo>
+              {studentList[studentInfo].name} 학생 | {studentList[studentInfo].subject}
+            </MainInfo>
+          </ClassInfoBox>
+          <TurnInfoBox>{studentList[studentInfo].turn}</TurnInfoBox>
+          {/* <Image src={DownButton} alt="드롭다운" width={24} height={24} /> */}
+        </StudentContainer>
+        <DropDownWrapper>
+          {dropDown && (
+            <ClassDropdown
+              giveStudentInfo={(giveStudentInfo: string) => setStudentInfo(giveStudentInfo)}
+              giveSelected={(giveSelected: boolean) => setDropDown(giveSelected)}
+            />
+          )}
+        </DropDownWrapper>
+
         <DateContainer>
           <DateBox>
             <DateTitle>날짜</DateTitle>
@@ -158,6 +173,7 @@ const StudentContainer = styled.div`
   padding: 1.1rem 1.5rem;
   background-color: ${theme.colors.lightGray};
   border-radius: 1rem;
+  cursor: pointer;
 `;
 const DateContainer = styled.div`
   display: flex;
@@ -349,3 +365,9 @@ const UnCompleteButton = styled.div`
   color: ${theme.colors.white};
   border-radius: 3rem;
 `;
+const DropDownWrapper = styled.div`
+  position: absolute;
+  top: 13.8rem;
+  z-index: 3;
+`;
+const StudentDropDown = styled.div``;
