@@ -15,7 +15,7 @@ const Onboarding = () => {
   };
 
   const handleSignup = () => {
-    router.replace('/selectsignup');
+    router.replace('/signup/select');
   };
 
   return (
