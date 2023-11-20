@@ -11,10 +11,12 @@ import { CheckIcon, CopyIcon } from 'asset';
 const CompleteCreateTutoring = () => {
   const [tutoringState, setClientTutoringState] = useState<Tutoring>({ name: '', subject: '', code: '' });
   const [tutoringInfoState, setTutoringState] = useRecoilState(tutoringInfo);
-  const userName = localStorage.getItem('userName');
+  const [userName, setUserName] = useState('');
   const router = useRouter();
 
   useEffect(() => {
+    const userName = localStorage.getItem('userName');
+    setUserName(userName || '');
     setClientTutoringState(tutoringInfoState);
   }, [tutoringInfoState]);
 
