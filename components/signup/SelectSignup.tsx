@@ -33,7 +33,6 @@ const SelectSignup = () => {
 
   useEffect(() => {
     setClickedId(clickedId);
-    console.log(clickedId);
   }, [clickedId]);
 
   return (

@@ -9,12 +9,13 @@ import { tutoringInfoSave } from 'atoms/selector';
 import { CirclePicker, ColorResult } from 'react-color';
 import Modal from 'react-modal';
 import ReactModal from 'react-modal';
+import axios from 'axios';
 
 interface Props {
   isClick?: boolean;
 }
 
-const AddTutoring = () => {
+const CreateTutoring = () => {
   const yearOptions = [
     { value: '' },
     { value: 1 },
@@ -24,7 +25,7 @@ const AddTutoring = () => {
     { value: 5 },
     { value: 6 },
   ];
-  const depositOptions = [
+  const cycleOptions = [
     { value: '' },
     { value: 1 },
     { value: 2 },
@@ -48,16 +49,17 @@ const AddTutoring = () => {
   const [parentPhone, setParentPhone] = useState('');
   const [subject, setSubject] = useState('');
   const [time, setTime] = useState('');
-  const [fee, setFee] = useState('');
-  const [deposit, setDeposit] = useState('');
+  const [payment, setPayment] = useState('');
+  const [cycle, setCycle] = useState('');
 
   const [nameValid, setNameValid] = useState(false);
   const [ageValid, setAgeValid] = useState(false);
+  const [schoolValid, setSchoolValid] = useState(false);
   const [gradeValid, setGradeValid] = useState(false);
   const [subjectValid, setSubjectValid] = useState(false);
   const [timeValid, setTimeValid] = useState(false);
-  const [feeValid, setFeeValid] = useState(false);
-  const [depositValid, setDepositValid] = useState(false);
+  const [paymentValid, setPaymentValid] = useState(false);
+  const [cycleValid, setCycleValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -112,7 +114,7 @@ const AddTutoring = () => {
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-    if (e.target.value.length <= 6) {
+    if (0 < e.target.value.length && e.target.value.length <= 6) {
       setNameValid(true);
     } else {
       setNameValid(false);
@@ -131,6 +133,11 @@ const AddTutoring = () => {
 
   const handleSchool = (e: ChangeEvent<HTMLInputElement>) => {
     setSchool(e.target.value);
+    if (0 < e.target.value.length) {
+      setSchoolValid(true);
+    } else {
+      setSchoolValid(false);
+    }
   };
 
   const handleGrade = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -169,62 +176,68 @@ const AddTutoring = () => {
     }
   };
 
-  const handleFee = (e: ChangeEvent<HTMLInputElement>) => {
-    setFee(e.target.value);
+  const handlePayment = (e: ChangeEvent<HTMLInputElement>) => {
+    setPayment(e.target.value);
     const regex = /^[0-9\b]+$/;
     if (regex.test(e.target.value)) {
-      setFeeValid(true);
+      setPaymentValid(true);
     } else {
-      setFeeValid(false);
+      setPaymentValid(false);
     }
   };
 
   const handleDeopsit = (e: ChangeEvent<HTMLSelectElement>) => {
-    setDeposit(e.target.value);
+    setCycle(e.target.value);
     if (e.target.value !== '') {
-      setDepositValid(true);
+      setCycleValid(true);
     } else {
-      setDepositValid(false);
+      setCycleValid(false);
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!notAllow) {
-      const tutoringInfo = {
-        color: selectedColor,
-        name: name,
-        age: age,
-        school: school,
-        grade: grade,
-        studentPhone: studentPhone,
-        parentPhone: parentPhone,
-        subject: subject,
-        time: time,
-        fee: fee,
-        deposit: deposit,
-      };
-      console.log(tutoringInfo);
-      router.replace('/completeaddtutoring');
+      try {
+        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/create`;
+        const userToken = localStorage.getItem('userToken');
+        const response = await axios.post(
+          URL,
+          {
+            color: selectedColor,
+            studentName: name,
+            studentAge: parseInt(age),
+            studentSchool: school,
+            studentGrade: parseInt(grade),
+            studentPhone: studentPhone,
+            parentPhone: parentPhone,
+            subject: subject,
+            courseTime: parseInt(time),
+            coursePayment: parseInt(payment),
+            paymentCycle: parseInt(cycle),
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          },
+        );
+
+        const code = response.data.inviteCode;
+        setTutoringInfo({ name: name, subject: subject, code: code });
+      } catch (error) {
+        console.error('Error:', error);
+      }
+      router.replace('/tutoring/completecreate');
     }
   };
 
   useEffect(() => {
-    if (
-      nameValid &&
-      ageValid &&
-      school.length > 0 &&
-      gradeValid &&
-      subjectValid &&
-      timeValid &&
-      feeValid &&
-      depositValid
-    ) {
+    if (nameValid && ageValid && schoolValid && gradeValid && subjectValid && timeValid && paymentValid && cycleValid) {
       setNotAllow(false);
-      setTutoringInfo({ name: name, subject: subject });
       return;
     }
     setNotAllow(true);
-  }, [nameValid, ageValid, school, gradeValid, subjectValid, timeValid, feeValid, depositValid]);
+  }, [nameValid, ageValid, schoolValid, gradeValid, subjectValid, timeValid, paymentValid, cycleValid]);
 
   return (
     <Layout noFooter>
@@ -337,7 +350,7 @@ const AddTutoring = () => {
                 과외비 <Required>*</Required>
               </InputTitle>
               <InputWrapper style={{ width: '15.5rem' }}>
-                <Input type="text" placeholder="숫자로 입력해주세요" value={fee} onChange={handleFee}></Input>
+                <Input type="text" placeholder="숫자로 입력해주세요" value={payment} onChange={handlePayment}></Input>
                 <Unit>원</Unit>
               </InputWrapper>
             </ContentBox>
@@ -348,8 +361,8 @@ const AddTutoring = () => {
               </InputTitle>
               <SelectWrapper style={{ marginTop: `0.5rem` }}>
                 <SelectBox>
-                  <Select value={deposit} onChange={handleDeopsit}>
-                    {depositOptions.map((option) => (
+                  <Select value={cycle} onChange={handleDeopsit}>
+                    {cycleOptions.map((option) => (
                       <option value={option.value}>{option.value}</option>
                     ))}
                   </Select>
@@ -370,7 +383,7 @@ const AddTutoring = () => {
   );
 };
 
-export default AddTutoring;
+export default CreateTutoring;
 
 const Page = styled.div`
   width: 100%;

@@ -1,29 +1,65 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { studentList } from 'data/dummy';
 import { PlusIcon } from 'asset';
 import theme from '@src/styles/theme';
+import { useRouter } from 'next/router';
+import axios from 'axios';
 interface colorProps {
   color: string;
 }
+interface tutoringInfo {
+  color: string;
+  course_id: number;
+  currentLessonTime: number;
+  studentGrade: number;
+  studentName: string;
+  studentSchool: string;
+  subject: string;
+  teacherName: string;
+}
 const ClassList = () => {
+  const [studentList, setStudentList] = useState([]);
+  const router = useRouter();
+  const handleCreateTutoring = () => {
+    router.replace('/tutoring/create');
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/course-list`;
+        const userToken = localStorage.getItem('userToken');
+        const response = await axios.get(URL, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+
+        setStudentList(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <ClassWrapper>
       <Title>진행 중인 과외</Title>
       <ClassSection>
-        {studentList.map((student) => (
+        {studentList.map((student: tutoringInfo) => (
           <StudentContainer>
             <ProfileBox color={student.color} />
             <ClassInfoBox>
-              <SubInfo>{student.school}</SubInfo>
+              <SubInfo>{student.studentSchool}</SubInfo>
               <MainInfo>
-                {student.name} 학생 | {student.subject}
+                {student.studentName} 학생 | {student.subject}
               </MainInfo>
             </ClassInfoBox>
-            <TurnInfoBox>{student.turn}</TurnInfoBox>
+            <TurnInfoBox>{student.currentLessonTime}회차</TurnInfoBox>
           </StudentContainer>
         ))}
-        <PlusIconSvg />
+        <PlusIconSvg type="button" onClick={handleCreateTutoring} />
       </ClassSection>
     </ClassWrapper>
   );
@@ -79,4 +115,5 @@ const MainInfo = styled.div`
 `;
 const PlusIconSvg = styled(PlusIcon)`
   margin: 1.5rem 0rem 1.5rem 13.6rem;
+  cursor: pointer;
 `;

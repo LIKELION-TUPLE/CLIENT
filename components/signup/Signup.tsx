@@ -2,7 +2,6 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import Layout from '../common/Layout';
-import { dummyUsers } from 'data/dummy';
 import { useRouter } from 'next/router';
 import { OwnProps } from 'pages/signup/[userType]';
 import { useSetRecoilState } from 'recoil';
@@ -17,6 +16,7 @@ interface Props {
 const Signup: React.FC<OwnProps> = ({ userType }) => {
   const type = userType === 'teacher' ? '선생님' : '학생';
   const [id, setId] = useState('');
+  const [checkId, setCheckId] = useState(false);
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState('');
   const [name, setName] = useState('');
@@ -24,6 +24,7 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
   const [phone, setPhone] = useState('');
 
   const [idValid, setIdValid] = useState(false);
+  const [checkIdValid, setCheckIdValid] = useState(false);
   const [pwValid, setPwValid] = useState(false);
   const [pwConfirmValid, setPwConfirmValid] = useState(false);
   const [dateValid, setDateValid] = useState(false);
@@ -35,53 +36,54 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
   const setUserInfo = useSetRecoilState(userInfoSave);
 
   const handleCheckId = async () => {
-    try {
-      const URL = `https://api.tupl.store/signup/check`;
-      const response = await axios.post(URL, {
-        loginId: id,
-      });
+    if (checkId) {
+      try {
+        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/signup/check`;
+        const response = await axios.post(URL, {
+          loginId: id,
+        });
 
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error:', error);
+        if (response.data.isDuplicated === 'false') {
+          setIdValid(true);
+          setCheckId(false);
+          setCheckIdValid(true);
+          return;
+        } else {
+          alert('이미 사용 중인 아이디입니다');
+          setId('');
+          setCheckId(false);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
   const handleSignup = async () => {
     if (!notAllow) {
       try {
-        const URL = `https://api.tupl.store/signup/teacher`;
-        const response = await axios.post(URL, {
+        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/signup/teacher`;
+        await axios.post(URL, {
           loginId: id,
           password: pw,
           name: name,
           phone: phone,
           birthDate: date,
         });
-
-        console.log(response.data);
       } catch (error) {
         console.error('Error:', error);
       }
 
-      router.replace('/completesignup');
+      router.replace('/signup/complete');
     }
   };
 
   const handleId = (e: ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
-
-    let flag = true;
-    dummyUsers.users.forEach((user) => {
-      if (e.target.value === user.id) {
-        flag = false;
-      }
-    });
-
-    if (flag) {
-      setIdValid(true);
+    if (e.target.value.length > 0) {
+      setCheckId(true);
     } else {
-      setIdValid(false);
+      setCheckId(false);
     }
   };
 
@@ -107,7 +109,7 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-    if (e.target.value.length <= 6) {
+    if (0 < e.target.value.length && e.target.value.length <= 6) {
       setNameValid(true);
     } else {
       setNameValid(false);
@@ -152,15 +154,22 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
             <InputTitle>
               아이디 <Required>*</Required>
             </InputTitle>
-            <InputWrapper style={{ display: `flex`, alignItems: `flex-end` }}>
-              <Input type="text" placeholder="아이디를 입력해주세요" value={id} onChange={handleId}></Input>
-              <CheckIdButton type="submit" onClick={handleCheckId}>
+            <InputWrapper>
+              <Input
+                type="text"
+                placeholder="아이디를 입력해주세요"
+                value={id}
+                onChange={handleId}
+                disabled={checkIdValid}></Input>
+              <CheckIdButton type="submit" isClick={!checkId} onClick={handleCheckId}>
                 중복확인
               </CheckIdButton>
             </InputWrapper>
-            <ErrorMessageWrapper>
-              {!idValid && id.length > 0 && <div>이미 사용중인 아이디입니다</div>}
-            </ErrorMessageWrapper>
+            {!checkIdValid ? (
+              <ErrorMessageWrapper style={{ color: theme.colors.red }}>아이디 중복확인을 해주세요</ErrorMessageWrapper>
+            ) : (
+              <ErrorMessageWrapper style={{ color: theme.colors.green }}>사용가능한 아이디입니다</ErrorMessageWrapper>
+            )}
           </ContentContainer>
 
           <ContentContainer>
@@ -168,15 +177,15 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
               비밀번호 <Required>*</Required>
             </InputTitle>
             <InputWrapper>
-              <Input
-                type="password"
-                placeholder="비밀번호를 입력해주세요 (영문, 숫자, 특수문자 포함 8자 이상)"
-                value={pw}
-                onChange={handlePw}></Input>
+              <Input type="password" placeholder="비밀번호를 입력해주세요" value={pw} onChange={handlePw}></Input>
             </InputWrapper>
-            <ErrorMessageWrapper>
-              {!pwValid && pw.length > 0 && <div>영문, 숫자, 특수문자 포함 8자 이상</div>}
-            </ErrorMessageWrapper>
+            {pwValid ? (
+              <ErrorMessageWrapper style={{ color: theme.colors.green }}>올바른 비밀번호입니다</ErrorMessageWrapper>
+            ) : (
+              <ErrorMessageWrapper style={{ color: theme.colors.red }}>
+                영문, 숫자, 특수문자 포함 8자 이상
+              </ErrorMessageWrapper>
+            )}
           </ContentContainer>
 
           <ContentContainer>
@@ -190,9 +199,13 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
                 value={pwConfirm}
                 onChange={handlePwConfirm}></Input>
             </InputWrapper>
-            <ErrorMessageWrapper>
-              {!pwConfirmValid && pwConfirm.length > 0 && <div>비밀번호가 일치하지 않습니다</div>}
-            </ErrorMessageWrapper>
+            {pwConfirmValid ? (
+              <ErrorMessageWrapper style={{ color: theme.colors.green }}>비밀번호가 일치합니다</ErrorMessageWrapper>
+            ) : (
+              <ErrorMessageWrapper style={{ color: theme.colors.red }}>
+                비밀번호가 일치하지 않습니다
+              </ErrorMessageWrapper>
+            )}
           </ContentContainer>
 
           <ContentContainer>
@@ -200,13 +213,13 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
               이름 <Required>*</Required>
             </InputTitle>
             <InputWrapper>
-              <Input
-                type="text"
-                placeholder="이름을 입력해주세요 (6자 이하)"
-                value={name}
-                onChange={handleName}></Input>
+              <Input type="text" placeholder="이름을 입력해주세요" value={name} onChange={handleName}></Input>
             </InputWrapper>
-            <ErrorMessageWrapper>{!nameValid && name.length > 0 && <div>5자 이하</div>}</ErrorMessageWrapper>
+            {nameValid ? (
+              <ErrorMessageWrapper style={{ color: theme.colors.green }}>올바른 이름입니다</ErrorMessageWrapper>
+            ) : (
+              <ErrorMessageWrapper style={{ color: theme.colors.red }}>1 ~ 6자</ErrorMessageWrapper>
+            )}
           </ContentContainer>
 
           <ContentContainer>
@@ -214,13 +227,13 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
               생년월일 <Required>*</Required>
             </InputTitle>
             <InputWrapper>
-              <Input
-                type="text"
-                placeholder="생년월일을 입력해주세요 (YYMMDD)"
-                value={date}
-                onChange={handleDate}></Input>
+              <Input type="text" placeholder="생년월일을 입력해주세요" value={date} onChange={handleDate}></Input>
             </InputWrapper>
-            <ErrorMessageWrapper>{!dateValid && date.length > 0 && <div>YYMMDD</div>}</ErrorMessageWrapper>
+            {dateValid ? (
+              <ErrorMessageWrapper style={{ color: theme.colors.green }}>올바른 생년월일입니다</ErrorMessageWrapper>
+            ) : (
+              <ErrorMessageWrapper style={{ color: theme.colors.red }}>YYMMDD</ErrorMessageWrapper>
+            )}
           </ContentContainer>
 
           <ContentContainer>
@@ -228,13 +241,13 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
               휴대폰 번호 <Required>*</Required>
             </InputTitle>
             <InputWrapper>
-              <Input
-                type="text"
-                placeholder="휴대폰 번호를 입력해주세요 (010-XXXX-XXXX)"
-                value={phone}
-                onChange={handlePhone}></Input>
+              <Input type="text" placeholder="휴대폰 번호를 입력해주세요" value={phone} onChange={handlePhone}></Input>
             </InputWrapper>
-            <ErrorMessageWrapper>{!phoneValid && phone.length > 0 && <div>010-XXXX-XXXX</div>}</ErrorMessageWrapper>
+            {phoneValid ? (
+              <ErrorMessageWrapper style={{ color: theme.colors.green }}>올바른 휴대폰 번호입니다</ErrorMessageWrapper>
+            ) : (
+              <ErrorMessageWrapper style={{ color: theme.colors.red }}>010-XXXX-XXXX</ErrorMessageWrapper>
+            )}
           </ContentContainer>
         </ContentWrapper>
         <ButtonWrapper>
@@ -267,9 +280,9 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 3.8rem;
+  gap: 2.3rem;
 
-  height: 51.4rem;
+  height: 60.7 rem;
   margin-top: 1.5rem;
   padding: 3rem 2rem;
   border-radius: 1rem;
@@ -289,6 +302,9 @@ const Required = styled.span`
 `;
 
 const InputWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  height: 3.4rem;
   padding-top: 0.6rem;
   padding-bottom: 0.2rem;
   border-bottom: 0.1rem solid ${theme.colors.black};
@@ -308,14 +324,14 @@ const Input = styled.input`
   }
 `;
 
-const CheckIdButton = styled.button`
+const CheckIdButton = styled.button<Props>`
   width: 6rem;
   border-radius: 2rem;
   padding: 0.5rem 0.7rem;
   text-align: center;
-  background-color: ${theme.colors.lightGray};
+  background-color: ${({ isClick }) => (isClick ? theme.colors.lightGray : theme.colors.mainColor)};
   ${theme.fonts.text03_regular};
-  color: ${theme.colors.darkGray};
+  color: ${({ isClick }) => (isClick ? theme.colors.darkGray : theme.colors.white)};
 
   cursor: pointer;
 `;
@@ -323,7 +339,6 @@ const CheckIdButton = styled.button`
 const ErrorMessageWrapper = styled.div`
   margin-top: 0.2rem;
 
-  color: #ec5959;
   ${theme.fonts.text03_regular};
 `;
 

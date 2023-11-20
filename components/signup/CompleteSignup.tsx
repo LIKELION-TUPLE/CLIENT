@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { CheckIcon } from 'asset';
 import Layout from '../common/Layout';
 import theme from '@src/styles/theme';
 import { useRouter } from 'next/router';
-import { useRecoilValue } from 'recoil';
-import { userInfo } from 'atoms/atom';
+import { useRecoilState } from 'recoil';
+import { User, userInfo } from 'atoms/atom';
 
 const CompleteSignup = () => {
-  const { name, type } = useRecoilValue(userInfo);
+  const [userState, setClientUserState] = useState<User>({ name: '', type: '' });
+  const [userInfoState, setUserState] = useRecoilState(userInfo);
+
+  useEffect(() => {
+    setClientUserState(userInfoState);
+  }, [userInfoState]);
+
   const router = useRouter();
   const handleLogin = () => {
     router.replace('/login');
@@ -17,12 +23,13 @@ const CompleteSignup = () => {
   return (
     <Layout noFooter>
       <Page>
-        <CheckIcon alt="축하" width={200} height={200} style={{ marginTop: `18.5rem` }} />
+        <CheckIcon alt="확인" width={200} height={200} style={{ marginTop: `18.5rem` }} />
         <TitleWrapper>
-          {name} {type}
+          {userState.name} {userState.type}
           <br />
           가입이 완료되었습니다
         </TitleWrapper>
+
         <BottomButton type="button" onClick={handleLogin}>
           로그인 하기
         </BottomButton>
