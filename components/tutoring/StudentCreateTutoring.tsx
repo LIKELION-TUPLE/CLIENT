@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 interface Props {
   isClick?: boolean;
 }
 
-const AddTutoring = () => {
+const StudentCreateTutoring = () => {
   const [code, setCode] = useState('');
   const [notAllow, setNotAllow] = useState(true);
   const router = useRouter();
@@ -18,9 +19,27 @@ const AddTutoring = () => {
     setCode(e.target.value);
   };
 
-  const handleClick = () => {
+  const handleCreate = async () => {
     if (!notAllow) {
-      alert('과외가 추가되었습니다');
+      try {
+        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/student-create`;
+        const userToken = localStorage.getItem('userToken');
+        const response = await axios.post(
+          URL,
+          {
+            inviteCode: code,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          },
+        );
+
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
@@ -42,8 +61,8 @@ const AddTutoring = () => {
           <Input type="input" placeholder="10자리 입력" value={code} onChange={handleCode}></Input>
         </InputCodeWrapper>
         <ButtonWrapper>
-          <BottomButton type="submit" isClick={notAllow} onClick={handleClick}>
-            저장
+          <BottomButton type="submit" isClick={notAllow} onClick={handleCreate}>
+            과외 추가하기
           </BottomButton>
         </ButtonWrapper>
       </Page>
@@ -51,7 +70,7 @@ const AddTutoring = () => {
   );
 };
 
-export default AddTutoring;
+export default StudentCreateTutoring;
 
 const Page = styled.div`
   width: 100%;
@@ -80,14 +99,15 @@ const InputTitle = styled.div`
 
 const Input = styled.input`
   margin-top: 2rem;
-  padding: 1rem 5.4rem;
+  padding: 1rem 5rem;
   border-radius: 1rem;
   border: none;
   outline: none;
   width: 19.4rem;
   height: 3.6rem;
   background-color: ${theme.colors.lightGray};
-  ${theme.fonts.text01_medium}
+  ${theme.fonts.text01_medium};
+  color: ${theme.colors.mainColor};
 `;
 
 const ButtonWrapper = styled.div`
