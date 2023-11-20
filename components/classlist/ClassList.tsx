@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import { studentList } from 'data/dummy';
 import { PlusIcon } from 'asset';
 import theme from '@src/styles/theme';
+import { useRouter } from 'next/router';
 interface colorProps {
   color: string;
 }
 const ClassList = () => {
+  const router = useRouter();
+  const handleCreateTutoring = () => {
+    router.replace('/tutoring/create');
+  };
   return (
     <ClassWrapper>
       <Title>진행 중인 과외</Title>
@@ -23,7 +28,7 @@ const ClassList = () => {
             <TurnInfoBox>{student.turn}</TurnInfoBox>
           </StudentContainer>
         ))}
-        <PlusIconSvg />
+        <PlusIconSvg type="button" onClick={handleCreateTutoring} />
       </ClassSection>
     </ClassWrapper>
   );
@@ -79,4 +84,5 @@ const MainInfo = styled.div`
 `;
 const PlusIconSvg = styled(PlusIcon)`
   margin: 1.5rem 0rem 1.5rem 13.6rem;
+  cursor: pointer;
 `;
