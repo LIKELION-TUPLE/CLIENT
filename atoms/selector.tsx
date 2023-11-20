@@ -1,5 +1,5 @@
 import { selector } from 'recoil';
-import { selectedDate, userInfo, tutoringInfo } from './atom';
+import { selectedDate, userInfo, tutoringInfo, userToken } from './atom';
 
 export const dateSelect = selector({
   key: 'dateSelect',
@@ -22,5 +22,13 @@ export const tutoringInfoSave = selector({
   get: ({ get }) => get(tutoringInfo),
   set: ({ set }, newTutoringInfo) => {
     set(tutoringInfo, newTutoringInfo);
+  },
+});
+
+export const userTokenSave = selector({
+  key: 'userTokenSave',
+  get: ({ get }) => get(userToken),
+  set: ({ set }, newUserToken) => {
+    set(userToken, newUserToken);
   },
 });

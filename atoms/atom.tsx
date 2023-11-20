@@ -14,11 +14,16 @@ export const selectedDate = atom<string>({
 });
 
 export const userInfo = atom<User>({
-  key: `tutoringInfo`,
+  key: `userInfo`,
   default: { name: '', type: '' },
 });
 
 export const tutoringInfo = atom<Tutoring>({
   key: `tutoringInfo`,
   default: { name: '', subject: '' },
+});
+
+export const userToken = atom<string>({
+  key: `userToken`,
+  default: '',
 });

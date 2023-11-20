@@ -5,6 +5,8 @@ import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useSetRecoilState } from 'recoil';
+import { userTokenSave } from 'atoms/selector';
 
 interface Props {
   isClick?: boolean;
@@ -15,6 +17,7 @@ const Login = () => {
   const [pw, setPw] = useState('');
   const [notAllow, setNotAllow] = useState(true);
   const router = useRouter();
+  const setUserToken = useSetRecoilState(userTokenSave);
 
   const handleId = (e: ChangeEvent<HTMLInputElement>) => {
     setId(e.target.value);
@@ -28,10 +31,11 @@ const Login = () => {
     if (!notAllow) {
       try {
         const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/login`;
-        await axios.post(URL, {
+        const response = await axios.post(URL, {
           loginId: id,
           password: pw,
         });
+        setUserToken(response.data.token);
         alert('로그인에 성공했습니다');
         router.replace('/calendar');
       } catch (error) {
