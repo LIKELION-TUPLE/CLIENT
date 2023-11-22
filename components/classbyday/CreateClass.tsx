@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { classList } from 'data/dummy';
+import { studentList } from 'data/dummy';
 import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
+import ClassDropdown from './ClassDropdown';
 import { PlusIcon } from 'asset/index';
 
 interface colorProps {
@@ -11,43 +12,90 @@ interface colorProps {
 const CreateClass = () => {
   const [nextHW, setNextHW] = useState<any[]>([]);
   const [nextHWContent, setNextHWContent] = useState<string[]>([]);
-  const handleNextHW = (content) => {
-    console.log(content);
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
+  const [place, setPlace] = useState('');
+  const [progress, setProgress] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [dropDown, setDropDown] = useState<boolean>(false);
+  const [studentInfo, setStudentInfo] = useState<number>(0);
+
+  const handleNextHW = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNextHWContent([...nextHWContent, e.target.value]);
+  };
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(e.target.value);
+  };
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTime(e.target.value);
+  };
+  const handlePlaceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlace(e.target.value);
+  };
+  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProgress(e.target.value);
   };
   const handlePlusOnClick = () => {
-    setNextHW(nextHW.concat(<NextHWInput placeholder="숙제를 입력해주세요" />));
-    handleNextHW(nextHW);
+    setNextHW(
+      nextHW.concat(
+        <NextHWInputContainer>
+          -
+          <NextHWInput
+            placeholder="숙제를 입력해주세요"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleNextHW(e)}
+          />
+        </NextHWInputContainer>,
+      ),
+    );
   };
+  useEffect(() => {
+    nextHWContent && date && time && place && progress ? setIsFormValid(true) : setIsFormValid(false);
+  }, [nextHWContent, date, time, place, progress]);
   return (
     <ClassWrapper>
       <Header path={'calendar'} />
       <Title>수업일지</Title>
       <MainInfoSection>
-        {classList.map((student) => (
-          <StudentContainer>
-            <ProfileBox color={student.color} />
-            <ClassInfoBox>
-              <SubInfo>{student.school}</SubInfo>
-              <MainInfo>
-                {student.name} 학생 | {student.subject}
-              </MainInfo>
-            </ClassInfoBox>
-            <TurnInfoBox>{student.turn}</TurnInfoBox>
-          </StudentContainer>
-        ))}
+        <StudentContainer
+          onClick={() => {
+            setDropDown(!dropDown);
+          }}>
+          <ProfileBox color={studentList[studentInfo].color} />
+          <ClassInfoBox>
+            <SubInfo>{studentList[studentInfo].school}</SubInfo>
+            <MainInfo>
+              {studentList[studentInfo].name} 학생 | {studentList[studentInfo].subject}
+            </MainInfo>
+          </ClassInfoBox>
+          <TurnInfoBox>{studentList[studentInfo].turn}</TurnInfoBox>
+          {/* <Image src={DownButton} alt="드롭다운" width={24} height={24} /> */}
+        </StudentContainer>
+        <DropDownWrapper>
+          {dropDown && (
+            <ClassDropdown
+              giveStudentInfo={(giveStudentInfo: string) => setStudentInfo(giveStudentInfo)}
+              giveSelected={(giveSelected: boolean) => setDropDown(giveSelected)}
+            />
+          )}
+        </DropDownWrapper>
+
         <DateContainer>
           <DateBox>
             <DateTitle>날짜</DateTitle>
-            <DateInput type="date"></DateInput>
+            <DateInput
+              type="date"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDateChange(e)}></DateInput>
           </DateBox>
           <TimeBox>
             <TimeTitle>시간</TimeTitle>
-            <TimeInput type="time"></TimeInput>
+            <TimeInput
+              type="time"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleTimeChange(e)}></TimeInput>
           </TimeBox>
         </DateContainer>
         <PlaceContainer>
           <PlaceTitle>장소</PlaceTitle>
-          <PlaceInput></PlaceInput>
+          <PlaceInput onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePlaceChange(e)}></PlaceInput>
         </PlaceContainer>
       </MainInfoSection>
       <ClassInfoSection>
@@ -61,7 +109,9 @@ const CreateClass = () => {
           <UnderLine></UnderLine>
         </TitleContainer>
         <ProgressContainer>
-          <ProgressInput placeholder="오늘의 진도를 입력해 주세요."></ProgressInput>
+          <ProgressInput
+            placeholder="오늘의 진도를 입력해 주세요."
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleProgressChange(e)}></ProgressInput>
         </ProgressContainer>
 
         <TitleContainer>
@@ -73,7 +123,7 @@ const CreateClass = () => {
           <PlusIconSvg onClick={handlePlusOnClick} />
         </NextHWContainer>
       </ClassInfoSection>
-      <Button>저장</Button>
+      {isFormValid ? <CompleteButton>저장</CompleteButton> : <UnCompleteButton>저장</UnCompleteButton>}
     </ClassWrapper>
   );
 };
@@ -123,6 +173,7 @@ const StudentContainer = styled.div`
   padding: 1.1rem 1.5rem;
   background-color: ${theme.colors.lightGray};
   border-radius: 1rem;
+  cursor: pointer;
 `;
 const DateContainer = styled.div`
   display: flex;
@@ -205,18 +256,18 @@ const PlaceContainer = styled.div`
   width: 30.5rem;
   height: 3.7rem;
   padding: 0rem 1rem;
-  gap: 0.7rem;
+  gap: 1.4rem;
   background-color: ${theme.colors.lightGray};
   border-radius: 1rem;
 `;
 const PlaceTitle = styled.p`
-  /* margin-left: 1rem;
-  margin-right: 1.4rem; */
   ${theme.fonts.text01_medium}
 `;
 const PlaceInput = styled.input`
   width: 24rem;
   border: none;
+  outline: none;
+  color: ${theme.colors.darkGray};
   background-color: ${theme.colors.lightGray};
   ${theme.fonts.text02_regular}
 `;
@@ -273,6 +324,10 @@ const NextHWContainer = styled.div`
 `;
 const PlusIconSvg = styled(PlusIcon)`
   margin: 1.5rem 0rem 1.5rem 12.5rem;
+  cursor: pointer;
+`;
+const NextHWInputContainer = styled.div`
+  margin-left: 1rem;
 `;
 const NextHWInput = styled.input`
   width: 23.4rem;
@@ -280,21 +335,39 @@ const NextHWInput = styled.input`
   margin-top: 0.5rem;
   outline: none;
   border: none;
-  border-bottom: 0.1rem ${theme.colors.gray} solid;
+  /* border-bottom: 0.1rem ${theme.colors.gray} solid; */
   ${theme.fonts.text02_regular};
 `;
-const Button = styled.div`
-  /* position: fixed; */
+const CompleteButton = styled.div`
   width: 30rem;
   height: 5rem;
-  /* bottom: 4.3rem; */
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 3.5rem;
   margin-top: 3rem;
-  ${theme.fonts.title_bold};
+  ${theme.fonts.title_medium};
   background-color: ${theme.colors.mainColor};
   color: ${theme.colors.white};
   border-radius: 3rem;
+  cursor: pointer;
 `;
+const UnCompleteButton = styled.div`
+  width: 30rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 3.5rem;
+  margin-top: 3rem;
+  ${theme.fonts.title_medium};
+  background-color: ${theme.colors.lightGray};
+  color: ${theme.colors.white};
+  border-radius: 3rem;
+`;
+const DropDownWrapper = styled.div`
+  position: absolute;
+  top: 13.8rem;
+  z-index: 3;
+`;
+const StudentDropDown = styled.div``;
