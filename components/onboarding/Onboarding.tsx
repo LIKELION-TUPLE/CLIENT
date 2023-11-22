@@ -2,10 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from '../common/Layout';
 import theme from '@src/styles/theme';
-import { OnboardingCalendarIcon, OnboardingClassListIcon, OnboardingMoneyIcon, KakaoIcon } from 'asset';
+import { KakaoIcon } from 'asset';
 import { useRouter } from 'next/router';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Sliders from './Sliders';
 
 const Onboarding = () => {
   const router = useRouter();
@@ -21,21 +20,7 @@ const Onboarding = () => {
   return (
     <Layout noFooter>
       <Page>
-        <SliderWrapper>
-          <Carousel
-            showStatus={false}
-            showArrows={false}
-            autoPlay={true}
-            infiniteLoop={true}
-            showThumbs={false}
-            interval={2000}
-            swipeable={true}
-            emulateTouch={true}>
-            <OnboardingCalendarIcon alt="달력온보딩" width={375} height={500} />
-            <OnboardingClassListIcon alt="달력온보딩" width={375} height={500} />
-            <OnboardingMoneyIcon alt="달력온보딩" width={375} height={500} />
-          </Carousel>
-        </SliderWrapper>
+        <Sliders />
 
         <LoginWrapper>
           <KakaoLoginButton type="button">
