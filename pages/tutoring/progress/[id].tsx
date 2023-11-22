@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import Layout from 'components/common/Layout';
-import Progress from 'components/progress/Progress';
+import ProgressTutoring from 'components/tutoring/ProgressTutoring';
 export interface idProps {
   id?: string;
 }
@@ -10,7 +10,7 @@ const id = () => {
   const queryid = router.query.id;
   return (
     <Layout>
-      <Progress id={queryid as string} />
+      <ProgressTutoring id={queryid as string} />
     </Layout>
   );
 };

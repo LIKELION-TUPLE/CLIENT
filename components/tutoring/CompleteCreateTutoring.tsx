@@ -26,7 +26,7 @@ const CompleteCreateTutoring = () => {
   };
 
   const handleClick = () => {
-    router.replace('/classlist');
+    router.replace('/tutoring/list');
   };
 
   return (

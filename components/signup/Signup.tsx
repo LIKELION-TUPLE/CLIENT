@@ -62,7 +62,7 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
   const handleSignup = async () => {
     if (!notAllow) {
       try {
-        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/signup/teacher`;
+        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/signup/${userType}`;
         await axios.post(URL, {
           loginId: id,
           password: pw,

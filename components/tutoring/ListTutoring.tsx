@@ -4,6 +4,7 @@ import { PlusIcon } from 'asset';
 import theme from '@src/styles/theme';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+
 interface colorProps {
   color: string;
 }
@@ -17,11 +18,16 @@ interface tutoringInfo {
   subject: string;
   teacherName: string;
 }
-const ClassList = () => {
-  const [studentList, setStudentList] = useState([]);
+
+const ListTutoring = () => {
+  const [tutoringList, setTutoringList] = useState([]);
   const router = useRouter();
   const handleCreateTutoring = () => {
     router.replace('/tutoring/create');
+  };
+
+  const handleShowClass = (course_id: number) => {
+    router.replace(`/tutoring/progress/${course_id}`);
   };
 
   useEffect(() => {
@@ -35,7 +41,7 @@ const ClassList = () => {
           },
         });
 
-        setStudentList(response.data);
+        setTutoringList(response.data);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -43,20 +49,30 @@ const ClassList = () => {
 
     fetchData();
   }, []);
+
   return (
     <ClassWrapper>
       <Title>진행 중인 과외</Title>
       <ClassSection>
-        {studentList.map((student: tutoringInfo) => (
-          <StudentContainer>
-            <ProfileBox color={student.color} />
+        {tutoringList.map((tutoring: tutoringInfo) => (
+          <StudentContainer
+            onClick={() => {
+              handleShowClass(tutoring.course_id);
+            }}>
+            <ProfileBox color={tutoring.color} />
             <ClassInfoBox>
-              <SubInfo>{student.studentSchool}</SubInfo>
+              <SubInfo>
+                {tutoring.studentSchool} {tutoring.studentGrade}학년
+              </SubInfo>
               <MainInfo>
-                {student.studentName} 학생 | {student.subject}
+                {tutoring.studentName} 학생 | {tutoring.subject}
               </MainInfo>
             </ClassInfoBox>
-            <TurnInfoBox>{student.currentLessonTime}회차</TurnInfoBox>
+            {tutoring.currentLessonTime === 0 ? (
+              <TurnInfoBox style={{ color: theme.colors.red }}>NEW</TurnInfoBox>
+            ) : (
+              <TurnInfoBox>{tutoring.currentLessonTime}회차</TurnInfoBox>
+            )}
           </StudentContainer>
         ))}
         <PlusIconSvg type="button" onClick={handleCreateTutoring} />
@@ -65,7 +81,7 @@ const ClassList = () => {
   );
 };
 
-export default ClassList;
+export default ListTutoring;
 const Title = styled.h1`
   margin-top: 7.3rem;
   margin-left: 3rem;
@@ -78,6 +94,7 @@ const ClassSection = styled.section`
   flex-direction: column;
   justify-content: center;
   margin-top: 3rem;
+  margin-bottom: 6rem;
   margin-left: 2rem;
   padding: 1.5rem;
   background-color: ${theme.colors.white};
@@ -92,6 +109,8 @@ const StudentContainer = styled.div`
   padding: 1.1rem 1.5rem;
   background-color: ${theme.colors.lightGray};
   border-radius: 1rem;
+
+  cursor: pointer;
 `;
 const ProfileBox = styled.div<colorProps>`
   width: 4rem;
