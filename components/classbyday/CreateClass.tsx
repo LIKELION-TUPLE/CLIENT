@@ -5,7 +5,9 @@ import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
 import ClassDropdown from './ClassDropdown';
 import { PlusIcon } from 'asset/index';
-
+import axios from 'axios';
+import * as moment from 'moment';
+import 'moment/locale/ko';
 interface colorProps {
   color: string;
 }
@@ -35,6 +37,7 @@ const CreateClass = () => {
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProgress(e.target.value);
   };
+
   const handlePlusOnClick = () => {
     setNextHW(
       nextHW.concat(
@@ -48,9 +51,36 @@ const CreateClass = () => {
       ),
     );
   };
+  const postClassData = async () => {
+    try {
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/today`;
+      const userToken = localStorage.getItem('userToken');
+      const response = await axios.post(
+        URL,
+        {
+          date: moment(date).format('YYYY-MM-DD'),
+          startTime: moment(time).format('HH:mm'), //"09:00"
+          endTime: '12:00',
+          dow: 'SAT',
+          place: '정하상관',
+          studyContent: '오늘은 김장하는 법을을 배웠어요.',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        },
+      );
+
+      console.log(response.data);
+    } catch (err) {
+      console.error('Err:', err);
+    }
+  };
   useEffect(() => {
-    nextHWContent && date && time && place && progress ? setIsFormValid(true) : setIsFormValid(false);
-  }, [nextHWContent, date, time, place, progress]);
+    nextHWContent && date && time && place && progress && studentInfo ? setIsFormValid(true) : setIsFormValid(false);
+  }, [nextHWContent, date, time, place, progress, studentInfo]);
+
   return (
     <ClassWrapper>
       <Header path={'calendar'} />
