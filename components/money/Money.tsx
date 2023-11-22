@@ -34,7 +34,7 @@ const Money = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/course-list`;
+        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/payment`;
         const userToken = localStorage.getItem('userToken');
         const response = await axios.get(URL, {
           headers: {
