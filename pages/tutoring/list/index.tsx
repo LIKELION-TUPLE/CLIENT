@@ -1,10 +1,10 @@
 import React from 'react';
-import ClassList from 'components/classlist/ClassList';
 import Layout from 'components/common/Layout';
+import ListTutoring from 'components/tutoring/ListTutoring';
 const index = () => {
   return (
     <Layout>
-      <ClassList></ClassList>
+      <ListTutoring />
     </Layout>
   );
 };

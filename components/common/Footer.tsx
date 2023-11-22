@@ -20,11 +20,11 @@ const Footer = () => {
 
   return (
     <Wrapper>
-      {pathname.startsWith(`/classlist`) ? (
+      {pathname.startsWith(`/tutoring`) ? (
         <ColorClasslistIcon alt="진행 중인 과외 아이콘" style={{ cursor: `pointer` }} />
       ) : (
         <NoColorClasslistIcon
-          onClick={() => router.replace(`classlist`)}
+          onClick={() => router.replace(`/tutoring/list`)}
           alt="진행 중인 과외 아이콘"
           style={{ cursor: `pointer` }}
         />
@@ -33,7 +33,7 @@ const Footer = () => {
         <ColorCalendarIcon alt="캘린더 아이콘" style={{ cursor: `pointer` }} />
       ) : (
         <NoColorCalendarIcon
-          onClick={() => router.replace(`calendar`)}
+          onClick={() => router.replace(`/calendar`)}
           alt="캘린더 아이콘"
           style={{ cursor: `pointer` }}
         />
@@ -42,7 +42,7 @@ const Footer = () => {
         <ColorMoneyIcon alt="입금 관리 아이콘" style={{ cursor: `pointer` }} />
       ) : (
         <NoColorMoneyIcon
-          onClick={() => router.replace(`money`)}
+          onClick={() => router.replace(`/money`)}
           alt="입금 관리 아이콘"
           style={{ cursor: `pointer` }}
         />

@@ -85,7 +85,7 @@ const CreateTutoring = () => {
       zIndex: '150',
       position: 'absolute',
       top: modalPosition.top + 120,
-      left: `50%`,
+      left: '50%',
       transform: 'translate(-50%, -50%)',
       borderRadius: '10px',
       boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)',
@@ -159,7 +159,7 @@ const CreateTutoring = () => {
 
   const handleSubject = (e: ChangeEvent<HTMLInputElement>) => {
     setSubject(e.target.value);
-    if (e.target.value.length <= 6) {
+    if (0 < e.target.value.length && e.target.value.length <= 6) {
       setSubjectValid(true);
     } else {
       setSubjectValid(false);
@@ -241,7 +241,7 @@ const CreateTutoring = () => {
 
   return (
     <Layout noFooter>
-      <Header path="/classlist" />
+      <Header path="/tutoring/list" />
       <Page>
         <TitleWrapper>학생 정보</TitleWrapper>
         <ContentWrapper>
@@ -319,6 +319,7 @@ const CreateTutoring = () => {
             </ContentBox>
           </ContentContainer>
         </ContentWrapper>
+
         <TitleWrapper style={{ marginTop: `3.4rem` }}>과외 정보</TitleWrapper>
         <ContentWrapper>
           <ContentContainer>
