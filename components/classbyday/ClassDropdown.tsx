@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { studentList } from 'data/dummy';
 import theme from '@src/styles/theme';
+import axios from 'axios';
 interface Props {
   onClick?: () => void;
 }
@@ -12,32 +12,26 @@ interface stuProps {
   onClick?: () => void;
   turn: number;
 }
-const ClassDropdown = ({ giveStudentInfo, giveSelected }: any) => {
-  const [clickedStudent, setClickedStudent] = useState<number>(0);
+const ClassDropdown = ({ giveStudentInfo, giveSelected, studentList }: any) => {
   const handleClickStudent = (student: number) => {
-    // if (clickedStudent === student) {
-    //   // setClickedStudent('');
-    //   return;
-    // }
-
-    setClickedStudent(student);
-    // 모달 닫기를 위해 선택되었는지 여부를 상위로 전달
     giveSelected(false);
     giveStudentInfo(student);
   };
   return (
     <ListWrapper>
-      {studentList.map((student) => (
+      {studentList?.map((student) => (
         <>
-          <StudentContainer turn={student.id} onClick={() => handleClickStudent(student.id)}>
-            <ProfileBox color={student.color} />
+          <StudentContainer turn={student?.course_id} onClick={() => handleClickStudent(student?.course_id)}>
+            <ProfileBox color={student?.color} />
             <ClassInfoBox>
-              <SubInfo>{student.school}</SubInfo>
+              <SubInfo>
+                {student?.studentSchool} {student?.studentGrade}학년
+              </SubInfo>
               <MainInfo>
-                {student.name} 학생 | {student.subject}
+                {student?.studentName} 학생 | {student?.subject}
               </MainInfo>
             </ClassInfoBox>
-            <TurnInfoBox>{student.turn}</TurnInfoBox>
+            <TurnInfoBox>{student?.currentLessonTime}회차</TurnInfoBox>
             {/* <Image src={DownButton} alt="드롭다운" width={24} height={24} /> */}
           </StudentContainer>
         </>
