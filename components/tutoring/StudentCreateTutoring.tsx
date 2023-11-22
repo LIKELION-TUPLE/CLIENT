@@ -36,7 +36,13 @@ const StudentCreateTutoring = () => {
           },
         );
 
-        console.log(response.data);
+        const result = response.data['Enroll-success'];
+        if (result) {
+          alert('과외가 추가되었습니다');
+        } else {
+          alert('등록되지 않은 코드입니다');
+          setCode('');
+        }
       } catch (error) {
         console.error('Error:', error);
       }
@@ -99,12 +105,13 @@ const InputTitle = styled.div`
 
 const Input = styled.input`
   margin-top: 2rem;
-  padding: 1rem 5rem;
+  padding: 1rem 0;
   border-radius: 1rem;
   border: none;
   outline: none;
   width: 19.4rem;
   height: 3.6rem;
+  text-align: center;
   background-color: ${theme.colors.lightGray};
   ${theme.fonts.text01_medium};
   color: ${theme.colors.mainColor};
