@@ -10,6 +10,7 @@ import ReactModal from 'react-modal';
 import axios from 'axios';
 import { idProps } from 'pages/tutoring/edit/[id]';
 import { tutoringInfo } from './ProgressTutoring';
+import copy from 'copy-to-clipboard';
 
 interface Props {
   isClick?: boolean;
@@ -281,6 +282,11 @@ const EditTutoring: React.FC<idProps> = ({ id }) => {
     router.replace(beforePath);
   };
 
+  const handleCopyClick = () => {
+    copy(tutoring.inviteCode || '');
+    alert('코드가 복사되었습니다');
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -327,7 +333,12 @@ const EditTutoring: React.FC<idProps> = ({ id }) => {
     <Layout noFooter>
       <Header path={beforePath} />
       <Page>
-        <TitleWrapper>학생 정보</TitleWrapper>
+        <TitleWrapper>
+          학생 정보
+          <InviteCodeButton type="button" onClick={handleCopyClick}>
+            {tutoring.inviteCode}
+          </InviteCodeButton>
+        </TitleWrapper>
         <ContentWrapper>
           <ContentContainer>
             <Circle style={{ backgroundColor: selectedColor }} onClick={openColorModal} />
@@ -503,9 +514,22 @@ const Page = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 8.3rem;
   margin-left: 1rem;
   ${theme.fonts.headline};
+`;
+
+const InviteCodeButton = styled.button`
+  border-radius: 2rem;
+  margin-left: 1.8rem;
+  padding: 0.5rem 0.7rem;
+  text-align: center;
+
+  background-color: ${theme.colors.lightGray};
+  ${theme.fonts.text02_medium};
+  color: ${theme.colors.darkGray};
 `;
 
 const ContentWrapper = styled.div`

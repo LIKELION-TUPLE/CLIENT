@@ -9,6 +9,7 @@ import { idProps } from 'pages/tutoring/detail/[id]';
 import { tutoringInfo } from './ProgressTutoring';
 import Modal from 'react-modal';
 import ReactModal from 'react-modal';
+import copy from 'copy-to-clipboard';
 
 const DetailTutoring: React.FC<idProps> = ({ id }) => {
   const router = useRouter();
@@ -107,11 +108,21 @@ const DetailTutoring: React.FC<idProps> = ({ id }) => {
     router.replace('/tutoring/list');
   };
 
+  const handleCopyClick = () => {
+    copy(tutoring.inviteCode || '');
+    alert('코드가 복사되었습니다');
+  };
+
   return (
     <Layout noFooter>
       <Header path="/tutoring/list" />
       <Page>
-        <TitleWrapper>학생 정보</TitleWrapper>
+        <TitleWrapper>
+          학생 정보
+          <InviteCodeButton type="button" onClick={handleCopyClick}>
+            {tutoring.inviteCode}
+          </InviteCodeButton>
+        </TitleWrapper>
         <ContentWrapper>
           <ContentContainer>
             <Circle style={{ backgroundColor: tutoring.color }} />
@@ -259,9 +270,22 @@ const Page = styled.div`
 `;
 
 const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 8.3rem;
   margin-left: 1rem;
   ${theme.fonts.headline};
+`;
+
+const InviteCodeButton = styled.button`
+  border-radius: 2rem;
+  margin-left: 1.8rem;
+  padding: 0.5rem 0.7rem;
+  text-align: center;
+
+  background-color: ${theme.colors.lightGray};
+  ${theme.fonts.text02_medium};
+  color: ${theme.colors.darkGray};
 `;
 
 const ContentWrapper = styled.div`
