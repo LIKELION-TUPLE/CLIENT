@@ -94,9 +94,11 @@ const CreateClass = () => {
       ),
     );
   };
+
+  // 드롭다운을 위한 학생 정보
   const fetchStudentInfo = async () => {
     try {
-      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/course-list`;
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/course-list-for-create`;
       const userToken = localStorage.getItem('userToken');
       const response = await axios.get(URL, {
         headers: {
@@ -112,11 +114,35 @@ const CreateClass = () => {
     fetchStudentInfo();
   }, []);
 
+  // 오늘까지 숙제를 불러오는 부분
+  const fetchLatestClass = async (course_id) => {
+    try {
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/homeworks/last-homeworks-list/${course_id}`;
+      const userToken = localStorage.getItem('userToken');
+      const response = await axios.get(URL, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.error('Err:', err);
+    }
+  };
+
+  // 선택된 학생은 임의로 첫번째로 저장
   useEffect(() => {
     setSelectedStudentInfo(studentList[0]);
     setStudentInfo(studentList[0]?.course_id);
+    // fetchLatestClass(studentList[0]?.course_id);
   }, [studentList]);
 
+  //
+  // useEffect(() => {
+  //   fetchLatestClass(studentInfo);
+  // }, [studentInfo]);
+
+  //드롭다운에 따라 선택된 학생 정보 넘김
   useEffect(() => {
     studentList.map((student) => {
       if (student?.course_id === studentInfo) {
@@ -125,13 +151,14 @@ const CreateClass = () => {
     });
   }, [dropDown]);
 
+  // 폼에 입력값이 잘 들어갔는지
   useEffect(() => {
     nextHWContent && date && stime && etime && place && progress && studentInfo
       ? setIsFormValid(true)
       : setIsFormValid(false);
-    console.log(isFormValid);
   }, [nextHWContent, date, stime, etime, place, progress, studentInfo]);
 
+  // 폼 완료시 수업 추가를 요청
   const postClassData = async (course_id) => {
     try {
       const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/${course_id}`;
@@ -161,6 +188,7 @@ const CreateClass = () => {
     router.replace(`/calendar`);
     postClassData(studentInfo);
   };
+
   return (
     <ClassWrapper>
       <Header path={'calendar'} />
