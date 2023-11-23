@@ -119,6 +119,7 @@ const ProgressTutoring: React.FC<idProps> = ({ id }) => {
           },
         });
         setClassList(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -166,7 +167,12 @@ const ProgressTutoring: React.FC<idProps> = ({ id }) => {
           {tutoring.totalLessonTime === 0 ? (
             <TurnInfoBox style={{ color: theme.colors.red }}>NEW</TurnInfoBox>
           ) : (
-            <TurnInfoBox>{tutoring.totalLessonTime}회차</TurnInfoBox>
+            <TurnInfoBox>
+              {tutoring.totalLessonTime % tutoring.paymentCycle === 0
+                ? tutoring.paymentCycle
+                : tutoring.totalLessonTime % tutoring.paymentCycle}
+              회차
+            </TurnInfoBox>
           )}
         </StudentContainer>
       </ClassSection>
@@ -192,7 +198,9 @@ const ProgressTutoring: React.FC<idProps> = ({ id }) => {
                   {data.date < currentDate ? (
                     <>
                       <ProgressDone style={{ backgroundColor: tutoring.color }} />
-                      <ProgressBarLine style={{ backgroundColor: tutoring.color }} />
+                      {index < classList.length - 1 ? (
+                        <ProgressBarLine style={{ backgroundColor: tutoring.color }} />
+                      ) : null}
                     </>
                   ) : (
                     <>
@@ -272,6 +280,7 @@ const MainInfo = styled.div`
 `;
 const ProgressSection = styled.section`
   margin: 0rem 2.1rem;
+  height: 90%;
 `;
 const DateContainer = styled.div`
   margin-top: 2.7rem;

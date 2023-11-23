@@ -452,6 +452,7 @@ const DeleteOkButton = styled.button`
   height: 4rem;
   border-right: solid 0.1rem ${theme.colors.gray};
   ${theme.fonts.title_regular};
+  color: ${theme.colors.mainColor};
 
   &:hover {
     background-color: ${theme.colors.mainColor};
@@ -463,6 +464,7 @@ const DeleteNoButton = styled.button`
   width: 13.3rem;
   height: 4rem;
   ${theme.fonts.title_regular};
+  color: ${theme.colors.mainColor};
 
   &:hover {
     background-color: ${theme.colors.mainColor};
