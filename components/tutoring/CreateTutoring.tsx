@@ -63,6 +63,7 @@ const CreateTutoring = () => {
   const [notAllow, setNotAllow] = useState(true);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState(`#f44336`);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
 
@@ -97,6 +98,32 @@ const CreateTutoring = () => {
     },
   };
 
+  const editModalStyle: ReactModal.Styles = {
+    overlay: {
+      backgroundColor: ' rgba(0, 0, 0, 0.4)',
+      width: '100%',
+      height: '100vh',
+      zIndex: '10',
+      position: 'fixed',
+      top: '0',
+      left: '0',
+    },
+    content: {
+      width: '27rem',
+      height: '13.6rem',
+      zIndex: '150',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      padding: 0,
+      borderRadius: '10px',
+      boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)',
+      backgroundColor: 'white',
+      overflow: 'auto',
+    },
+  };
+
   const handleColorChange = (color: ColorResult) => {
     setSelectedColor(color.hex);
     closeModal();
@@ -110,6 +137,16 @@ const CreateTutoring = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const openEditModal = () => {
+    if (!notAllow) {
+      setIsEditModalOpen(true);
+    }
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
   };
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -196,39 +233,37 @@ const CreateTutoring = () => {
   };
 
   const handleSave = async () => {
-    if (!notAllow) {
-      try {
-        const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/create`;
-        const userToken = localStorage.getItem('userToken');
-        const response = await axios.post(
-          URL,
-          {
-            color: selectedColor,
-            studentName: name,
-            studentAge: parseInt(age),
-            studentSchool: school,
-            studentGrade: parseInt(grade),
-            studentPhone: studentPhone,
-            parentPhone: parentPhone,
-            subject: subject,
-            courseTime: parseInt(time),
-            coursePayment: parseInt(payment),
-            paymentCycle: parseInt(cycle),
+    try {
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/create`;
+      const userToken = localStorage.getItem('userToken');
+      const response = await axios.post(
+        URL,
+        {
+          color: selectedColor,
+          studentName: name,
+          studentAge: parseInt(age),
+          studentSchool: school,
+          studentGrade: parseInt(grade),
+          studentPhone: studentPhone,
+          parentPhone: parentPhone,
+          subject: subject,
+          courseTime: parseInt(time),
+          coursePayment: parseInt(payment),
+          paymentCycle: parseInt(cycle),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${userToken}`,
-            },
-          },
-        );
+        },
+      );
 
-        const code = response.data.inviteCode;
-        setTutoringInfo({ name: name, subject: subject, code: code });
-      } catch (error) {
-        console.error('Error:', error);
-      }
-      router.replace('/tutoring/completecreate');
+      const code = response.data.inviteCode;
+      setTutoringInfo({ name: name, subject: subject, code: code });
+    } catch (error) {
+      console.error('Error:', error);
     }
+    router.replace('/tutoring/completecreate');
   };
 
   useEffect(() => {
@@ -375,9 +410,33 @@ const CreateTutoring = () => {
         </ContentWrapper>
 
         <ButtonWrapper>
-          <BottomButton type="submit" isClick={notAllow} onClick={handleSave}>
+          <BottomButton type="submit" isClick={notAllow} onClick={openEditModal}>
             저장
           </BottomButton>
+          <Modal
+            isOpen={isEditModalOpen}
+            onRequestClose={closeEditModal}
+            contentLabel="Check Edit"
+            style={editModalStyle}>
+            <EditWrapper>
+              <EditContainer>
+                <EditTitle>정보 저장</EditTitle>
+                <EditContent>
+                  학생 정보와 과외 정보를
+                  <br />
+                  저장하시겠습니까?
+                </EditContent>
+              </EditContainer>
+              <EditButton>
+                <EditOkButton type="submit" onClick={handleSave}>
+                  네
+                </EditOkButton>
+                <EditNoButton type="button" onClick={closeEditModal}>
+                  아니오
+                </EditNoButton>
+              </EditButton>
+            </EditWrapper>
+          </Modal>
         </ButtonWrapper>
       </Page>
     </Layout>
@@ -491,7 +550,8 @@ const Select = styled.select`
   padding-left: 0.7rem;
   padding-bottom: 0.2rem;
   background-color: ${theme.colors.lightGray};
-  ${theme.fonts.text01_medium}
+  ${theme.fonts.text01_medium};
+  cursor: pointer;
 
   &::checked {
     background-color: ${theme.colors.mainColor};
@@ -518,4 +578,64 @@ const BottomButton = styled.button<Props>`
   ${theme.fonts.title_bold};
 
   cursor: pointer;
+`;
+
+const EditWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  width: 100%;
+  height: 100%;
+`;
+
+const EditContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  width: 100%;
+  margin-top: 1.6rem;
+  text-align: center;
+`;
+
+const EditTitle = styled.div`
+  ${theme.fonts.title_regular};
+`;
+
+const EditContent = styled.div`
+  ${theme.fonts.text02_regular}
+`;
+
+const EditButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: solid 0.1rem ${theme.colors.gray};
+`;
+
+const EditOkButton = styled.button`
+  width: 13.3rem;
+  height: 4rem;
+  border-right: solid 0.1rem ${theme.colors.gray};
+  ${theme.fonts.title_regular};
+  color: ${theme.colors.mainColor};
+
+  &:hover {
+    background-color: ${theme.colors.mainColor};
+    color: ${theme.colors.white};
+  }
+`;
+
+const EditNoButton = styled.button`
+  width: 13.3rem;
+  height: 4rem;
+  ${theme.fonts.title_regular};
+  color: ${theme.colors.mainColor};
+
+  &:hover {
+    background-color: ${theme.colors.mainColor};
+    color: ${theme.colors.white};
+  }
 `;
