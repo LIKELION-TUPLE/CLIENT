@@ -38,11 +38,11 @@ const Footer = () => {
           style={{ cursor: `pointer` }}
         />
       )}
-      {pathname.startsWith(`/money`) ? (
+      {pathname.startsWith(`/payment`) ? (
         <ColorMoneyIcon alt="입금 관리 아이콘" style={{ cursor: `pointer` }} />
       ) : (
         <NoColorMoneyIcon
-          onClick={() => router.replace(`/money`)}
+          onClick={() => router.replace(`/payment`)}
           alt="입금 관리 아이콘"
           style={{ cursor: `pointer` }}
         />
