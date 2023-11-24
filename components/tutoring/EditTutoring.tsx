@@ -81,7 +81,7 @@ const EditTutoring: React.FC<idProps> = ({ id }) => {
   const [notAllow, setNotAllow] = useState(false);
 
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
-  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState(tutoring.color);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
 
@@ -116,7 +116,7 @@ const EditTutoring: React.FC<idProps> = ({ id }) => {
     },
   };
 
-  const saveModalStyle: ReactModal.Styles = {
+  const editModalStyle: ReactModal.Styles = {
     overlay: {
       backgroundColor: ' rgba(0, 0, 0, 0.4)',
       width: '100%',
@@ -157,14 +157,14 @@ const EditTutoring: React.FC<idProps> = ({ id }) => {
     setIsColorModalOpen(false);
   };
 
-  const openSaveModal = () => {
+  const openEditModal = () => {
     if (!notAllow) {
-      setIsSaveModalOpen(true);
+      setIsEditModalOpen(true);
     }
   };
 
-  const closeSaveModal = () => {
-    setIsSaveModalOpen(false);
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
   };
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -250,7 +250,7 @@ const EditTutoring: React.FC<idProps> = ({ id }) => {
     }
   };
 
-  const handleSave = async () => {
+  const handleEdit = async () => {
     try {
       const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/update/${id}`;
       const userToken = localStorage.getItem('userToken');
@@ -470,32 +470,32 @@ const EditTutoring: React.FC<idProps> = ({ id }) => {
         </ContentWrapper>
 
         <ButtonWrapper>
-          <BottomButton type="submit" isClick={notAllow} onClick={openSaveModal}>
+          <BottomButton type="submit" isClick={notAllow} onClick={openEditModal}>
             저장
           </BottomButton>
           <Modal
-            isOpen={isSaveModalOpen}
-            onRequestClose={closeSaveModal}
-            contentLabel="Check Delete"
-            style={saveModalStyle}>
-            <DeleteWrapper>
-              <DeleteContainer>
-                <DeleteTitle>정보 저장</DeleteTitle>
-                <DeleteContent>
+            isOpen={isEditModalOpen}
+            onRequestClose={closeEditModal}
+            contentLabel="Check Edit"
+            style={editModalStyle}>
+            <EditWrapper>
+              <EditContainer>
+                <EditTitle>정보 저장</EditTitle>
+                <EditContent>
                   학생 정보와 과외 정보를
                   <br />
                   저장하시겠습니까?
-                </DeleteContent>
-              </DeleteContainer>
-              <DeleteButton>
-                <DeleteOkButton type="submit" onClick={handleSave}>
+                </EditContent>
+              </EditContainer>
+              <EditButton>
+                <EditOkButton type="submit" onClick={handleEdit}>
                   네
-                </DeleteOkButton>
-                <DeleteNoButton type="button" onClick={closeSaveModal}>
+                </EditOkButton>
+                <EditNoButton type="button" onClick={closeEditModal}>
                   아니오
-                </DeleteNoButton>
-              </DeleteButton>
-            </DeleteWrapper>
+                </EditNoButton>
+              </EditButton>
+            </EditWrapper>
           </Modal>
         </ButtonWrapper>
       </Page>
@@ -623,7 +623,8 @@ const Select = styled.select`
   padding-left: 0.7rem;
   padding-bottom: 0.2rem;
   background-color: ${theme.colors.lightGray};
-  ${theme.fonts.text01_medium}
+  ${theme.fonts.text01_medium};
+  cursor: pointer;
 
   &::checked {
     background-color: ${theme.colors.mainColor};
@@ -652,7 +653,7 @@ const BottomButton = styled.button<Props>`
   cursor: pointer;
 `;
 
-const DeleteWrapper = styled.div`
+const EditWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -661,7 +662,7 @@ const DeleteWrapper = styled.div`
   height: 100%;
 `;
 
-const DeleteContainer = styled.div`
+const EditContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -672,26 +673,27 @@ const DeleteContainer = styled.div`
   text-align: center;
 `;
 
-const DeleteTitle = styled.div`
+const EditTitle = styled.div`
   ${theme.fonts.title_regular};
 `;
 
-const DeleteContent = styled.div`
+const EditContent = styled.div`
   ${theme.fonts.text02_regular}
 `;
 
-const DeleteButton = styled.div`
+const EditButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   border-top: solid 0.1rem ${theme.colors.gray};
 `;
 
-const DeleteOkButton = styled.button`
+const EditOkButton = styled.button`
   width: 13.3rem;
   height: 4rem;
   border-right: solid 0.1rem ${theme.colors.gray};
   ${theme.fonts.title_regular};
+  color: ${theme.colors.mainColor};
 
   &:hover {
     background-color: ${theme.colors.mainColor};
@@ -699,10 +701,11 @@ const DeleteOkButton = styled.button`
   }
 `;
 
-const DeleteNoButton = styled.button`
+const EditNoButton = styled.button`
   width: 13.3rem;
   height: 4rem;
   ${theme.fonts.title_regular};
+  color: ${theme.colors.mainColor};
 
   &:hover {
     background-color: ${theme.colors.mainColor};

@@ -1,10 +1,10 @@
 import React from 'react';
 import Layout from 'components/common/Layout';
-import Money from 'components/money/Money';
+import Payment from 'components/payment/Payment';
 const index = () => {
   return (
     <Layout>
-      <Money />
+      <Payment />
     </Layout>
   );
 };
