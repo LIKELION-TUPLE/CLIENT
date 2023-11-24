@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import theme from '@src/styles/theme';
 import { useSetRecoilState } from 'recoil';
 import { dateSelect } from '../../atoms/selector';
+import { PlusClass } from 'asset';
+import axios from 'axios';
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 interface colorProps {
@@ -27,9 +29,30 @@ const TupleCalendar = () => {
   const handleClick = () => {
     router.replace('/classbyday');
   };
+  const fetchDateData = async () => {
+    try {
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/today`;
+      const userToken = localStorage.getItem('userToken');
+      const response = await axios.get(URL, {
+        params: {
+          date: '2023-11-16', // 원하는 데이터를 여기에 추가하세요
+        },
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   useEffect(() => {
     setSelectDate(moment(date).format('YYYY-MM-DD'));
   }, [date]);
+  useEffect(() => {
+    fetchDateData();
+  }, []);
   return (
     <CalendarWrapper>
       <TitleSection>
@@ -65,6 +88,13 @@ const TupleCalendar = () => {
             <TurnInfoBox>{student.turn}</TurnInfoBox>
           </ClassContainer>
         ))}
+        <PlusClassContainer>
+          <PlusClass
+            onClick={() => {
+              router.replace(`/classbyday/create`);
+            }}
+          />
+        </PlusClassContainer>
       </ClassSection>
     </CalendarWrapper>
   );
@@ -99,6 +129,12 @@ const ClassSection = styled.div`
 
   background-color: ${theme.colors.white};
   border-radius: 1rem;
+`;
+const PlusClassContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
 `;
 const DateTitle = styled.h1`
   margin-bottom: 1.6rem;

@@ -3,93 +3,97 @@ import styled from 'styled-components';
 import theme from '@src/styles/theme';
 import { idProps } from 'pages/classbyday/detail/[id]';
 import Header from 'components/common/Header';
-import { classList } from 'data/dummy';
 import { CheckedButtonIcon, UnCheckedButtonIcon, TrashIcon } from 'asset/index';
+import axios from 'axios';
 
 interface colorProps {
   color: string;
 }
-const dummyHW = [
-  { key: 1, text: '먕', isChecked: true },
-  { key: 2, text: '먕먕', isChecked: false },
-  { key: 3, text: '먕먕먕', isChecked: true },
-];
 const Detail = (props: idProps) => {
   const { id } = props;
-  console.log(id);
-  const [checkList, setCheckList] = useState(dummyHW);
+  const [lessonId, setLessonId] = useState(id);
+  const [classInfo, setClassInfo] = useState([]);
 
-  // useEffect(() => {
-  //   const
-  //   dummyHW.forEach((hw) => {
-  //     hw.isChecked;
-  //   });
-  //   setCheckList([]);
-  // }, []);
+  useEffect(() => {
+    setLessonId(id);
+  }, []);
+  // 드롭다운을 위한 학생 정보
+  const fetchStudentInfo = async (lesson_id) => {
+    try {
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/lesson-detail/${lesson_id}`;
+      const userToken = localStorage.getItem('userToken');
+      const response = await axios.get(URL, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      setClassInfo(response.data);
+    } catch (err) {
+      console.error('Err:', err);
+    }
+  };
+  useEffect(() => {
+    fetchStudentInfo(lessonId);
+  }, []);
 
-  // const handleIsChecked = () => {
-  //   setIsChecked(...isChecked);
-  // };
   return (
     <ClassWrapper>
       <Header path={'calendar'} />
       <Title>수업일지</Title>
-      {classList.map((student) => (
-        <MainInfoSection>
-          <StudentContainer>
-            <ProfileBox color={student.color} />
-            <ClassInfoBox>
-              <SubInfo>{student.school}</SubInfo>
-              <MainInfo>
-                {student.name} 학생 | {student.subject}
-              </MainInfo>
-            </ClassInfoBox>
-            <TurnInfoBox>{student.turn}</TurnInfoBox>
-          </StudentContainer>
-          <DateContainer>
-            <DateBox>
-              <DateTitle>날짜</DateTitle>
-              <DateInput>{student.date}</DateInput>
-            </DateBox>
-            <TimeBox>
-              <TimeTitle>시간</TimeTitle>
-              <TimeInput>{student.time}</TimeInput>
-            </TimeBox>
-          </DateContainer>
-          <PlaceContainer>
-            <PlaceTitle>장소</PlaceTitle>
-            <PlaceInput>{student.place}</PlaceInput>
-          </PlaceContainer>
-        </MainInfoSection>
-      ))}
+      <MainInfoSection>
+        <StudentContainer>
+          <ProfileBox color={classInfo?.color} />
+          <ClassInfoBox>
+            <SubInfo>{classInfo?.studentSchool}</SubInfo>
+            <MainInfo>
+              {classInfo?.studentName} 학생 | {classInfo?.subject}
+            </MainInfo>
+          </ClassInfoBox>
+          <TurnInfoBox>{classInfo?.currentLessonTime}</TurnInfoBox>
+        </StudentContainer>
+        <DateContainer>
+          <DateBox>
+            <DateTitle>날짜</DateTitle>
+            <DateInput>{classInfo?.date}</DateInput>
+          </DateBox>
+          <TimeBox>
+            <TimeTitle>시간</TimeTitle>
+            <TimeInput>
+              {classInfo?.startTime} ~ {classInfo?.endtime}
+            </TimeInput>
+          </TimeBox>
+        </DateContainer>
+        <PlaceContainer>
+          <PlaceTitle>장소</PlaceTitle>
+          <PlaceInput>{classInfo?.place}</PlaceInput>
+        </PlaceContainer>
+      </MainInfoSection>
       <ClassInfoSection>
         <Container>
           <TitleContainer>
             <InfoTitle>오늘까지 숙제</InfoTitle>
             <UnderLine></UnderLine>
           </TitleContainer>
-          {dummyHW.map((hw) => (
-            <TodayHWContainer>
-              <CheckButton>{hw.isChecked ? <CheckedButtonIcon /> : <UnCheckedButtonIcon />}</CheckButton>
-              <Homework>{hw.text}</Homework>
-              {/* <TrashIcon></TrashIcon> */}
-            </TodayHWContainer>
-          ))}
+          {classInfo?.homeworkForTodayList &&
+            classInfo.homeworkForTodayList.map((hw) => (
+              <TodayHWContainer>
+                <CheckButton>{hw?.completed ? <CheckedButtonIcon /> : <UnCheckedButtonIcon />}</CheckButton>
+                <Homework>{hw?.homeworkContent}</Homework>
+              </TodayHWContainer>
+            ))}
         </Container>
         <TitleContainer>
           <InfoTitle>오늘 나간 진도</InfoTitle>
           <UnderLine></UnderLine>
         </TitleContainer>
-        <ProgressContainer>
-          <ProgressInput placeholder="오늘의 진도를 입력해 주세요."></ProgressInput>
-        </ProgressContainer>
+        <ProgressContainer>{classInfo?.studyContent}</ProgressContainer>
         <NextHWContainer>
           <TitleContainer>
             <InfoTitle>다음 시간까지 숙제</InfoTitle>
             <UnderLine></UnderLine>
           </TitleContainer>
-          <Homework>쎈 76-90p 풀기 </Homework>
-          <Homework>모의고오사 풀기 </Homework>
+          {classInfo?.homeworkForNextList &&
+            classInfo.homeworkForNextList.map((hwNext) => <Homework>{hwNext?.homeworkContent}</Homework>)}
         </NextHWContainer>
       </ClassInfoSection>
     </ClassWrapper>

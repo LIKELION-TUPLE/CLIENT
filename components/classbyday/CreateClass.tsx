@@ -5,29 +5,74 @@ import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
 import ClassDropdown from './ClassDropdown';
 import { PlusIcon } from 'asset/index';
-
+import axios from 'axios';
+import * as moment from 'moment';
+import 'moment/locale/ko';
+import { useRouter } from 'next/router';
 interface colorProps {
   color: string;
 }
 const CreateClass = () => {
+  const router = useRouter();
   const [nextHW, setNextHW] = useState<any[]>([]);
   const [nextHWContent, setNextHWContent] = useState<string[]>([]);
   const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [dow, setDow] = useState<string>('');
+  const [stime, setStime] = useState('');
+  const [etime, setEtime] = useState('');
   const [place, setPlace] = useState('');
   const [progress, setProgress] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [dropDown, setDropDown] = useState<boolean>(false);
-  const [studentInfo, setStudentInfo] = useState<number>(0);
+  const [studentList, setStudentList] = useState([]); // 담당하는 수업 정보 리스트
+  const [studentInfo, setStudentInfo] = useState<number>(0); // 드롭다운에서 선택된 course의 id
+  const [selectedStudentInfo, setSelectedStudentInfo] = useState([]); // 드롭다운에서 선택된 학생 정보
 
   const handleNextHW = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNextHWContent([...nextHWContent, e.target.value]);
   };
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
+    switch (moment(date).day()) {
+      case 0:
+        setDow('SUN');
+        break;
+      case 1:
+        setDow('MON');
+        break;
+      case 3:
+        setDow('TUE');
+      case 4:
+        setDow('WED');
+        break;
+      case 5:
+        setDow('THU');
+        break;
+      case 6:
+        setDow('FRI');
+        break;
+      case 6:
+        setDow('SAT');
+        break;
+      default:
+        setDow('');
+    }
   };
-  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTime(e.target.value);
+  const handleSTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const regex = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
+
+    if (regex.test(inputValue) || inputValue === '') {
+      setStime(inputValue);
+    }
+  };
+  const handleETimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    const regex = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
+
+    if (regex.test(inputValue) || inputValue === '') {
+      setEtime(inputValue);
+    }
   };
   const handlePlaceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlace(e.target.value);
@@ -35,6 +80,7 @@ const CreateClass = () => {
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProgress(e.target.value);
   };
+
   const handlePlusOnClick = () => {
     setNextHW(
       nextHW.concat(
@@ -48,9 +94,101 @@ const CreateClass = () => {
       ),
     );
   };
+
+  // 드롭다운을 위한 학생 정보
+  const fetchStudentInfo = async () => {
+    try {
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/course/course-list-for-create`;
+      const userToken = localStorage.getItem('userToken');
+      const response = await axios.get(URL, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      setStudentList(response.data);
+    } catch (err) {
+      console.error('Err:', err);
+    }
+  };
   useEffect(() => {
-    nextHWContent && date && time && place && progress ? setIsFormValid(true) : setIsFormValid(false);
-  }, [nextHWContent, date, time, place, progress]);
+    fetchStudentInfo();
+  }, []);
+
+  // 오늘까지 숙제를 불러오는 부분
+  const fetchLatestClass = async (course_id) => {
+    try {
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/homeworks/last-homeworks-list/${course_id}`;
+      const userToken = localStorage.getItem('userToken');
+      const response = await axios.get(URL, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.error('Err:', err);
+    }
+  };
+
+  // 선택된 학생은 임의로 첫번째로 저장
+  useEffect(() => {
+    setSelectedStudentInfo(studentList[0]);
+    setStudentInfo(studentList[0]?.course_id);
+    // fetchLatestClass(studentList[0]?.course_id);
+  }, [studentList]);
+
+  //
+  // useEffect(() => {
+  //   fetchLatestClass(studentInfo);
+  // }, [studentInfo]);
+
+  //드롭다운에 따라 선택된 학생 정보 넘김
+  useEffect(() => {
+    studentList.map((student) => {
+      if (student?.course_id === studentInfo) {
+        setSelectedStudentInfo(student);
+      }
+    });
+  }, [dropDown]);
+
+  // 폼에 입력값이 잘 들어갔는지
+  useEffect(() => {
+    nextHWContent && date && stime && etime && place && progress && studentInfo
+      ? setIsFormValid(true)
+      : setIsFormValid(false);
+  }, [nextHWContent, date, stime, etime, place, progress, studentInfo]);
+
+  // 폼 완료시 수업 추가를 요청
+  const postClassData = async (course_id) => {
+    try {
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/${course_id}`;
+      const userToken = localStorage.getItem('userToken');
+      const response = await axios.post(
+        URL,
+        {
+          date: moment(date).format('YYYY-MM-DD'),
+          startTime: stime,
+          endTime: etime,
+          dow: dow,
+          place: place,
+          studyContent: progress,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        },
+      );
+      console.log(response.data);
+    } catch (err) {
+      console.error('Err:', err);
+    }
+  };
+  const handleSaveClick = () => {
+    router.replace(`/calendar`);
+    postClassData(studentInfo);
+  };
+
   return (
     <ClassWrapper>
       <Header path={'calendar'} />
@@ -60,20 +198,21 @@ const CreateClass = () => {
           onClick={() => {
             setDropDown(!dropDown);
           }}>
-          <ProfileBox color={studentList[studentInfo].color} />
+          <ProfileBox color={selectedStudentInfo?.color} />
           <ClassInfoBox>
-            <SubInfo>{studentList[studentInfo].school}</SubInfo>
+            <SubInfo>{selectedStudentInfo?.studentSchool}</SubInfo>
             <MainInfo>
-              {studentList[studentInfo].name} 학생 | {studentList[studentInfo].subject}
+              {selectedStudentInfo?.studentName} 학생 | {selectedStudentInfo?.subject}
             </MainInfo>
           </ClassInfoBox>
-          <TurnInfoBox>{studentList[studentInfo].turn}</TurnInfoBox>
+          <TurnInfoBox>{selectedStudentInfo?.currentLessonTime}회차</TurnInfoBox>
           {/* <Image src={DownButton} alt="드롭다운" width={24} height={24} /> */}
         </StudentContainer>
         <DropDownWrapper>
           {dropDown && (
             <ClassDropdown
-              giveStudentInfo={(giveStudentInfo: string) => setStudentInfo(giveStudentInfo)}
+              studentList={studentList}
+              giveStudentInfo={(giveStudentInfo: number) => setStudentInfo(giveStudentInfo)}
               giveSelected={(giveSelected: boolean) => setDropDown(giveSelected)}
             />
           )}
@@ -89,8 +228,12 @@ const CreateClass = () => {
           <TimeBox>
             <TimeTitle>시간</TimeTitle>
             <TimeInput
-              type="time"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleTimeChange(e)}></TimeInput>
+              placeholder="HH:MM"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSTimeChange(e)}></TimeInput>
+            ~
+            <TimeInput
+              placeholder="HH:MM"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleETimeChange(e)}></TimeInput>
           </TimeBox>
         </DateContainer>
         <PlaceContainer>
@@ -123,7 +266,11 @@ const CreateClass = () => {
           <PlusIconSvg onClick={handlePlusOnClick} />
         </NextHWContainer>
       </ClassInfoSection>
-      {isFormValid ? <CompleteButton>저장</CompleteButton> : <UnCompleteButton>저장</UnCompleteButton>}
+      {isFormValid ? (
+        <CompleteButton onClick={handleSaveClick}>저장</CompleteButton>
+      ) : (
+        <UnCompleteButton>저장</UnCompleteButton>
+      )}
     </ClassWrapper>
   );
 };
@@ -177,7 +324,7 @@ const StudentContainer = styled.div`
 `;
 const DateContainer = styled.div`
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   margin-bottom: 1rem;
 `;
 const DateBox = styled.div`
@@ -218,36 +365,31 @@ const DateInput = styled.input`
 const TimeBox = styled.div`
   display: flex;
   align-items: center;
-  width: 14.5rem;
+  width: 15rem;
   height: 3.7rem;
   padding: 0rem 1rem;
-  gap: 0.7rem;
+  gap: 0.5rem;
   background-color: ${theme.colors.lightGray};
   border-radius: 1rem;
 `;
 const TimeTitle = styled.p`
   /* margin-left: 1rem;
   margin-right: 1.4rem; */
+  width: 4.5rem;
   ${theme.fonts.text01_medium}
 `;
 const TimeInput = styled.input`
-  width: 9rem;
+  width: 4rem;
   border: none;
   background-color: ${theme.colors.lightGray};
   color: ${theme.colors.darkGray};
   ${theme.fonts.text02_regular}
 
-  &[type='time'] {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding: 0.5rem 0.7rem; /* 조절 가능한 패딩 값 */
-    border-radius: 4px;
-    outline: none;
+  border-radius: 4px;
+  outline: none;
 
-    &::-webkit-calendar-picker-indicator {
-      background: none;
-    }
+  &::-webkit-calendar-picker-indicator {
+    display: none; /* This will hide the calendar picker indicator */
   }
 `;
 const PlaceContainer = styled.div`

@@ -29,3 +29,4 @@ export { default as RightSmallIcon } from './right.svg';
 export { default as ProgressBarIcon } from './ProgressBar.svg';
 export { default as ProgressDoneIcon } from './ProgressDone.svg';
 export { default as ProgressNowIcon } from './ProgressNow.svg';
+export { default as PlusClass } from './PlusClass.svg';

@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/moment": "^2.13.0",
     "@types/react-slick": "^0.23.12",
     "@types/styled-components": "^5.1.27",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
