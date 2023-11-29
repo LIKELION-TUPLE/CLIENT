@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { studentList } from 'data/dummy';
 import theme from '@src/styles/theme';
 import Header from 'components/common/Header';
 import ClassDropdown from './ClassDropdown';
 import { PlusIcon } from 'asset/index';
 import axios from 'axios';
-import * as moment from 'moment';
+import moment, { MomentInput } from 'moment';
 import 'moment/locale/ko';
 import { useRouter } from 'next/router';
 interface colorProps {
-  color: string;
+  color?: string;
 }
+export interface courseProps {
+  course_id: number;
+  color: string;
+  studentName: string;
+  studentSchool: string;
+  studentGrade: number;
+  teacherName: string;
+  subject: string;
+  currentLessonTime: number;
+}
+
 const CreateClass = () => {
   const router = useRouter();
   const [nextHW, setNextHW] = useState<any[]>([]);
@@ -24,16 +34,16 @@ const CreateClass = () => {
   const [progress, setProgress] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
   const [dropDown, setDropDown] = useState<boolean>(false);
-  const [studentList, setStudentList] = useState([]); // 담당하는 수업 정보 리스트
+  const [studentList, setStudentList] = useState<Array<courseProps>>([]); // 담당하는 수업 정보 리스트
   const [studentInfo, setStudentInfo] = useState<number>(0); // 드롭다운에서 선택된 course의 id
-  const [selectedStudentInfo, setSelectedStudentInfo] = useState([]); // 드롭다운에서 선택된 학생 정보
+  const [selectedStudentInfo, setSelectedStudentInfo] = useState<courseProps>(); // 드롭다운에서 선택된 학생 정보
 
   const handleNextHW = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNextHWContent([...nextHWContent, e.target.value]);
   };
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
-    switch (moment(date).day()) {
+    switch (moment(date as MomentInput).day()) {
       case 0:
         setDow('SUN');
         break;
@@ -115,7 +125,7 @@ const CreateClass = () => {
   }, []);
 
   // 오늘까지 숙제를 불러오는 부분
-  const fetchLatestClass = async (course_id) => {
+  const fetchLatestClass = async (course_id: number) => {
     try {
       const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/homeworks/last-homeworks-list/${course_id}`;
       const userToken = localStorage.getItem('userToken');
@@ -159,7 +169,7 @@ const CreateClass = () => {
   }, [nextHWContent, date, stime, etime, place, progress, studentInfo]);
 
   // 폼 완료시 수업 추가를 요청
-  const postClassData = async (course_id) => {
+  const postClassData = async (course_id: number) => {
     try {
       const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/${course_id}`;
       const userToken = localStorage.getItem('userToken');

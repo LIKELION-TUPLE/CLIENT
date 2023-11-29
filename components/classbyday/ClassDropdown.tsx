@@ -1,16 +1,25 @@
 import React, { use, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '@src/styles/theme';
-import axios from 'axios';
-interface Props {
-  onClick?: () => void;
-}
+// import type { courseProps } from 'CreateClass';
+
 interface colorProps {
   color: string;
 }
 interface stuProps {
   onClick?: () => void;
   turn: number;
+}
+
+export interface courseProps {
+  course_id: number;
+  color: string;
+  studentName: string;
+  studentSchool: string;
+  studentGrade: number;
+  teacherName: string;
+  subject: string;
+  currentLessonTime: number;
 }
 const ClassDropdown = ({ giveStudentInfo, giveSelected, studentList }: any) => {
   const handleClickStudent = (student: number) => {
@@ -19,7 +28,7 @@ const ClassDropdown = ({ giveStudentInfo, giveSelected, studentList }: any) => {
   };
   return (
     <ListWrapper>
-      {studentList?.map((student) => (
+      {studentList?.map((student: courseProps) => (
         <>
           <StudentContainer turn={student?.course_id} onClick={() => handleClickStudent(student?.course_id)}>
             <ProfileBox color={student?.color} />
