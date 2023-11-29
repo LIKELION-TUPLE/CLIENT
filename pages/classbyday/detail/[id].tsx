@@ -3,15 +3,15 @@ import { useRouter } from 'next/router';
 import Layout from 'components/common/Layout';
 import Detail from 'components/classbyday/Detail';
 export interface idProps {
-  id?: string;
+  id: number;
 }
 const id = () => {
   const router = useRouter();
-  const queryid = router.query.id;
+  const queryid = Number(router.query.id);
 
   return (
     <Layout>
-      <Detail id={queryid as string}></Detail>
+      <Detail id={queryid as number}></Detail>
     </Layout>
   );
 };

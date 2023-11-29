@@ -7,18 +7,39 @@ import { CheckedButtonIcon, UnCheckedButtonIcon, TrashIcon } from 'asset/index';
 import axios from 'axios';
 
 interface colorProps {
+  color?: string;
+}
+interface hwProps {
+  id: number;
+  completed: boolean;
+  homeworkContent: string;
+  lessonId: number;
+}
+interface classProps {
   color: string;
+  classInfo: string;
+  studentName: string;
+  studentSchool: string;
+  subject: string;
+  currentLessonTime: number;
+  date: string;
+  startTime: string;
+  endtime: string;
+  place: string;
+  homeworkForTodayList: Array<hwProps>;
+  studyContent: string;
+  homeworkForNextList: Array<hwProps>;
 }
 const Detail = (props: idProps) => {
   const { id } = props;
-  const [lessonId, setLessonId] = useState(id);
-  const [classInfo, setClassInfo] = useState([]);
+  const [lessonId, setLessonId] = useState<number>(id);
+  const [classInfo, setClassInfo] = useState<classProps>();
 
   useEffect(() => {
     setLessonId(id);
   }, []);
   // 드롭다운을 위한 학생 정보
-  const fetchStudentInfo = async (lesson_id) => {
+  const fetchStudentInfo = async (lesson_id: number) => {
     try {
       const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/lesson-detail/${lesson_id}`;
       const userToken = localStorage.getItem('userToken');

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import moment, { MomentInput } from 'moment';
 import 'moment/locale/ko';
 import { dayList, studentList } from 'data/dummy';
 import styled from 'styled-components';
@@ -48,7 +49,9 @@ const TupleCalendar = () => {
     }
   };
   useEffect(() => {
-    setSelectDate(moment(date).format('YYYY-MM-DD'));
+    if (date) {
+      setSelectDate(moment(date as MomentInput).format('YYYY-MM-DD'));
+    }
   }, [date]);
   useEffect(() => {
     fetchDateData();
@@ -73,7 +76,7 @@ const TupleCalendar = () => {
         />
       </CalendarSection>
       <ClassSection>
-        <DateTitle>{moment(date).format('MM월 DD일 (dd)')}</DateTitle>
+        <DateTitle>{moment(date as MomentInput).format('MM월 DD일 (dd)')}</DateTitle>
         <DateSubTitle>오늘의 수업</DateSubTitle>
         {studentList.map((student) => (
           <ClassContainer>
