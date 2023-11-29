@@ -33,10 +33,11 @@ const Login = () => {
           password: pw,
         });
         const userName = response.data.name;
+        const userRole = response.data.role;
         const userToken = response.data.token;
         localStorage.setItem('userName', userName);
+        localStorage.setItem('userRole', userRole);
         localStorage.setItem('userToken', userToken);
-
         alert('로그인에 성공했습니다');
         router.replace('/calendar');
       } catch (error) {

@@ -21,9 +21,14 @@ interface tutoringInfo {
 
 const ListTutoring = () => {
   const [tutoringList, setTutoringList] = useState([]);
+  const [userRole, setUserRole] = useState('');
   const router = useRouter();
   const handleCreateTutoring = () => {
-    router.replace('/tutoring/create');
+    if (userRole === 'ROLE_TEACHER') {
+      router.replace('/tutoring/create');
+    } else {
+      router.replace('/tutoring/studentcreate');
+    }
   };
 
   const handleShowClass = (course_id: number) => {
@@ -41,12 +46,14 @@ const ListTutoring = () => {
           },
         });
 
+        console.log(response.data);
         setTutoringList(response.data);
       } catch (error) {
         console.error('Error:', error);
       }
     };
-
+    const userRole = localStorage.getItem('userRole');
+    setUserRole(userRole || '');
     fetchData();
   }, []);
 
@@ -62,10 +69,22 @@ const ListTutoring = () => {
             <ProfileBox color={tutoring.color} />
             <ClassInfoBox>
               <SubInfo>
-                {tutoring.studentSchool} {tutoring.studentGrade}학년
+                {userRole === 'ROLE_TEACHER' ? (
+                  <div>
+                    {tutoring.studentSchool} {tutoring.studentGrade}학년
+                  </div>
+                ) : null}
               </SubInfo>
               <MainInfo>
-                {tutoring.studentName} 학생 | {tutoring.subject}
+                {userRole === 'ROLE_TEACHER' ? (
+                  <div>
+                    {tutoring.studentName} 학생 | {tutoring.subject}
+                  </div>
+                ) : (
+                  <div>
+                    {tutoring.teacherName} 선생님 | {tutoring.subject}
+                  </div>
+                )}
               </MainInfo>
             </ClassInfoBox>
             {tutoring.currentLessonTime === 0 ? (

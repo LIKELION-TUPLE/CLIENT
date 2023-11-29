@@ -17,6 +17,13 @@ interface Props {
 const Footer = () => {
   const router = useRouter();
   const { pathname } = useRouter();
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    const userRole = localStorage.getItem('userRole');
+    setUserRole(userRole || '');
+    console.log(userRole);
+  }, []);
 
   return (
     <Wrapper>
@@ -38,15 +45,19 @@ const Footer = () => {
           style={{ cursor: `pointer` }}
         />
       )}
-      {pathname.startsWith(`/payment`) ? (
-        <ColorMoneyIcon alt="입금 관리 아이콘" style={{ cursor: `pointer` }} />
-      ) : (
-        <NoColorMoneyIcon
-          onClick={() => router.replace(`/payment`)}
-          alt="입금 관리 아이콘"
-          style={{ cursor: `pointer` }}
-        />
-      )}
+      {userRole === 'ROLE_TEACHER' ? (
+        <div>
+          {pathname.startsWith(`/payment`) ? (
+            <ColorMoneyIcon alt="입금 관리 아이콘" style={{ cursor: `pointer` }} />
+          ) : (
+            <NoColorMoneyIcon
+              onClick={() => router.replace(`/payment`)}
+              alt="입금 관리 아이콘"
+              style={{ cursor: `pointer` }}
+            />
+          )}
+        </div>
+      ) : null}
     </Wrapper>
   );
 };

@@ -27,13 +27,19 @@ const CreateClass = () => {
   const [studentList, setStudentList] = useState([]); // 담당하는 수업 정보 리스트
   const [studentInfo, setStudentInfo] = useState<number>(0); // 드롭다운에서 선택된 course의 id
   const [selectedStudentInfo, setSelectedStudentInfo] = useState([]); // 드롭다운에서 선택된 학생 정보
-
   const handleNextHW = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNextHWContent([...nextHWContent, e.target.value]);
   };
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(e.target.value);
-    switch (moment(date).day()) {
+    const date = e.target.value;
+    const updateDate = date;
+    setDate(date);
+    if (date[8] === '0') {
+      let day = parseInt(date[9]) + 14;
+      let updatedDate = date.slice(0, 8) + ('0' + day).slice(-2);
+    }
+
+    switch (moment(updateDate).day()) {
       case 0:
         setDow('SUN');
         break;
@@ -42,6 +48,7 @@ const CreateClass = () => {
         break;
       case 3:
         setDow('TUE');
+        break;
       case 4:
         setDow('WED');
         break;
@@ -110,9 +117,6 @@ const CreateClass = () => {
       console.error('Err:', err);
     }
   };
-  useEffect(() => {
-    fetchStudentInfo();
-  }, []);
 
   // 오늘까지 숙제를 불러오는 부분
   const fetchLatestClass = async (course_id) => {
@@ -129,6 +133,10 @@ const CreateClass = () => {
       console.error('Err:', err);
     }
   };
+
+  useEffect(() => {
+    fetchStudentInfo();
+  }, []);
 
   // 선택된 학생은 임의로 첫번째로 저장
   useEffect(() => {

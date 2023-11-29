@@ -146,7 +146,7 @@ const Signup: React.FC<OwnProps> = ({ userType }) => {
 
   return (
     <Layout noFooter>
-      <Header path={'selectsignup'} />
+      <Header path={'signup/select'} />
       <Page>
         <TitleWrapper>{type} 회원가입</TitleWrapper>
         <ContentWrapper>

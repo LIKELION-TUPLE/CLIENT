@@ -5,18 +5,110 @@ import { idProps } from 'pages/classbyday/detail/[id]';
 import Header from 'components/common/Header';
 import { CheckedButtonIcon, UnCheckedButtonIcon, TrashIcon } from 'asset/index';
 import axios from 'axios';
+import Modal from 'react-modal';
+import ReactModal from 'react-modal';
+import { useRouter } from 'next/router';
 
 interface colorProps {
   color: string;
 }
-const Detail = (props: idProps) => {
+
+interface lessonInfo {
+  color: string;
+  courseId: number;
+  currentLessonTime: number;
+  date: string;
+  dow: string;
+  endTime: string;
+  homeworkForNextList: string[];
+  homeworkForTodayList: string[];
+  id: number;
+  place: string;
+  startTime: string;
+  studentGrade: number;
+  studentName: string;
+  studentSchool: string;
+  studyContent: string;
+  subject: string;
+  teacherName: string;
+}
+
+const ParsedDate: React.FC<{ date: string | undefined }> = (data) => {
+  const date = new Date(data.date as string);
+  const formattedDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+
+  return <span>{formattedDate}</span>;
+};
+
+const DetailClass = (props: idProps) => {
   const { id } = props;
   const [lessonId, setLessonId] = useState(id);
-  const [classInfo, setClassInfo] = useState([]);
+  const [classInfo, setClassInfo] = useState<lessonInfo>();
+  const router = useRouter();
 
-  useEffect(() => {
-    setLessonId(id);
-  }, []);
+  const modalStyle: ReactModal.Styles = {
+    overlay: {
+      backgroundColor: ' rgba(0, 0, 0, 0.4)',
+      width: '100%',
+      height: '100vh',
+      zIndex: '10',
+      position: 'fixed',
+      top: '0',
+      left: '0',
+    },
+    content: {
+      width: '27rem',
+      height: '13.6rem',
+      zIndex: '150',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      padding: 0,
+      borderRadius: '10px',
+      boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)',
+      backgroundColor: 'white',
+      overflow: 'auto',
+    },
+  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const formattedTime = (timeString: string) => {
+    const time = new Date(`2000-01-01T${timeString}`);
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+
+    // 시간과 분을 2자리 숫자로 표시하기 위해 조건부 삼항 연산자 사용
+    const formattedTime = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+    return formattedTime;
+  };
+
+  const handleEdit = () => {};
+  const handleDelete = async () => {
+    try {
+      const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/delete-lesson/${id}`;
+      const userToken = localStorage.getItem('userToken');
+      const response = await axios.delete(URL, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      console.log(response.data);
+      router.replace('/calendar');
+    } catch (err) {
+      console.error('Err:', err);
+    }
+  };
+
   // 드롭다운을 위한 학생 정보
   const fetchStudentInfo = async (lesson_id) => {
     try {
@@ -27,6 +119,7 @@ const Detail = (props: idProps) => {
           Authorization: `Bearer ${userToken}`,
         },
       });
+      console.log(response.data);
       setClassInfo(response.data);
     } catch (err) {
       console.error('Err:', err);
@@ -49,17 +142,17 @@ const Detail = (props: idProps) => {
               {classInfo?.studentName} 학생 | {classInfo?.subject}
             </MainInfo>
           </ClassInfoBox>
-          <TurnInfoBox>{classInfo?.currentLessonTime}</TurnInfoBox>
+          <TurnInfoBox>{classInfo?.currentLessonTime}회차</TurnInfoBox>
         </StudentContainer>
         <DateContainer>
           <DateBox>
             <DateTitle>날짜</DateTitle>
-            <DateInput>{classInfo?.date}</DateInput>
+            <ParsedDate date={classInfo?.date} />
           </DateBox>
           <TimeBox>
             <TimeTitle>시간</TimeTitle>
             <TimeInput>
-              {classInfo?.startTime} ~ {classInfo?.endtime}
+              {formattedTime(classInfo?.startTime)} ~ {formattedTime(classInfo?.endTime)}
             </TimeInput>
           </TimeBox>
         </DateContainer>
@@ -96,12 +189,44 @@ const Detail = (props: idProps) => {
             classInfo.homeworkForNextList.map((hwNext) => <Homework>{hwNext?.homeworkContent}</Homework>)}
         </NextHWContainer>
       </ClassInfoSection>
+
+      <ButtonWrapper>
+        <BottomEditButton type="submit" onClick={handleEdit}>
+          수정
+        </BottomEditButton>
+        <BottomDeleteButton type="submit" onClick={openModal}>
+          삭제
+        </BottomDeleteButton>
+        <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Check Delete" style={modalStyle}>
+          <DeleteWrapper>
+            <DeleteContainer>
+              <DeleteTitle>정보 삭제</DeleteTitle>
+              <DeleteContent>
+                학생 정보와 과외 정보를 전부
+                <br />
+                삭제하시겠습니까?
+              </DeleteContent>
+            </DeleteContainer>
+            <DeleteButton>
+              <DeleteOkButton type="submit" onClick={handleDelete}>
+                네
+              </DeleteOkButton>
+              <DeleteNoButton type="button" onClick={closeModal}>
+                아니오
+              </DeleteNoButton>
+            </DeleteButton>
+          </DeleteWrapper>
+        </Modal>
+      </ButtonWrapper>
     </ClassWrapper>
   );
 };
 
-export default Detail;
-const ClassWrapper = styled.div``;
+export default DetailClass;
+const ClassWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const Title = styled.h1`
   margin-top: 7.3rem;
@@ -260,3 +385,103 @@ const ProgressInput = styled.input`
   border: none;
 `;
 const NextHWContainer = styled.div``;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: 3rem;
+`;
+
+const BottomEditButton = styled.button`
+  margin-top: 2rem;
+  margin-bottom: 4.5rem;
+
+  width: 20rem;
+  height: 5rem;
+  border-radius: 3rem;
+  border: none;
+
+  background-color: ${theme.colors.gray};
+  color: ${theme.colors.white};
+  ${theme.fonts.title_bold};
+
+  cursor: pointer;
+`;
+
+const BottomDeleteButton = styled.button`
+  margin-top: 2rem;
+  margin-bottom: 4.5rem;
+
+  width: 9rem;
+  height: 5rem;
+  border-radius: 3rem;
+  border: none;
+
+  background-color: ${theme.colors.red};
+  color: ${theme.colors.white};
+  ${theme.fonts.title_bold};
+
+  cursor: pointer;
+`;
+
+const DeleteWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  width: 100%;
+  height: 100%;
+`;
+
+const DeleteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  width: 100%;
+  margin-top: 1.6rem;
+  text-align: center;
+`;
+
+const DeleteTitle = styled.div`
+  ${theme.fonts.title_regular};
+`;
+
+const DeleteContent = styled.div`
+  ${theme.fonts.text02_regular}
+`;
+
+const DeleteButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: solid 0.1rem ${theme.colors.gray};
+`;
+
+const DeleteOkButton = styled.button`
+  width: 13.3rem;
+  height: 4rem;
+  border-right: solid 0.1rem ${theme.colors.gray};
+  ${theme.fonts.title_regular};
+  color: ${theme.colors.mainColor};
+
+  &:hover {
+    background-color: ${theme.colors.mainColor};
+    color: ${theme.colors.white};
+  }
+`;
+
+const DeleteNoButton = styled.button`
+  width: 13.3rem;
+  height: 4rem;
+  ${theme.fonts.title_regular};
+  color: ${theme.colors.mainColor};
+
+  &:hover {
+    background-color: ${theme.colors.mainColor};
+    color: ${theme.colors.white};
+  }
+`;

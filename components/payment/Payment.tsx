@@ -42,37 +42,9 @@ const Payment = () => {
     fetchData();
   }, []);
 
-  // const handleCreate = async () => {
-  //   try {
-  //     const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/48`;
-  //     const userToken = localStorage.getItem('userToken');
-  //     const response = await axios.post(
-  //       URL,
-  //       {
-  //         date: '2023-11-10',
-  //         startTime: '17:00',
-  //         endTime: '19:00',
-  //         dow: 'THU',
-  //         place: '정하상관',
-  //         studyContent: '5',
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${userToken}`,
-  //         },
-  //       },
-  //     );
-
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
-
   return (
     <Wrapper>
       <Title>입금관리</Title>
-      {/* <button onClick={handleCreate}>추가</button> */}
       {paymentList.map((payment) =>
         payment !== null ? (
           <Section>
@@ -98,7 +70,9 @@ const Payment = () => {
 
 export default Payment;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  height: 145rem;
+`;
 const Title = styled.h1`
   margin-top: 7.3rem;
   margin-left: 3rem;

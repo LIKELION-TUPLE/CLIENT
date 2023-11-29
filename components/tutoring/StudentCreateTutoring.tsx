@@ -39,6 +39,7 @@ const StudentCreateTutoring = () => {
         const result = response.data['Enroll-success'];
         if (result) {
           alert('과외가 추가되었습니다');
+          router.replace('/tutoring/list');
         } else {
           alert('등록되지 않은 코드입니다');
           setCode('');
