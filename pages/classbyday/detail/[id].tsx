@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from 'components/common/Layout';
-import Detail from 'components/classbyday/Detail';
+import DetailClass from 'components/classbyday/DetailClass';
 export interface idProps {
   id: number;
 }
@@ -10,8 +10,8 @@ const id = () => {
   const queryid = Number(router.query.id);
 
   return (
-    <Layout>
-      <Detail id={queryid as number}></Detail>
+    <Layout noFooter>
+      <DetailClass id={queryid as number}></DetailClass>
     </Layout>
   );
 };

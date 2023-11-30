@@ -3,7 +3,6 @@ import Calendar from 'react-calendar';
 // import * as moment from 'moment';
 import moment, { MomentInput } from 'moment';
 import 'moment/locale/ko';
-import { dayList, studentList } from 'data/dummy';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import theme from '@src/styles/theme';
@@ -11,32 +10,48 @@ import { useSetRecoilState } from 'recoil';
 import { dateSelect } from '../../atoms/selector';
 import { PlusClass } from 'asset';
 import axios from 'axios';
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 interface colorProps {
   color: string;
 }
+interface lessonInfo {
+  course_id: number;
+  color: string;
+  studentName: string;
+  school: string;
+  studentGrade: number;
+  teacherName: string;
+  subject: string;
+  currentLessonTime: number;
+  startTime: string;
+  endTime: string;
+  lesson_id: number;
+}
+
 const TupleCalendar = () => {
   const router = useRouter();
-  const [date, setDate] = useState<Value>(new Date()); //선택된 날짜
+  const [userName, setUserName] = useState('');
+  const [userRole, setUserRole] = useState('');
+  const [date, setDate] = useState<Date>(new Date());
+  const [lessonList, setLessonList] = useState<lessonInfo[]>([]);
   const setSelectDate = useSetRecoilState(dateSelect);
-  const addContent = ({ date }: any) => {
-    const contents = [];
-    if (dayList.find((day) => day === moment(date).format('YYYY-MM-DD'))) {
-      contents.push(<div className="dot"></div>);
-    }
-    return <div>{contents}</div>;
-  };
-  const handleClick = () => {
-    router.replace('/classbyday');
-  };
-  const fetchDateData = async () => {
+
+  // const addContent = ({ date }: any) => {
+  //   const contents = [];
+  //   if (dayList.find((day) => day === moment(date).format('YYYY-MM-DD'))) {
+  //     contents.push(<div className="dot"></div>);
+  //   }
+  //   return <div>{contents}</div>;
+  // };
+
+  const fetchDateData = async (date: Date) => {
     try {
       const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/today`;
       const userToken = localStorage.getItem('userToken');
       const response = await axios.get(URL, {
         params: {
-          date: '2023-11-16', // 원하는 데이터를 여기에 추가하세요
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate(),
         },
         headers: {
           Authorization: `Bearer ${userToken}`,
@@ -44,51 +59,103 @@ const TupleCalendar = () => {
       });
 
       console.log(response.data);
+      setLessonList(response.data);
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
+  const formattedTime = (timeString: string) => {
+    const time = new Date(`2000-01-01T${timeString}`);
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+
+    // 시간과 분을 2자리 숫자로 표시하기 위해 조건부 삼항 연산자 사용
+    const formattedTime = `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+
+    return formattedTime;
+  };
+  // type MyEventHandler<T> = React.MouseEvent<T>;
+
+  const handleChange = () => {
+    const newDate: Date = new Date();
+    setDate(newDate);
+    fetchDateData(newDate);
+  };
+
+  const handleShowDetail = (lessonid: number) => {
+    router.replace(`/classbyday/detail/${lessonid}`);
+  };
+
   useEffect(() => {
     if (date) {
       setSelectDate(moment(date as MomentInput).format('YYYY-MM-DD'));
     }
   }, [date]);
+
   useEffect(() => {
-    fetchDateData();
+    const userName = localStorage.getItem('userName');
+    setUserName(userName || '');
+    const userRole = localStorage.getItem('userRole');
+    setUserRole(userRole || '');
+    fetchDateData(date);
   }, []);
+
   return (
     <CalendarWrapper>
       <TitleSection>
-        <SubTitle>최인강 선생님, 어서오세요!</SubTitle>
+        <SubTitle>
+          {userName} {userRole === 'ROLE_TEACHER' ? '선생님' : '학생'}, 어서오세요!
+        </SubTitle>
         <Title>과외 일정</Title>
       </TitleSection>
       <CalendarSection>
         <Calendar
           locale="ko"
-          onChange={setDate}
+          onChange={handleChange}
           formatDay={(locale, date) => moment(date).format('D')} // 0일
           next2Label={null} //년 네비게이션 표시 여부
           prev2Label={null} //년 네비게이션 표시 여부
           showNeighboringMonth={false} //최근 달 일자 표시 여부
-          tileContent={addContent}
-          onClickDay={handleClick}
           value={date}
+          tileClassName={({ date, view }) => {
+            // 현재 날짜가 선택된 날짜인 경우에 클래스를 추가
+            if (
+              view === 'month' &&
+              date.getDate() === date.getDate() &&
+              date.getMonth() === date.getMonth() &&
+              date.getFullYear() === date.getFullYear()
+            ) {
+              return 'selected-date';
+            }
+            return null;
+          }}
         />
       </CalendarSection>
       <ClassSection>
         <DateTitle>{moment(date as MomentInput).format('MM월 DD일 (dd)')}</DateTitle>
         <DateSubTitle>오늘의 수업</DateSubTitle>
-        {studentList.map((student) => (
-          <ClassContainer>
-            <ProfileBox color={student.color} />
+        {lessonList.map((lesson) => (
+          <ClassContainer onClick={() => handleShowDetail(lesson.lesson_id)}>
+            <ProfileBox color={lesson.color} />
             <ClassInfoBox>
-              <SubInfo>{student.school}</SubInfo>
+              <SubInfo>{lesson.school}</SubInfo>
               <MainInfo>
-                {student.name} 학생 | {student.subject}
+                {userRole === 'ROLE_TEACHER' ? (
+                  <div>
+                    {lesson.studentName} 학생 | {lesson.subject}
+                  </div>
+                ) : (
+                  <div>
+                    {lesson.teacherName} 선생님 | {lesson.subject}
+                  </div>
+                )}
               </MainInfo>
-              <SubInfo>{student.time}</SubInfo>
+              <SubInfo>
+                {formattedTime(lesson.startTime)} ~ {formattedTime(lesson.endTime)}
+              </SubInfo>
             </ClassInfoBox>
-            <TurnInfoBox>{student.turn}</TurnInfoBox>
+            <TurnInfoBox>{lesson.currentLessonTime}회차</TurnInfoBox>
           </ClassContainer>
         ))}
         <PlusClassContainer>
@@ -159,6 +226,7 @@ const ClassContainer = styled.div`
   padding: 1.1rem 1.5rem;
   background-color: ${theme.colors.lightGray};
   border-radius: 1rem;
+  cursor: pointer;
 `;
 const ProfileBox = styled.div<colorProps>`
   width: 4rem;
