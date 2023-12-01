@@ -7,10 +7,10 @@ export interface idProps {
 }
 const id = () => {
   const router = useRouter();
-  const queryid = router.query.id;
+  const queryid = Number(router.query.id);
   return (
     <Layout>
-      <ProgressTutoring id={queryid as string} />
+      <ProgressTutoring id={queryid as number} />
     </Layout>
   );
 };
