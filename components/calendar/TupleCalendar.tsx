@@ -35,14 +35,6 @@ const TupleCalendar = () => {
   const [lessonList, setLessonList] = useState<lessonInfo[]>([]);
   const setSelectDate = useSetRecoilState(dateSelect);
 
-  // const addContent = ({ date }: any) => {
-  //   const contents = [];
-  //   if (dayList.find((day) => day === moment(date).format('YYYY-MM-DD'))) {
-  //     contents.push(<div className="dot"></div>);
-  //   }
-  //   return <div>{contents}</div>;
-  // };
-
   const fetchDateData = async (date: Date) => {
     try {
       const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/today`;
