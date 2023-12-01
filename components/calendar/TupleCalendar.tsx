@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, MouseEvent } from 'react';
 import Calendar from 'react-calendar';
 // import * as moment from 'moment';
 import moment, { MomentInput } from 'moment';
@@ -36,6 +36,7 @@ const TupleCalendar = () => {
   const setSelectDate = useSetRecoilState(dateSelect);
 
   const fetchDateData = async (date: Date) => {
+    console.log(date);
     try {
       const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/today`;
       const userToken = localStorage.getItem('userToken');
@@ -69,10 +70,9 @@ const TupleCalendar = () => {
   };
   // type MyEventHandler<T> = React.MouseEvent<T>;
 
-  const handleChange = () => {
-    const newDate: Date = new Date();
-    setDate(newDate);
-    fetchDateData(newDate);
+  const handleChange = (value: Date, event: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setDate(value);
+    fetchDateData(value);
   };
 
   const handleShowDetail = (lessonid: number) => {

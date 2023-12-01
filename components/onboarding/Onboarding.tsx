@@ -83,6 +83,7 @@ const KakaoLoginButton = styled.button`
 const KakaoLogin = styled.div`
   padding-left: 1.4rem;
   ${theme.fonts.title_medium};
+  color: ${theme.colors.black};
 `;
 
 const TupleLoginButton = styled.button`
@@ -94,6 +95,7 @@ const TupleLoginButton = styled.button`
   background-color: ${theme.colors.lightGray};
 
   ${theme.fonts.title_medium};
+  color: ${theme.colors.black};
 
   cursor: pointer;
 `;
@@ -114,6 +116,7 @@ const SignupButton = styled.button`
   padding-left: 0.2rem;
 
   ${theme.fonts.text02_bold};
+  color: ${theme.colors.black};
   text-decoration: underline;
 
   cursor: pointer;
