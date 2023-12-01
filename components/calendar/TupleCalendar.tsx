@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
-import * as moment from 'moment';
+// import * as moment from 'moment';
+import moment, { MomentInput } from 'moment';
 import 'moment/locale/ko';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
@@ -74,8 +75,10 @@ const TupleCalendar = () => {
 
     return formattedTime;
   };
+  // type MyEventHandler<T> = React.MouseEvent<T>;
 
-  const handleChange = (newDate: Date) => {
+  const handleChange = () => {
+    const newDate: Date = new Date();
     setDate(newDate);
     fetchDateData(newDate);
   };
@@ -85,7 +88,9 @@ const TupleCalendar = () => {
   };
 
   useEffect(() => {
-    setSelectDate(moment(date).format('YYYYMMDD'));
+    if (date) {
+      setSelectDate(moment(date as MomentInput).format('YYYY-MM-DD'));
+    }
   }, [date]);
 
   useEffect(() => {
@@ -128,7 +133,7 @@ const TupleCalendar = () => {
         />
       </CalendarSection>
       <ClassSection>
-        <DateTitle>{moment(date).format('MM월 DD일 (dd)')}</DateTitle>
+        <DateTitle>{moment(date as MomentInput).format('MM월 DD일 (dd)')}</DateTitle>
         <DateSubTitle>오늘의 수업</DateSubTitle>
         {lessonList.map((lesson) => (
           <ClassContainer onClick={() => handleShowDetail(lesson.lesson_id)}>

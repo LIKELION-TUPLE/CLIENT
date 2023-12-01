@@ -10,28 +10,49 @@ import ReactModal from 'react-modal';
 import { useRouter } from 'next/router';
 
 interface colorProps {
-  color: string;
+  color?: string;
 }
-
-interface lessonInfo {
-  color: string;
-  courseId: number;
-  currentLessonTime: number;
-  date: string;
-  dow: string;
-  endTime: string;
-  homeworkForNextList: string[];
-  homeworkForTodayList: string[];
+interface hwProps {
   id: number;
-  place: string;
-  startTime: string;
-  studentGrade: number;
+  completed: boolean;
+  homeworkContent: string;
+  lessonId: number;
+}
+interface classProps {
+  color: string;
+  classInfo: string;
   studentName: string;
   studentSchool: string;
-  studyContent: string;
   subject: string;
-  teacherName: string;
+  currentLessonTime: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  place: string;
+  homeworkForTodayList: Array<hwProps>;
+  studyContent: string;
+  homeworkForNextList: Array<hwProps>;
 }
+
+// interface lessonInfo {
+//   color: string;
+//   courseId: number;
+//   currentLessonTime: number;
+//   date: string;
+//   dow: string;
+//   endTime: string;
+//   homeworkForNextList: string[];
+//   homeworkForTodayList: string[];
+//   id: number;
+//   place: string;
+//   startTime: string;
+//   studentGrade: number;
+//   studentName: string;
+//   studentSchool: string;
+//   studyContent: string;
+//   subject: string;
+//   teacherName: string;
+// }
 
 const ParsedDate: React.FC<{ date: string | undefined }> = (data) => {
   const date = new Date(data.date as string);
@@ -42,8 +63,8 @@ const ParsedDate: React.FC<{ date: string | undefined }> = (data) => {
 
 const DetailClass = (props: idProps) => {
   const { id } = props;
-  const [lessonId, setLessonId] = useState(id);
-  const [classInfo, setClassInfo] = useState<lessonInfo>();
+  const [lessonId, setLessonId] = useState<number>(id);
+  const [classInfo, setClassInfo] = useState<classProps>();
   const router = useRouter();
 
   const modalStyle: ReactModal.Styles = {
@@ -81,7 +102,7 @@ const DetailClass = (props: idProps) => {
     setIsModalOpen(false);
   };
 
-  const formattedTime = (timeString: string) => {
+  const formattedTime = (timeString: string | undefined) => {
     const time = new Date(`2000-01-01T${timeString}`);
     const hours = time.getHours();
     const minutes = time.getMinutes();
@@ -110,7 +131,7 @@ const DetailClass = (props: idProps) => {
   };
 
   // 드롭다운을 위한 학생 정보
-  const fetchStudentInfo = async (lesson_id) => {
+  const fetchStudentInfo = async (lesson_id: number) => {
     try {
       const URL = `https://port-0-server-3szcb0g2blp3xl01q.sel5.cloudtype.app/lessons/lesson-detail/${lesson_id}`;
       const userToken = localStorage.getItem('userToken');
